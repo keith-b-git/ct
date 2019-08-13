@@ -1,0 +1,66 @@
+
+	<style type="text/css">
+	#map {
+		height: 400px;
+		width:400px;
+	}
+	</style>
+
+	<div id="map"></div>
+
+<script language = "javascript">
+	var map = new mxn.Mapstraction('map', 'openlayers'); 
+	var latlon = new mxn.LatLonPoint(54.3714, -4.4546);
+	map.setCenterAndZoom(latlon, 5);
+    map.addControls({
+        pan: true,
+        zoom: 'small',
+        map_type: true
+    });
+    map.enableScrollWheelZoom();
+    var geocoder = new mxn.Geocoder('googlev3',geocode_return,geocode_error);
+   [% IF location.longitude && location.latitude %]
+    {
+		var loc = new mxn.LatLonPoint([% location.latitude %],[% location.longitude %]);
+		showLocation(loc);
+	}
+[% END %]
+	
+	if (document.forms[0].latitude)
+	{
+		map.click.addHandler(function(eventName, eventSource, eventArgs) {
+		var coords = eventArgs.location;	// coords are an mxn.LatLonPoint object
+		document.forms[0].latitude.value = coords.lat;
+		document.forms[0].longitude.value = coords.lon;
+		onConvertDecimal();
+		map.removeAllMarkers();
+		var marker = new mxn.Marker(coords);
+		marker.setIcon('/static/images/marker.png', [20,50],[1,49]);
+		marker.setDraggable(true);
+		map.addMarker(marker)
+		marker.show;
+		});
+	}
+	
+	function geocode_return (location) {
+	showLocation (location.point);
+	map.setCenterAndZoom(location.point, 13)
+	}
+	function geocode_error (message) {
+		alert (message)
+	}
+function showLocation(coords)
+{	
+	document.forms[0].latitude.value = coords.lat;
+	document.forms[0].longitude.value = coords.lon;
+	onConvertDecimal();
+	map.removeAllMarkers();
+	var marker = new mxn.Marker(coords);
+	marker.setDraggable(true);
+	map.addMarker(marker)
+	marker.show;
+	map.setCenterAndZoom(coords, 13)
+}
+
+
+</script>

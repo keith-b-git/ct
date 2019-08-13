@@ -1,0 +1,20 @@
+[% FOREACH location IN locations ; IF location.latitude %]
+	var loc[% location.id %] = new mxn.LatLonPoint([% location.latitude %],[% location.longitude %]);
+	var marker[% location.id %] = new mxn.Marker(loc[% location.id %]);
+	marker[% location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+	marker[% location.id %].setInfoBubble('[% PROCESS 'map/location_bubble.tt2'  %]');
+	marker[% location.id %].setHover(0);
+	[% map %].addMarker(marker[% location.id %]);
+	marker[% location.id %].click.addHandler(function (event_name, event_source, event_args)
+{
+if ( document.getElementById('locationform') != undefined) {
+	document.getElementById('locationform').location.value = [% location.id %];
+	$(".chosen-select").trigger('chosen:updated');
+	}
+[% map %].setCenterAndZoom(loc[% location.id %], 13);
+
+});
+
+
+[% END ; END %]
+

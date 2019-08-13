@@ -1,0 +1,186 @@
+
+<table>
+[% IF (c.stash.menu_item.type == 'user_profile') && (c.user.id == c.stash.menu_item.user.id) ; INCLUDE 'user/user_admin.tt2' ; END %]
+[% IF c.stash.menu_item.editable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'contentedit') %]" 
+title = "Change the main text dispayed on the web page">Edit [% c.stash.menu_item.title %] page text</a>
+</td></tr>
+[% UNLESS (c.stash.menu_item.type == 'user_profile') %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'navedit') %]"
+title = "Change where this page appears in the site menu structure">Edit [% c.stash.menu_item.title %] page navigation</a>
+</td></tr>
+[% END %]
+[% IF c.user.access_level == 2 &&  0 %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'permedit') %]" 
+title = "Change who can access the page, who can join discussions, upload images etc, and who can modify the page">Edit [% c.stash.menu_item.title %] page permissions</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'navedit') %]"
+title = "Change where this page appears in the site menu structure">Edit [% c.stash.menu_item.title %] page navigation</a>
+</td></tr>
+[% END ; IF c.stash.menu_item.type == 'event' %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'event','edit') %]"
+title = "Change event event name, type, organiser, location(s) etc.">Edit [% c.stash.menu_item.title %] event details</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.type == 'event' && c.stash.menu_item.event.event_type == 'ct-man'  %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'event','new_entry') %]"
+title = "Create a new entry for this event">Create entry for [% c.stash.menu_item.parent.title %]</a>
+</td></tr>
+[% IF c.stash.menu_item.event.event_merchandises.size %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'event','viewextras') %]"
+title = "View extras/ merchandise for [% c.stash.menu_item.parent.title %]">View options/ merchandise for [% c.stash.menu_item.parent.title %]</a>
+</td></tr>
+[% END %]
+[% END  %]
+[% IF c.stash.menu_item.type == 'register' %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'register','edit') %]">Edit [% c.stash.menu_item.title %] car details</a>
+</td></tr>
+[% IF c.user.club_member %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_register') %]"
+title = "Add a new car to the Triumph Register">New register entry</a>
+</td></tr>
+[% END ; END %]
+[% IF c.stash.menu_item.local_group %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','edit') %]"
+title = "Change group title and organiser">Edit [% c.stash.menu_item.title %] local group details</a>
+</td></tr>
+[% FOREACH meeting IN c.stash.menu_item.local_group.group_meetings %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','meeting',meeting.id,'edit') %]"
+title = "Change time and location of meeting">Edit [% meeting.location.name %] meeting details</a>
+</td></tr>
+[% END %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','create_meeting') %]"
+title = "Create a new meeting for [% c.stash.menu_item.local_group.title %]">Create new meeting</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','emailmembers') %]"
+title = "Send a bulk email to all members of [% c.stash.menu_item.local_group.title %]">Email group members</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.location %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'location','edit') %]"
+title = "Update location details for [% menu_item.title %]. Do not use this function if you are moving an event or meeting to a new location, create a new location instead" >Edit [% c.stash.menu_item.title %] location details</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.type == 'club_role' %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'club_role','edit') %]">Edit [% c.stash.menu_item.title %] club role details</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'club_role','incumbents') %]">Change [% c.stash.menu_item.title %] club role incumbents</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.type == 'clubroleroot' %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_club_role') %]"> New Club Role</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.type == 'groupsroot' %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'create_local_group') %]">Create New Local Group</a>
+</td></tr>
+[% END %]
+[% END %]
+[% IF c.stash.menu_item.type == 'entry' && c.stash.menu_item.editable_by(c.user) && c.user.id == menu_item.entry.member.userid.id %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.entry.event.menus.first.pid,'event','entry',menu_item.entry.id,'edit') %]"
+title = "Change entry details.">Edit [% c.stash.menu_item.title %] entry details</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.type == 'entry' && c.stash.menu_item.entry.event.entrylist.editable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.entry.event.menus.first.pid,'event','entry',menu_item.entry.id,'adminedit') %]"
+title = "Change entry details by administrator">Edit [% c.stash.menu_item.title %] entry details (admin)</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.news_addable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_news') %]"
+title = "Create a new scrolling news item on this page">New News Item</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.anchorable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'create') %]"
+title = "Create a new web page which will appear as a child of this one">Create Web Page</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.events_addable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'createevent') %]"
+title = "Create an event associated with [% menu_item.title %]">Create Event</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.shop_addable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_shop_item') %]"
+title = "Create a new shop item in [% menu_item.title %]">Create New Shop Item</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.championship_addable_by(c.user) %]
+[%# IF c.stash.menu_item.type == 'championshiproot' #%]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_championship') %]"> New Championship</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_challenge') %]"> New Challenge</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.championship %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'championship','edit') %]">Edit [% c.stash.menu_item.title %] details</a>
+</td></tr>
+[% IF c.stash.menu_item.championship.events %]
+[% FOREACH event IN c.stash.menu_item.championship.events %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'championship','points',event.id) %]"> Points for [% event.title %]</a>
+</td></tr>
+[% END ; ELSE %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'championship','champpoints') %]">Allocate Points </a>
+</td></tr>
+[% END ; END %]
+[% IF c.stash.menu_item.type == 'entrylist' && (c.stash.menu_item.editable_by(c.user))  %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.parent.pid,'event','admin_entry_list','all') %]"
+title = "Admin version of list">Manage [% c.stash.menu_item.title %] </a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.deletable_by(c.user) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'deleteconfirm') %]">Delete [% c.stash.menu_item.title %] permanently</a>
+</td></tr>
+[% END %]
+
+</table>
+
+
+<script>
+$(document).ready(function() {
+var timer;
+$("#admin").mouseover(function() {
+    $("#admin_popup").show();
+    clearTimeout(timer);
+})
+.mouseleave(function() { 
+	timer = setTimeout(function () {
+    $("#admin_popup").hide();
+	},500);
+});
+})
+</script>
+
+

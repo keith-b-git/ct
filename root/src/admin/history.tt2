@@ -1,0 +1,11 @@
+[% WRAPPER 'admin/admin_wrapper.tt2' %]
+<table>
+[% FOREACH item IN history %]
+<tr><td>[% item.time | dateformat()	 %]</td><td>[% item.time  %]</td>
+<td>[% item.user.username %]</td><td>[%
+item.user.fullname %]</td>
+<td>[% item.menu.title %]</td></tr>[%
+END
+%]
+</table>
+[% END %]

@@ -1,0 +1,7 @@
+[% page = page.parent || 1 type = type || 'view' -%]
+<span class = "hierachy"><small><small>you are here - </small></small></span><br><span class = "hierachy">[% INCLUDE parentblock page = page %]
+[% BLOCK parentblock ;
+IF page.parent ; INCLUDE parentblock page = page.parent ; END -%]
+ <a href = "[% c.uri_for('/menu',page.pid,type) %]">[% page.title %]</a> -
+[% END %]</span>
+

@@ -1,0 +1,41 @@
+
+
+
+<table >
+[% IF menu_item.event ; event = menu_item.event ;
+IF event.organiser && event.organiser.userid.menus ; pid = event.organiser.userid.menus.first ; context = 'Organiser' %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 pid = pid %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% IF event.predecessor && event.predecessor.menus ; pid = event.predecessor.menus.first ; context = 'Predecessor' %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context = 'event' %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% IF event.locations  ; pid = event.locations.first.menus.first ; IF event.location_count > 1 ; context = 'Starting from' ; ELSE ; context = 'Location' ; END %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context = 'location' %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% FOREACH pid IN menu_item.viewable_children(c.user) %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context=pid.type %]" width = 30 align = left>[% pid.title %]</a>
+</td></tr>
+[% END ; ELSE %]
+<tr><td valign=top>
+[% FOREACH pid IN c.stash.menu_item.context_related(c.user,30) %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.page.pid,'view') %]"><img src = "[% INCLUDE menu/icon.tt2 pid = pid %]" width = 30 align = left>[% pid.context %] [% pid.page.title %]</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.event && c.stash.menu_item.event.entry_open(c.user) %]
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'event','enter') %]">Enter Event</a>
+</td></tr>
+[% END ; END %]
+
+
+
+
+</table>

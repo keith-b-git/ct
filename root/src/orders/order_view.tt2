@@ -1,0 +1,10 @@
+
+<p>
+Dear [% order.forename %],
+</p>
+Thank you for ordering from Club Triumph
+<br>
+[% purchases = order.baskets ;
+ INCLUDE 'orders/details.tt2' %]
+
+</p>

@@ -1,0 +1,51 @@
+[% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = threads_per_page %]
+[% IF c.session.diarypage && c.session.diarypage.pid == menu_item.pid ; diarypage = c.session.diarypage.page ; ELSE ; diarypage = 1 ; END ;
+diary_count = object.items_bytype_viewable_count(c.user,14 )%]
+<div class = 'forum_head'>
+[% INCLUDE 'menu/hierarchy.tt2' type = 'diary' page = menu_item %]<span class = "hierachy"> - Message Diary</span>
+</div>
+<table cellspacing = 1 cellpadding =5 class = "threadstable">
+
+<tr><th colspan =6>
+[% INCLUDE 'item/pagemenu.tt2' count = diary_count rowsize = rowsize param = 'diarypage' currentpage = diarypage || 1  -%]
+
+</th></tr>
+<tr><th>Team</th><th>Message</th></tr>
+[% FOREACH item IN object.items_bytype_viewable_by(c.user,14,rowsize,diarypage ) -%]
+
+<tr >
+<td valign = top style="width: 180px;"><A id = num[% item.id %]></A>[% FOREACH tag IN item.tags(c.user) ; INCLUDE 'menu/thumb.tt2' pid = tag ; END %]</td>
+	<td valign = top>
+<span class = "item_date">
+[%  item.created | dateformat('date_time') %]</span>[% entry = item.menu_items_rs.related_resultset('entry').first ; IF entry && entry.charity_link %]<a href= "[% entry.charity_link%]"><button style ="float:right; background-color: green; color:white;cursor:pointer;">Donate</button></a>[% END %]
+<p>
+<span id="content[% item.id %]">[% item.content | highlight(c.req.params.search)  %]</span>
+</p>
+[% FOREACH attachment IN item.unembedded_attachments(c) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]
+<video controls="controls" height="260" width="520"><source src="[% attachment.download_uri(c) %]" type ="video/mp4"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a><br>[% 
+		END ; 
+	END ;
+	IF attachment.contenttype.id ==  3 ;
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% attachment.display_uri(c,'w-500') %]"></a> [% 
+	END ;
+END %]
+
+
+</td>
+
+
+
+</tr>
+[% END %]
+<tr><th colspan =6>
+[% INCLUDE 'item/pagemenu.tt2' count = diary_count rowsize = rowsize param = 'diarypage' currentpage = diarypage || 1  -%]
+</th></tr>
+
+</table>
+[% END  %]
+
+

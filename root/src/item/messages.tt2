@@ -1,0 +1,12 @@
+<BR>
+BLOGS - [% object.blog_count %] blog entries.<BR>
+
+
+[% FOREACH item IN object.blogs.sort('modified').reverse -%]
+
+  [% INCLUDE 'item/blog.tt2' blog = item %] 
+
+[% END %]
+
+
+<A HREF="[% c.uri_for('/items', 'new_thread') %]">Create New</A><BR>

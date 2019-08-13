@@ -1,0 +1,14 @@
+[% WRAPPER 'menu/content.tt2' ; meta.mapping =1 ; event=menu_item.event ;
+ map = 'eventmap' %]
+
+[% PROCESS map/createmapdiv.tt2  %]
+
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/event_line.tt2 %]
+[% PROCESS map/event_markers.tt2 %]
+[% PROCESS map/item_markers.tt2 %]
+[% PROCESS map/entry_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+</script>
+[% END %]

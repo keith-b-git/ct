@@ -1,0 +1,8 @@
+[% WRAPPER 'menu/content.tt2' ;
+IF form_stages ; PROCESS "form_nav_bar.tt2" ; END %]
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+
+[% END ; #of wrapper %]
+

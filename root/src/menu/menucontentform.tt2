@@ -1,0 +1,28 @@
+[% WRAPPER 'menu/content.tt2' %]
+<h3>[% formtitle %]</h3>
+[% IF c.stash.menu_item.event  ; PROCESS 'event/view.tt2' event = c.stash.menu_item.event ; END %]
+<div>
+[% meta.mceedit = 1 ; meta.mcewidth = '"100%"' ; meta.mceheight = '1000' ; meta.imagebank = c.user.imagebank %]
+[%  form.render  %]
+
+</div>
+<span class = 'attachments'>[% 
+IF form.item.in_storage ;
+	FOREACH attachment IN menu_item.menu_attachments(c.user) ;
+		IF attachment.contenttype.id == 4 ;
+			IF attachment.extension == "mp4" %]
+	<video controls="controls" height="260" width="520"><source src="[% attachment.download_uri(c) %]"></video>[% 
+			ELSE
+	%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a>[%
+			IF attachment.licence %] Licence - [% attachment.licence | cc_expand ; END %] </a><a href = "[% c.uri_for('/menu',menu_item.pid,'item',attachment.id,'delete') %]">  <strong>Delete?</strong></a><br>[% 
+			END ; 
+		END ;
+	END ;
+END %]
+</span>
+[% END %]
+
+<script>
+	$( "input[type='radio']" ).checkboxradio();
+	$( "input[type='checkbox']" ).checkboxradio();
+</script>

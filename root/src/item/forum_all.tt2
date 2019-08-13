@@ -1,0 +1,185 @@
+[% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = 20 ; cat_count = 0 %]
+[% IF c.session.threadpage && c.session.threadpage.pid == menu_item.pid ; threadpage = c.session.threadpage.page ; ELSE ; threadpage = 1 ; END %]
+<div class = 'forum_head'>
+[% UNLESS menu_item.pid == menu_start.pid ; INCLUDE 'menu/hierarchy.tt2' type = 'forum' page = menu_item ; END %]
+<br>
+<div id = 'collapse_button' style = 'float:right'><a class = "expand_button" href = "javascript:collapse_all();">collapse all -</a></div>
+<div id = 'expand_button' style = 'float:right; display:none;'><a class = "expand_button" href = "javascript:expand_all();">expand all +</a></div>
+<center> <input type = button value = "View all threads ([% thread_count %] threads)" name = "threads" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'threads') %]';"></center>
+</div>
+
+[% future_events = menu_item.current_future_events(c.user) ; 
+IF menu_item.current_future_event_count(c.user) ; section_latest = 'null' ; section_message_count = 0 ; section_reply_count = 0 %]
+<div id = "section_events">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th>current & future events</th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:collapse('section_events');">-</a></th></tr>[%
+	FOREACH subpage IN future_events ; message_count = subpage.viewable_item_count(c.user,5) ; 
+		IF message_count || subpage.messages_addable_by(c.user) ;
+			section_message_count = section_message_count + message_count %]
+<tr><td><a href = "[% c.uri_for('/menu',subpage.pid,'threads') %]">[% subpage.title %]</a></td><td>[% message_count %]</td><td>[% 
+			reply_count = subpage.viewable_item_count(c.user,6) ;
+			section_reply_count = section_reply_count + reply_count ;
+			reply_count + message_count %]</td><td colspan = 2 >[% 
+			thread = subpage.latest_item(c.user,5) ; IF thread ;
+			IF ( section_latest == 'null') || (section_latest.sortby < thread.sortby) ; section_latest = thread ; END 
+			%]<a href = "[% c.uri_for('/menu',subpage.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]</td></tr>[% 
+		END ;
+	END %]</table></div>
+	<div id = "coll_section_events" style = "display:none">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th>current & future events</th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:expand('section_events');">+</a></th></tr>
+[% message_count = section_message_count ; 
+		IF message_count  && page.type != 'profileroot' && page.type != 'user_profile' %]
+[% thread = section_latest ; 
+			IF thread %]
+<tr><td style = 'width:30%'>[% FOREACH tag IN thread.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td><td>[% section_message_count %]</td><td>[% section_reply_count %]</td>
+<td  colspan = 2><a href = "[% c.uri_for('/menu',page.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]
+</td></tr>[% 
+		END %]</table></div>[% 
+END %]
+
+
+
+[% message_count = menu_item.local_item_count(c.user,5) ; 
+IF message_count || menu_item.messages_addable_by(c.user) %]
+<table cellspacing = 1 cellpadding =5 class = "threadstable">
+<tr><th><a href = "[% c.uri_for('/menu',menu_item.pid,'forum') %]">[% menu_item.title %]</a></th><th>topics</th><th>posts</th><th>last post</th></tr>
+<tr><td><a href = "[% c.uri_for('/menu',menu_item.pid,'threads') %]">[% menu_item.title %]</a></td><td>[% message_count %]</td><td>[% menu_item.local_item_count(c.user,6)  %]</td>
+<td colspan = 2>[% thread = menu_item.latest_local(c.user,5) ; 
+	IF thread %]<a href = "[% c.uri_for('/menu',menu_item.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+	END %]
+</td></tr></table>[% 
+END ; 
+
+FOREACH page IN menu_item.current_children(c.user) ; cat_count = cat_count + 1 ;
+	IF page.messages_viewable_by(c.user) && page.type != 'profileroot' && page.type != 'user_profile' ; section_latest = 'null' %]
+<div id = "section_[% page.pid %]">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th><a href = "[% c.uri_for('/menu',page.pid,'forum') %]">[% page.title %]</a></th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:collapse('section_[% page.pid %]');">-</a></th></tr>
+[% message_count = page.local_item_count(c.user,5) ; 		
+section_message_count = message_count ;
+		IF (message_count || page.messages_addable_by(c.user)) && page.type != 'profileroot' && page.type != 'user_profile' ; %]
+<tr><td style = 'width:30%'><a href = "[% c.uri_for('/menu',page.pid,'local_threads') %]">[% page.title %]</a></td><td>[% message_count %]</td><td>[% 
+		section_reply_count = page.local_item_count(c.user,6) ;
+		section_reply_count + message_count %]</td>
+<td  colspan = 2>[% thread = page.latest_local(c.user,5) ; 
+			IF thread ;
+			IF ( section_latest == 'null') || (section_latest.sortby < thread.sortby) ; section_latest = thread ; END ;
+			%]<a href = "[% c.uri_for('/menu',page.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]
+</td></tr>[% 
+		END ; 
+
+			FOREACH subpage IN page.current_children(c.user) ; message_count = subpage.viewable_item_count(c.user,5) ;
+			IF (message_count || subpage.messages_addable_by(c.user)) && subpage.type != 'profileroot' && subpage.type != 'user_profile' ;
+			section_message_count = section_message_count + message_count %]
+<tr><td><a href = "[% c.uri_for('/menu',subpage.pid,'threads') %]">[% subpage.title %]</a><br>[% subpage.summary %]</td><td>[% message_count %]</td><td>[% 
+			reply_count = subpage.viewable_item_count(c.user,6) ;
+			section_reply_count = section_reply_count + reply_count ;
+			reply_count + message_count %]</td>
+<td  colspan = 2>[% thread = subpage.latest_item(c.user,5) ; 
+				IF thread ;
+				IF ( section_latest == 'null') || (section_latest.sortby < thread.sortby) ; section_latest = thread ; END ;%]<a href = "[% c.uri_for('/menu',subpage.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+				END %]
+</td></tr>[% 
+			END ; 
+		END %]</table></div>
+		
+<div id = "coll_section_[% page.pid %]" style = "display:none">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th><a href = "[% c.uri_for('/menu',page.pid,'forum') %]">[% page.title %]</a></th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:expand('section_[% page.pid %]');">+</a></th></tr>
+[% message_count = section_message_count ; 
+		IF message_count  && page.type != 'profileroot' && page.type != 'user_profile' %]
+[% thread = section_latest ; 
+			IF thread %]
+<tr><td style = 'width:30%'>[% FOREACH tag IN thread.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td><td>[% section_message_count %]</td><td>[% section_reply_count %]</td>
+<td  colspan = 2><a href = "[% c.uri_for('/menu',page.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]
+</td></tr>[% 
+		END %]</table></div>[%
+	END ;
+END %]
+
+
+[% 
+IF cat_count < 4 ;
+past_events = menu_item.past_events(c.user) ; 
+IF menu_item.past_event_count(c.user) ; section_latest = 'null' ; section_message_count = 0 ; section_reply_count = 0 %]
+<div id = "section_events">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th>past events</th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:collapse('section_events');">-</a></th></tr>[%
+	FOREACH subpage IN past_events ; message_count = subpage.viewable_item_count(c.user,5) ; 
+		IF message_count || subpage.messages_addable_by(c.user) ;
+			section_message_count = section_message_count + message_count %]
+<tr><td><a href = "[% c.uri_for('/menu',subpage.pid,'threads') %]">[% subpage.title %]</a></td><td>[% message_count %]</td><td>[% 
+			reply_count = subpage.viewable_item_count(c.user,6) ;
+			section_reply_count = section_reply_count + reply_count ;
+			reply_count + message_count %]</td><td colspan = 2 >[% 
+			thread = subpage.latest_item(c.user,5) ; IF thread ;
+			IF ( section_latest == 'null') || (section_latest.sortby < thread.sortby) ; section_latest = thread ; END 
+			%]<a href = "[% c.uri_for('/menu',subpage.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]</td></tr>[% 
+		END ;
+	END %]</table></div>
+	<div id = "coll_section_events" style = "display:none">
+<table cellspacing = 1 cellpadding =5 class = "threadstable"><col style="width:34%"><col style="width:8%"><col style="width:8%"><col style="width:50%">
+<tr><th>current & past events</th><th>topics</th><th>posts</th><th>last post</th><th><a class = "expand_button" href = "javascript:expand('section_events');">+</a></th></tr>
+[% message_count = section_message_count ; 
+		IF message_count  && page.type != 'profileroot' && page.type != 'user_profile' %]
+[% thread = section_latest ; 
+			IF thread %]
+<tr><td style = 'width:30%'>[% FOREACH tag IN thread.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td><td>[% section_message_count %]</td><td>[% section_reply_count %]</td>
+<td  colspan = 2><a href = "[% c.uri_for('/menu',page.pid,'item', thread.last_read(c.user).id, 'view') %]">[% thread.title %]</a><br>
+by [% INCLUDE "item/userlink.tt2" user = thread.last_post.author %]<br>[% thread.modified | dateformat(thread.modified) ; 
+			END %]
+</td></tr>[% 
+		END %]</table></div>[% 
+END ;
+END %]
+
+<br clear =all>
+
+
+
+
+<script>
+function collapse(section) { 
+$('#' + section).hide();
+$('#coll_' + section).show();
+return;
+}
+function expand(section) { 
+$('#' + section).show();
+$('#coll_' + section).hide();
+return;
+}
+
+function collapse_all() { 
+$("[id^=section_]").hide();
+$("[id^=coll_section_]").show();
+$('#collapse_button').hide();
+$('#expand_button').show();
+return;
+}
+function expand_all() { 
+$("[id^=section_]").show();
+$("[id^=coll_section_]").hide();
+$('#expand_button').hide();
+$('#collapse_button').show();
+return;
+}
+
+
+</script>
+[% END # of wrapper%]
+
+

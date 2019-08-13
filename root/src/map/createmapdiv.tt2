@@ -1,0 +1,39 @@
+[% UNLESS width ; 
+	IF mobile ;
+		width = 500 ; 
+	ELSE ;
+		width = 590 ;
+	END ;
+END ; UNLESS height ; height = 600 ; END %] 
+<div class ="mapbox" style = "width:[% width + 70 %]px; height = [% height %]px;">
+<div id="osm[% map %]" style="position:relative; height: [% height %]px; width:[% width %]px; float:left;"></div>
+
+<div id="google[% map %]" style="position:relative; height: [% height %]px; width:[% width %]px; float:left;display:none;"></div>
+<div id="microsoft[% map %]" style="position:relative; height: [% height %]px; width:[% width %]px; float:left;display:none;"></div>
+<div id="os[% map %]" style="position:relative; height: [% height %]px; width:[% width %]px; float:left;display:none;"></div>
+<div style = "float: right; padding:5px; max-width:60px;">
+<a href="javascript:[% map %].swap('osm[% map %]','openlayers');" title = "View map with Open Street Map">
+	<img src ="[% c.uri_for('/static/images/osm.png') %]" alt = "Open Steet Map"></a><br>
+
+<a href="javascript:[% map %].swap('os[% map %]','openspace');" title = "View map with Ordnance Survey Mapping">
+	<img src ="[% c.uri_for('/static/images/os-logo.png') %]" alt = "Ordnance Survey"></a><br>
+<a href="javascript:[% map %].swap('google[% map %]','googlev3'); " title = "View map with Google Maps"><img src ="[% c.uri_for('/static/images/google.png') %]" alt = "Google Maps"></a><br>
+<br>
+
+<br>
+[% IF c.user && c.user.memno && c.user.memno.location.lat %]
+<input type = button name = "home" value = "home" onClick = "showhome();" title = "Show/hide your home location on map" style = "margin-top:20px; padding: 0px;">
+[% END %]
+<input type = button name = "here" value = "here" onClick = "showhere();" title = "Show/hide your current location on map" style = "margin-top:20px; padding: 0px;">
+[% IF menu_item.type == 'event' %]
+<input type = button name = "pics" value = "pics" onClick = "showpics();" title = "Show/hide user photos on map" style = "margin-top:20px; padding: 0px;">
+<input type = button name = "mms" value = "mms" onClick = "showmms();" title = "Show/hide user diary messages on map" style = "margin-top:20px; padding: 0px;">[% 
+IF event.entries_rs.locatable.size %]
+<input type = button name = "teams" value = "teams" onClick = "showentries();" title = "Show/hide entry locations on map" style = "margin-top:20px; padding: 0px;">[% END %]
+[% END %]
+<br>
+<input type = button name = "reset" value = "reset" onClick = "[% map %].autoCenterAndZoom();" title = "Reset map scale and position" style = "margin-top:20px; padding: 0px;">
+</div>
+
+</div>
+

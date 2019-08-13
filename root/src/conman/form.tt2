@@ -1,0 +1,10 @@
+<A HREF="[% c.uri_for('/conman/list') %]">LIST</A>
+<A HREF="[% c.uri_for('/content',pid,'content') %]">VIEW</A>
+
+[% object.pagetitle %]
+<A HREF="[% c.uri_for('/conman/pid', object.pid, 'editcontent') %]">Content</A>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+

@@ -1,0 +1,101 @@
+
+[% purchases = order.purchases(c) ; shoppage = c.model('ClubTriumphDB::Menu').find(type => 'shop') ;
+IF purchases.size %]
+<div class='orderform'>
+<h3>Club Shop Items</h3>
+<table >
+<tr><th></th><th>description</th><th>size</th><th>quantity</th><th>item price</th><th>subtotal</th></tr>
+[% FOREACH purchase IN purchases %]
+<tr><td>[% IF purchase.item.image_exists(c) %]<img src = "[% url = 'image' _ purchase.item.id _ '.jpg' ; c.uri_for('/image','w-80',url) %]">[% END %]</td>
+<td><a href= "[% c.uri_for('/menu',shoppage.pid,'item',purchase.item.id,'view') %]">[% purchase.item.title %]</a></td>
+<td>[% purchase.item_size %]</td>
+<td>[% purchase.quantity %]</td>
+<td> &pound;[% purchase.item.price | format('%1.2f')%]</td>
+<td>&pound;[% purchase.item.price * purchase.quantity | format('%1.2f') ; total = total + purchase.item.price * purchase.quantity %]</td>
+</tr>
+[% END %]
+<tr><td></td><td></td><td><td></td></td><th>total</th><td>&pound;[% total | format('%1.2f') %]</td></tr>
+
+</table>
+
+<form>
+[% IF order.is_open(c) %]
+<input type = button value = "Amend basket" onclick = "document.location = '[% c.uri_for('/menu',menu_item.pid,'checkout') %]';">
+</form>
+[% END %]</div>
+[% END %]
+
+[% IF order.application(c) ; application = order.application(c) %]
+<div class='orderform'>
+<h3>Membership Application</h3>
+<table>
+	<tr><th></th><th>Name</th><th>DoB</th><th>Membership Fee</th></tr>
+	<tr><th style ="text-align:right;">Principle member</th><td>[% application.formalname %]</td>
+	<td>[% INCLUDE 'date.tt2' date = application.dob %]</td><td>£[% application.area.fee %]</td>
+	<td>[% IF (application.young_check) %]You are eligible fo a 50% reducton in your membership fee[% END %]</td></tr>
+	<tr><th style ="text-align:right;">Joining Fee</th><td></td><td></td><td>£[% application.join_fee %]</td></tr>
+	
+	
+[% FOREACH joint IN application.memforms %]
+	<tr><th style ="text-align:right;">Joint member</th><td>[% joint.formalname %]</td><td></td><td>£[% application.area.ass_fee %]</td></tr>
+[% END %]
+<tr><th style ="text-align:right;">Total</th><td><td></td><td>£[% application.total %]</td></tr>
+<tr><td></td></tr>
+<tr><th valign = top style ="text-align:right;">Address</th><td>
+[% IF application.address1 ; application.address1 %]<br>[% END %]
+[% IF application.address2 ; application.address2 %]<br>[% END %]
+[% IF application.address3 ; application.address3 %]<br>[% END %]
+[% IF application.address4 ; application.address4 %]<br>[% END %]
+[% IF application.address5 ; application.address5 %]<br>[% END %]
+[% application.postcode %]<br>
+[% PERL %]use Geography::Countries; print scalar(country('[% application.country %]'))[% END %] 
+</td></tr>
+<tr><th style ="text-align:right;">Phone</th><td>[% application.tel %]</td></tr>
+<tr><th style ="text-align:right;">Mobile</th><td>[% application.mobile %]</td></tr>
+<tr><th style ="text-align:right;">E-mail</th><td>[% application.email %]</td></tr>
+</table>
+[% IF order.is_open(c) %] Please check the above details are correct.
+<form>
+<input type = button value = " Edit Details" onclick = "document.location = '[% c.uri_for('/','application',application.id,'edit') %]';">
+
+</form>[% END %]</div>
+[% END %]
+[% FOREACH entry IN order.entries_attached(c) %]
+<div class='orderform'>
+<h3>Event Entry - [% entry.event.title %]</h3>
+[% INCLUDE 'entry/draft_countdown.tt2' %]
+<table>
+[% IF entry.user.club_member ;
+	fee_per_entry = entry.event.fee_per_entry ;
+	fee_per_entrant = entry.event.fee_per_entrant ;
+ELSE ;
+	fee_per_entry = entry.event.nm_fee_per_entry ;
+	fee_per_entrant = entry.event.nm_fee_per_entrant ;
+END %]
+<tr><th>Team</th><td>[% entry.title %]</td><td>[% 
+			IF fee_per_entry %]£[% fee_per_entry | format('%1.2f') ;
+			END %]</td></tr>[%
+			FOREACH entrant IN entry.entrants
+				%]<tr><th>entrant</th><td>[% entrant.name %]</td><td>[% 
+					IF fee_per_entrant 
+						%]£[% fee_per_entrant | format('%1.2f') ;
+					END %]</td></tr>[%
+			END ;
+			IF entry.paid 
+				%]<tr><th>paid</th><td></td><td>£[% entry.paid | format('%1.2f') %]</td></tr>[%
+			END %]
+<tr><th>total</th><td></td><td>£[% entry.amount_payable - entry.paid | format('%1.2f') %]</td></tr>
+</table>
+[% IF order.is_open(c) %]
+<form>
+<input type = button value = "Amend entry" onclick = "document.location = '[% c.uri_for('/menu',entry.event.menus.first.pid,'event','entry',entry.id,'edit') %]';">
+</form>
+[% END %]
+</div>[% 
+
+END %]
+
+<div  class='orderform'>
+	<h3>Order Total £[% order.total | format('%1.2f') %]</h3>
+</div>
+<br clear all>

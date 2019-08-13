@@ -1,0 +1,14 @@
+[% IF currentpage == 'a' ; rowsize = count ; currentpage = 1 ; END -%]
+[% IF currentpage > 5 ; page = currentpage - 5 ; END -%]
+[% IF count > rowsize -%]
+[% pages = 0 -%]
+[% IF currentpage >1 %]<a href = "[%c.uri_for('/menu',c.stash.menu_item.pid,'item',c.stash.item.id,'view',$param = ( currentpage - 1 ) ) %]"> <</a> 
+<a href = "[%c.uri_for('/menu',c.stash.menu_item.pid,'item',c.stash.item.id,'view',$param = 1 ) %]"> ... </a> [% END -%]
+[% WHILE (page * rowsize < count) && (pages < 10) -%]
+[% page = page + 1 %][% pages = pages + 1 -%]
+[% IF currentpage == page %][% page %][% ELSE -%]
+<a href = "[%c.uri_for('/menu',c.stash.menu_item.pid,'item',c.stash.item.id,'view',$param = page) %]"> [% page %]</a>[% END -%]
+[% END %]
+[% IF (currentpage) * rowsize < count %]<a href = "[%c.uri_for('/menu',c.stash.menu_item.pid,'item',c.stash.item.id,'view',$param = (( count div rowsize ) + 1 ) ) %]"> ... </a>
+<a href = "[%c.uri_for('/menu',c.stash.menu_item.pid,'view','item',c.stash.item.id,$param = ( currentpage + 1 ) ) %]"> ></a>[% END -%]
+[% END -%]

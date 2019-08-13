@@ -1,0 +1,65 @@
+[% WRAPPER 'menu/content.tt2' %]
+[% meta.acc_count = meta.acc_count + 1 ; meta.pm_acc = meta.acc_count %]
+
+[% IF c.session.pmpage && c.session.pmpage.pid == menu_item.pid ; pmpage = c.session.pmpage.page ; ELSE ; pmpage = 1 ; END %]
+
+
+
+
+<div class = 'forum_head'>
+<span style = 'vertical-align:top'>
+[% INCLUDE 'menu/hierarchy.tt2' page = menu_item %] - private messages - </span>
+<div class = 'pm_folders'>
+[% IF folder == 'inbox' %]<strong>inbox [% c.user.pm_count('inbox') %] ([% c.user.new_pm_count('inbox') %] unread)</strong>
+[% ELSE %]<a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','private_messages','inbox',{pmpage => 1}) %]">inbox [% c.user.pm_count('inbox') %] ([% c.user.new_pm_count('inbox') %] unread)</a>[% END %]<br>
+[% IF folder == 'sent' %]<strong>sent [% c.user.pm_count('sent') %] ([% c.user.new_pm_count('sent') %] unread)</strong>
+[% ELSE %]<a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','private_messages','sent',{pmpage => 1}) %]">sent [% c.user.pm_count('sent') %] ([% c.user.new_pm_count('sent') %] unread)</a>[% END %]<br>
+[% IF folder == 'storage' %]<strong>storage [% c.user.pm_count('storage') %] ([% c.user.new_pm_count('storage') %] unread)</strong>[% ELSE %]
+<a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','private_messages','storage',{pmpage => 1}) %]">storage [% c.user.pm_count('storage') %] ([% c.user.new_pm_count('storage') %] unread)</a>[% END %]<br>
+
+</div>
+
+</div>
+<form>
+<table cellspacing = 1 cellpadding =5 class = "threadstable">
+[% IF c.stash.menu_item.messages_addable_by(c.user) -%]<tr><th colspan = 6>
+<input type = button name = "new_thread" value = "Create New Private Message" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_pm') %]';">
+</th></tr>[% END -%]
+<tr><th colspan =6>
+
+[% INCLUDE 'item/pagemenu.tt2' count = c.user.pm_count(folder) rowsize = 15 param = 'pmpage' currentpage = pmpage || 1  -%]
+
+</th></tr>
+<tr><th>Title</th><th>From</th><th>To</th><th>Received</th></tr>
+[% FOREACH item IN c.user.privatemessages(15,pmpage,folder)  -%]
+<tr>
+	<td>
+<a href = "[% c.uri_for('/menu',c.stash.menu_item.pid,'item', item.id, 'view') %]">
+[% IF item.unread(c.user) %]<STRONG><img src = "[% c.uri_for('/static','images','new.png') %]"> [% item.title %]</STRONG>[% ELSE; item.title ; END %]
+</a>[% IF item.replied(c.user) %] replied [% END %]
+</td><td><A HREF="[% c.uri_for('/menu',item.author.profile.pid,'view') %]">[% item.author.profile.title %]</A></td>
+<td>[% FOREACH recipient IN item.tags(c.user) %]<a href = "[% c.uri_for('/menu',recipient.pid,'view') %]" >[% recipient.title %]</a> [% END %]</td>
+<td>[% item.thread_modified.strftime( '%a %d %b %Y %r' ) %]</td><td><input type = checkbox name = "pm_[% item.id %]"></td>
+
+</tr>
+[% END %]
+
+<tr><th colspan = 6><input type= submit value = "delete selected pms" name = "delete">
+<input type= submit value = "move selected pms" name = "move">
+<select name = "newfolder">
+<option value = "inbox">inbox</option>
+<option value = "storage">storage</option>
+</select>
+</th></tr>
+<tr><th colspan =6>
+[% INCLUDE 'item/pagemenu.tt2' count = c.user.pm_count(folder) rowsize = 15 param = 'pmpage' currentpage = pmpage || 1  -%]
+</th></tr>
+[% IF c.stash.menu_item.messages_addable_by(c.user) -%]
+<tr><th colspan = 6>
+<input type = button name = "new_thread" value = "Create New Private Message" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_pm') %]';">
+</th></tr>[% END -%]
+</table>
+</form>
+
+[%  END %]
+

@@ -1,0 +1,16 @@
+[% IF currentpage == 'a' ; rowsize = count ; currentpage = 1 ; END ; page = 0 ;
+ IF currentpage > 5 ; page = currentpage - 5 ; END ;
+ UNLESS request ; request = c.req.path ; END ;
+ IF count > rowsize -%]
+<span class = "pagemenu">Page: 
+[% pages = 0 -%]
+[% IF currentpage  > 1 %]<a href = "[% c.uri_for('/',request,$param = ( currentpage - 1 ) ) _ extraparam %]"> <</a> 
+<a href = "[% c.uri_for('/',request,$param = 1 ) _ extraparam %]"> ... </a> [% END -%]
+[% WHILE (page * rowsize < count) && (pages < 10) -%]
+[% page = page + 1 %][% pages = pages + 1 -%]
+[% IF currentpage == page %]<span class = "pagecurr">[% page %]</span>[% ELSE -%]
+<a href = "[% c.uri_for('/',request,$param = page) _ extraparam %]"> [% page %]</a>[% END -%]
+[% END %]
+[% IF (currentpage) * rowsize < count %]<a href = "[% c.uri_for('/',request,$param = (( count div rowsize ) + 1 ) ) _ extraparam %]"> ... </a>
+[% IF currentpage %]<a href = "[% c.uri_for('/',request,$param = ( currentpage + 1 ) ) _ extraparam %]"> ></a>[% END ; END -%]
+</span>[% END -%]

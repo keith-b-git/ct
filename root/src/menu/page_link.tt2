@@ -1,0 +1,1 @@
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"> [% pid.title %]</a>

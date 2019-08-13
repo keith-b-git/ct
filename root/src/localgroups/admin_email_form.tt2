@@ -1,0 +1,44 @@
+[%  meta.mceedit = 1 meta.mcewidth = 700 ; meta.mceheight = 620 %]
+[% IF c.flash.success.size %]
+<h3>Sent-</h3>
+<ul>
+[% FOREACH member IN c.flash.success %]
+<li> [% member.fullname %] </li>
+[% END %]
+</ul>
+[% END %]
+[% IF c.flash.failed.size %]
+<h3>Failed-</h3>
+<ul>
+[% FOREACH entrant IN c.flash.failed %]
+<li> [% member.fullname %] </li>
+[% END %]
+</ul>
+[% END %]
+<p>
+This form will generate an e-mail which can be sent to all members of the [% localgroup.title %] Local Group. After composing your message you are advised to select the 'to self' option below to check that it is formatted correctly as an email. 
+You can then use the 'all members' tick box to send it to all group members who have not opted out. This may take a while if you have a lot of members in your group, if it appears to timeout don't refresh the page or try to send again, it's probably still working on it.
+
+<br>
+Template variables can be incuded to personalise the message as below.<br>
+</p>
+<p>useful template variables-
+<ul>
+<li>
+[[%%]% member.firstname %[%%]] e.g. 'John'
+</li>
+<li>[[%%]% member.fullname %[%%]] e.g. 'John Smith'
+</li>
+<li>[[%%]% member.formalname  %[%%]] e.g. 'Mr John Smith'
+</li>
+
+</li>
+</ul>
+</p>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+
+
+

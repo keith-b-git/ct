@@ -1,0 +1,25 @@
+[% WRAPPER 'menu/content.tt2' %]
+[% meta.acc_count = meta.acc_count + 1 ; meta.blog_acc = meta.acc_count ; blog_count = menu_item.viewable_item_count(c.user,2) %]
+[% IF c.session.blogpage && c.session.blogpage.pid == meta.pid ; blogpage = c.session.blogpage.page ; ELSE ; blogpage = 1 ; END %]
+
+
+<h3>Blog - [% blog_count %] Entries. [% IF meta.blog_title ; meta.blog_title ; END %] </h3>
+[% IF c.session.blogpage && c.session.blogpage.pid == menu_item.pid ; blogpage = c.session.blogpage.page ; ELSE ; blogpage = 1 ; END %]
+[% IF meta.insert_point == 'blogs' %]
+<a href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view',blogpage = blogpage ) %]">Back to [% c.stash.menu_item.title %] Blog</a>
+[% content ; ELSE %]
+<BR>
+
+[% IF c.stash.menu_item.blogs_addable_by(c.user) -%]
+<A HREF="[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_blog') %]">Create New</A><BR>
+[% END ; blog_no =  (blogpage - 1) * blogs_per_page %]
+[% INCLUDE 'item/pagemenu.tt2' count = blog_count rowsize = blogs_per_page param = 'blogpage' currentpage = blogpage || 1  ; count =1 -%]
+[% FOREACH item IN menu_item.blogs(c.user,blogs_per_page,blogpage) ; blog_no = blog_no + 1 ;
+ INCLUDE 'item/blog.tt2' blog = item count = count ; count = count + 1 blog_no = blog_no ; END %]
+[% INCLUDE 'item/pagemenu.tt2' count = blog_count rowsize = blogs_per_page param = 'blogpage' currentpage = blogpage || 1  -%]
+<br>
+[% IF c.stash.menu_item.blogs_addable_by(c.user) -%]
+<A HREF="[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_blog') %]">Create New</A><BR>
+[% END %]
+[% END ; END #of if %]
+

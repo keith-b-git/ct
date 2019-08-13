@@ -1,0 +1,2 @@
+[% meta.heading1 = car.triumph.model.model %]
+[% car.triumph.model.model %]

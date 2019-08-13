@@ -1,0 +1,71 @@
+[% WRAPPER member/admin_wrapper.tt2 ; years = 5  %]
+<table style = "text-align:right;">
+<tr><th></th>
+[% FOREACH mydate IN dates %]<th style ="text-align:center; border-style:solid;" >[% PROCESS date.tt2 date = mydate  %]</th>[% END %]
+</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','all','all','list') %]">Current members</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','all','all','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','all','all','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','near_expiry','all','all','list') %]">Near Expiry</a>
+<a href = "[% c.uri_for('/memadmin','members_by','near_expiry','all','all','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','near_expiry','all','all','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.near_expiry(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','grace_period','all','all','list') %]">Grace Period</a>
+<a href = "[% c.uri_for('/memadmin','members_by','grace_period','all','all','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','grace_period','all','all','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.grace_period(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th colspan = 5 colspan =5 style ="text-align:center; border-style:solid;">By Class-</th></tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','class','ORD','list') %]">Ordinary</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','ORD','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]"></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','ORD','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({class => 'ORD'}).current_members(mydate).unique.size %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','class','ASS','list') %]">Associate</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','ASS','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]"></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','ASS','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({class => 'ASS'}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','class','HON','list') %]">Honorary</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','HON','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]"></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','class','HON','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[%  members.search_rs({class => 'HON'}).current_members(mydate).unique.size %]</td>[% END %]</tr>
+<tr><th colspan = 5 colspan =5 style ="text-align:center; border-style:solid;" >By Area-</th></tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','area','1','list') %]">UK</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','area','1','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current',,'area','1','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({area => '1'}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','area','2','list') %]">UK Young</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','area','2','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current',,'area','2','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({area => '2'}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','area','3','list') %]">Europe</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','area','3','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current',,'area','3','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({area => '3'}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','area','4','list') %]">Worldwide</a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','area','4','map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current',,'area','4','email_csv') %]">csv</a>
+</th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({area => '4'}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+<tr><th colspan = 5 colspan =5 style ="text-align:center; border-style:solid;" >By Country-</th></tr>
+[% FOREACH country IN countries %]
+<tr><th><a href = "[% c.uri_for('/memadmin','member_by_location',{country => country}) %]">[% PERL %]use Geography::Countries; print scalar(country('[% country %]'))[% END %]</a></th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({country => country}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+[% END %]
+<tr><th colspan = 5 colspan =5 style ="text-align:center; border-style:solid;" >By Local Group-</th></tr>
+[% FOREACH local_group IN local_groups ; lg = c.model('ClubTriumphDB::LocalGroup').find(local_group)%]
+<tr><th><a href = "[% c.uri_for('/memadmin','members_by','current','localgroup',lg.id,'list') %]">[%  lg.title -%]
+<a href = "[% c.uri_for('/memadmin','members_by','current','localgroup',lg.id,'map') %]"><img src = "[% c.uri_for('/static','images','map.png') %]" height = 20></a>
+<a href = "[% c.uri_for('/memadmin','members_by','current','localgroup',lg.id,'email_csv') %]">csv</a></th>
+[% FOREACH mydate IN dates %]<td>[% members.search_rs({local_group => local_group}).current_members(mydate).unique.size  %]</td>[% END %]</tr>
+[% END %]
+</table>
+[% END %]

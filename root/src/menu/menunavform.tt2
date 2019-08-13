@@ -1,0 +1,33 @@
+[% WRAPPER 'menu/admin.tt2' %]
+[% IF menu_item.parent %]
+[% FOREACH sibling IN menu_item.parent.children ;
+	IF sibling.menu_order == 1 
+		%]<a href = "[% c.uri_for(menu_item.id, 'move_to',0) %]">---insert here----</a><br>[%
+	END;
+	IF (sibling.id == menu_item.id) %]
+<strong>[% sibling.title %]</strong>
+[% IF sibling.menu_order > 1 %]
+<a href = "[% c.uri_for(sibling.id, 'move_up') %]">move up</a>
+[% END %]
+[% IF sibling.menu_order < sibling.no_siblings %]
+<a href = "[% c.uri_for(sibling.id, 'move_down') %]">move down</a>
+[% END %]
+<br>
+[% ELSE %]
+[% sibling.title %]<a href = "[% c.uri_for(menu_item.id, 'move_to',sibling.menu_order) %]">---insert here----</a><br>
+[% END %]
+[% END %]
+[% END %]
+
+[% meta.mceedit = 1 ; meta.mcewidth = '"100%"' ; meta.mceheight = '1000' %]
+[%# Render the HTML::FormHandler Form %]
+[% form.render %]
+    
+[% IF menu_item.item %]
+[% menu_item.item.thumbnail %]
+[% END %]
+[% END %]
+<script language = 'javascript'>
+
+   $(".chosen-select").chosen()
+</script>

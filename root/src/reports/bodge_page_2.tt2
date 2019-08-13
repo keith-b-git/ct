@@ -1,0 +1,19 @@
+[%  pdf.prFont('NimbusSanL-Bold') ; pdf.prFontSize(10) ;
+pdf.prForm(c.path_to('data','pdfs','page2bodge.pdf'));
+pdf.prFont('NimbusSanL-Regu') ; pdf.prFontSize(25) ;
+
+
+IF member.local_group;
+
+	xpos=130 ; ypos= 82 ;
+
+	pdf.prFont('NimbusSanL') ; pdf.prFontSize(10) ;
+
+	pdf.prText(xpos,ypos,  member.local_group.title );
+
+
+
+END ;
+pdf.prPage;
+
+%]

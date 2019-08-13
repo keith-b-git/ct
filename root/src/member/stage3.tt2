@@ -1,0 +1,13 @@
+<p>Thank you for applying to join Club Triumph. Your application will be processed by our Membership Secretary very soon and you will receive your membership card and welcome pack in the post.
+
+</p>
+
+
+<form>
+[% UNLESS c.user %]
+You can now register to use the website-	
+<input type = button value = " Register" onclick = "document.location = '[% c.uri_for('/register') %]';">
+[% END %]
+
+
+</form>

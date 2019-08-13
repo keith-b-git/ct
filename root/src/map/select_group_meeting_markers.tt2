@@ -1,0 +1,18 @@
+
+[% FOREACH meeting IN localgroup.group_meetings %]
+	var loc[% meeting.location.id %] = new mxn.LatLonPoint([% meeting.location.latitude %],[% meeting.location.longitude %]);
+	var marker[% meeting.location.id %] = new mxn.Marker(loc[% meeting.location.id %]);
+	marker[% meeting.location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+	marker[% meeting.location.id %].setInfoBubble('[% PROCESS 'map/group_meeting_bubble.tt2' meeting = meeting %]');
+	[% map %].addMarker(marker[% meeting.location.id %]);
+	grouplocation[[% localgroup.id %]] = [% meeting.location.id %];
+	marker[% meeting.location.id %].click.addHandler(function (event_name, event_source, event_args)
+{
+	if ( document.getElementById('groupform') != undefined) {
+	document.getElementById('groupform').local_group.value = [% meeting.local_group.id %];
+	$(".chosen-select").trigger('chosen:updated');
+	}
+});
+[% map %].setCenterAndZoom(loc[% meeting.location.id %], 13);
+[% END %]
+

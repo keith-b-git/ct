@@ -1,0 +1,55 @@
+[%# WRAPPER 'menu/content.tt2' %]
+<strong>Entries open</strong> - [% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]
+entries-  [% event.live_count %]<br>
+
+
+<form action = '[% c.uri_for('/menu',event.menus.first.pid,'event','admin_entrant_email') %]'>
+<table >
+<tr><th></th><th>created</th><th>balance</th><th>status</th><th>no.</th><th>entrant</th><th>expires</th><th>teamname</th>[% 
+IF event.car %]<th>car</th><th>reg no.</th>[% END %]
+[%
+FOREACH option IN event.event_merchandises_rs.search({visible =>1}) 
+%]<th>[% option.title %]</th>[%
+END 
+%]
+<th colspan = 4>crew</th></tr>
+[% FOREACH entry IN entries %]
+<tr class ='entry_[% entry.status | lower %]' >
+<td><input type = checkbox name = "entry_[% entry.id %]"></td>
+<td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>[% entry.created.strftime('%H:%M %Z %d/%m/%y') %]</td>
+<td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>£[% entry.balance | format('%1.2f') %]</td>
+<td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>[% entry.status ; 
+IF entry.status == 'reserve' && ! entry.on_reserve %] <br>space free![% END %]</td>
+<td nClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>
+[% entry.team_number %]</td>
+<td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>[% entry.user.fullname %]</td>
+<td [% 
+SWITCH entry.member.status ;
+CASE 'expired' %]style = "background-color: red; color: white;"[% ;
+CASE 'grace period'%]style = "background-color: orange;"[% ;
+CASE 'near expiry'%]style = "background-color: yellow;"[% ;
+END 
+%]>[% entry.member.expdate.strftime('%d/%m/%y') %]</td>
+<td valign = top>
+[%  entry.menus.first.title %]</td><td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'> [%  entry.car_desc %]</td><td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>[% entry.car.regno %]</td>
+[%
+FOREACH option IN event.event_merchandises_rs.search({visible =>1}) 
+%]<td>[%  entry.entry_merchandises_rs.findoption(option.id).moption %]</td>[%
+END %]
+[% FOREACH entrant IN entry.entrants %]
+<td onClick = 'location.href= "[% c.uri_for('/menu',menu_item.pid,'event','entry',entry.id,'admin_entry_view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'>
+[% IF entrant.user && entrant.user.profile ;  entrant.user.profile.title ; ELSE ;
+ entrant.name ; END%]</td>
+[% END %]
+
+</tr>
+[% END %]
+</table>
+<center><a href = "[% c.uri_for('/menu',menu_item.pid,'event','entrants_csv','all') %]">export as csv</a></center>
+
+<input type = button value = "New entry" onclick = "document.location = '[% c.uri_for('/menu',entry.event.menus.first.pid,'event','new_entry') %]';">
+<input type = submit value = "Bulk E-mail Entrants" onclick = "document.location = '[% c.uri_for('/menu',event.menus.first.pid,'event','admin_entrant_email') %]';">
+<input type = button value = "Bulk SMS Entrants" onclick = "document.location = '[% c.uri_for('/menu',event.menus.first.pid,'event','admin_entrant_sms') %]';">
+
+</form>

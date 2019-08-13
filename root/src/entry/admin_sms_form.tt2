@@ -1,0 +1,45 @@
+[%  meta.mceedit = 0 meta.mcewidth = 700 ; meta.mceheight = 620 %]
+[% IF c.flash.success.size %]
+<h3>Sent-</h3>
+<ul>
+[% FOREACH entrant IN c.flash.success %]
+<li>entry [% entrant.entry_no %]: [% entrant.member.fullname %]: [% entrant.member.email %]</li>
+[% END %]
+</ul>
+[% END %]
+[% IF c.flash.failed.size %]
+<h3>Failed-</h3>
+<ul>
+[% FOREACH entrant IN c.flash.failed %]
+<li>entry [% entrant.entry_no %]: [% entrant.member.fullname %]: [% entrant.member.email %]</li>
+[% END %]
+</ul>
+[% END %]
+<script>
+$(document).ready(function() {
+$('#elm1').keyup(function () {
+    var max = 160;
+    var len = $(this).val().length;
+//  var char = max - len;
+    var messages = Math.ceil(len / 160);
+    if (len >= max) {
+        $('#charNum').text('(' + messages + ') ' + len + '/' + max);
+    } else {
+        $('#charNum').text(len + '/' + max);
+    }
+    });
+});
+</script>
+<p>
+This form will generate an SMS which can be sent to entrants grouped by status. <br>
+You have [% credits %] SMS credits.<br>
+Use the 'to self' option to test.
+</p>
+
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+
+
+

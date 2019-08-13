@@ -1,0 +1,27 @@
+[% # Use the TT Dumper plugin to Data::Dumper variables to the browser   -%]
+[% # Not a good idea for production use, though. :-)  'Indent=1' is      -%]
+[% # optional, but prevents "massive indenting" of deeply nested objects -%]
+[% USE Dumper(Indent=1) -%]
+ 
+[% # Set the page title.  META can 'go back' and set values in templates -%]
+[% # that have been processed 'before' this template (here it's updating -%]
+[% # the title in the root/src/wrapper.tt2 wrapper template).  Note that -%]
+[% # META only works on simple/static strings (i.e. there is no variable -%]
+[% # interpolation -- if you need dynamic/interpolated content in your   -%]
+[% # title, set "$c->stash(title => $something)" in the controller).     -%]
+[% META title = 'Book Created' %]
+ 
+[% # Output information about the record that was added.  First title.   -%]
+<p>Added content '[% content.pagetitle %]'
+ <BR>pid = [% content.pid %]
+
+ 
+[% # Provide a link back to the list page.  'c.uri_for' builds -%]
+[% # a full URI; e.g., 'http://localhost:3000/books/list'      -%]
+
+ 
+[% # Try out the TT Dumper (for development only!) -%]
+<pre>
+Dump of the 'content' variable:
+[% Dumper.dump(content) %]
+</pre>

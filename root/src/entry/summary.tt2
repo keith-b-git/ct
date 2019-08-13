@@ -1,0 +1,44 @@
+
+<div class = "sb_link">
+
+event- <a href = "[% c.uri_for('/menu',entry.event.menus.first.pid,'view') %]">[% entry.event.title %]</a>
+entrant- <a href = "[% c.uri_for('/menu',entry.user.profile.pid,'view') %]">[% entry.user.fullname %]</a>
+status- [% entry.status %]
+</div>
+
+
+
+[% FOREACH member IN entry.entrants ; IF member.user ; PROCESS 'menu/thumb.tt2' pid = member.user.profile ;
+ ELSE %]<div class = "sb_link">[% member.name %]</div>
+[% END ; END %]
+
+[% IF entry.car ; PROCESS 'menu/thumb.tt2' pid = entry.car.menus.first ; 
+ELSIF entry.other_car 
+%]<div class = "sb_link">[% entry.other_car %]</div>[% 
+END ;
+IF entry.charity_link 
+%]<br clear = all>
+<center><a href= "[% entry.charity_link%]"><button style =" background-color: green; color:white;cursor:pointer;">Donate</button></a></center>[%
+END ;
+IF   entry.user.id == c.user.id %]
+<br clear = all><center>
+<form>
+<input type = button value = "Edit entry" onclick = "document.location = '[% c.uri_for('/menu',entry.event.menus.first.pid,'event','entry',entry.id,'edit') %]';">
+</form>
+</center>
+[% END ;
+location = entry.location; 
+	IF ((location.latitude != undef) && (location.longitude != undef)) -%]
+	[% map = 'entrymap' ; meta.mapping = 1 ; PROCESS map/createmapdiv.tt2  %]
+	<script language = 'javascript'>
+	var entryloc = [];
+	var entrymarker = [];
+	[% PROCESS map/createmap.tt2 %]
+	entryloc[[% entry.id %]] = new mxn.LatLonPoint([% location.latitude %],[% location.longitude %]);
+	entrymarker[[% entry.id %]] = new mxn.Marker(entryloc[[% entry.id %]]);
+	entrymarker[[% entry.id %]].setIcon('/static/images/team.gif', [28,33],[1,32]);
+	entrymarker[[% entry.id %]].setInfoBubble('[% PROCESS map/entry_popup.tt2  %]');
+	[% map %].addMarker(entrymarker[[% entry.id %]]);
+	[% map %].autoCenterAndZoom();
+</script>
+[% END %]

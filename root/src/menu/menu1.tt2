@@ -1,0 +1,78 @@
+[% count = 10 %]
+[% INCLUDE menublock menu_item=menu_start count=10 %]
+[% BLOCK menublock -%]
+[% IF count == 10 -%]
+<ul class = 'sf-menu'>
+[% ELSE -%]
+<ul>
+[% END -%]
+[% FOREACH child IN menu_item.children -%]
+<li>
+[% IF (child.type  == 'item')||(child.type  == 'menuonly')||(child.type  == 'link')||(child.type  == 'groupsroot')||(child.type  != 'xeventroot') -%]
+<a href = "[% c.uri_for( child.url) %]">
+[% child.title %]</a>
+[% END -%]
+[% IF child.children && (count > 0) && (child.pid >1) -%] 
+[% INCLUDE menublock menu_item=child count=(count - 1) -%]
+[% END -%]
+[% IF (child.type  == 'groupsroot1') && (count > 0) && (child.pid >1) -%] 
+[% INCLUDE groupmenublock menu_item=child count=(count - 1) title=child.title -%]
+[% END -%]
+[% IF (child.type  == 'eventroot1') && (count > 0) && (child.pid >1) -%] 
+[% INCLUDE eventmenublock menu_item=child count=(count - 1) title=child.title -%]
+[% END -%]
+[% IF (child.type  == 'profileroot') && (count > 0) && (child.pid >1) -%] 
+[% INCLUDE profilemenublock menu_item=child count=(count - 1) title=child.title -%]
+[% END -%]
+</li>
+[% END -%]
+</ul>
+[% END -%]
+
+[% BLOCK groupmenublock -%]
+<a href = "[% c.uri_for('/local_groups','list') %]">[% title %]</a>
+[% IF count == 10 -%]
+<ul class = 'sf-menu'>
+[% ELSE -%]
+<ul>
+[% END -%]
+[% FOREACH group IN mlocalgroups %]
+<li>
+<a href = "[% c.uri_for('/local_groups', group.id, 'view') %]">
+[% group.title %]</a>
+</li>
+[% END -%]
+</ul>
+[% END -%]
+
+[% BLOCK eventmenublock -%]
+<a href = "[% c.uri_for('/event','list') %]">[% title %]</a>
+[% IF count == 10 -%]
+<ul class = 'sf-menu'>
+[% ELSE -%]
+<ul>
+[% END -%]
+[% FOREACH event IN mevents -%]
+<li>
+<a href = "[% c.uri_for('/event','id', event.id, 'view') %]">
+[% event.title %]</a>
+</li>
+[% END -%]
+</ul>
+[% END -%]
+
+[% BLOCK profilemenublock %]
+<a href = "[% c.uri_for('/member',c.user.id,'profile') %]">[% title %]</a>
+[% IF count == 10 -%]
+<ul class = 'sf-menu'>
+[% ELSE -%]
+<ul>
+[% END -%]
+[% FOREACH car IN mregister -%]
+<li>
+<a href = "[% c.uri_for('/register', car.id, 'view') %]">
+[% car.regno -%]</a>
+</li>
+[% END -%]
+</ul>
+[% END -%]

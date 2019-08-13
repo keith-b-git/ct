@@ -1,0 +1,25 @@
+[% IF c.action == "menu/map" 
+%] <div class = 'sb_link'>[% ELSE
+%]<a class = "sb_link" href= "[% c.uri_for('/menu',menu_item.pid,'map') %]">
+	[% END %]
+<img src = "[% c.uri_for('/static','images','map.png') %]" width = 30 align = left>
+
+
+[% location.address1 %]<br>
+[% location.address2 %]<br>
+[% location.county %]<br>
+[% location.town %]<br>
+[% location.postcode %]<br>
+lat [% location.latitude %]
+lon [% location.longitude %]<br>
+grid ref [% location.grid_ref %]
+[% IF c.action == "menu/map" 
+%]</div>[% ELSE 
+%]<h3>View map</h3>
+</a>[% END ;
+ FOREACH meeting IN location.group_meetings ;
+	INCLUDE 'menu/thumb.tt2' pid = meeting.local_group.menus.first context = 'group meeting- ' ;
+ END ;
+ FOREACH event IN location.events_rs.ordered_events ;
+  INCLUDE 'menu/thumb.tt2' pid = event.menus.first context = 'event- ' ;
+ END %]

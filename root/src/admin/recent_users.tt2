@@ -1,0 +1,16 @@
+
+[% WRAPPER 'admin/admin_wrapper.tt2' %]
+<table>
+[% FOREACH date IN days %]
+<tr>
+<td>
+	[% date.date | dateformat %]</td>
+	
+	[% FOREACH history IN date.history %]<td>
+<a href = "[% c.uri_for('/admin','history','user',history.user.id) %]">[% history.user.fullname %] [% history.user.username %]</a></td>[% END %]
+
+</tr>[%
+END
+%]
+</table>
+[% END %]

@@ -1,0 +1,13 @@
+[% meta.mapping =1 %]
+[% map = 'groupmap' %]
+
+[% PROCESS map/createmapdiv.tt2 %]
+
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% FOREACH menu_item IN menu_items %]
+[% localgroup = menu_item.local_group %]
+[% PROCESS map/group_meeting_markers.tt2 %]
+[% END %]
+[% map %].autoCenterAndZoom();
+</script>

@@ -1,0 +1,95 @@
+[% WRAPPER 'menu/content.tt2' ;
+	meta.heading1 = menu_item.item.heading1 || menu_item.title ;
+	meta.title = 'Club Triumph - ' _ menu_item.title ;
+	heading2 = menu_item.item.heading2 ;
+	meta.pid = menu_item.pid ;
+	meta.menu_item = menu_item ;
+	IF c.stash.menu_item.news 
+		%]<div id = "news">
+		[% INCLUDE 'item/news.tt2' object = c.stash.menu_item 
+		%]</div>
+	[% END %]
+	<br clear = all>
+	[% menu_item.content ;
+	INCLUDE 'item/attachments.tt2' ;
+	IF menu_item.event ;
+		INCLUDE 'event/view.tt2' event = menu_item.event ;
+	END ;
+	IF menu_item.local_group ;
+		INCLUDE 'localgroups/view.tt2' localgroup = menu_item.local_group ;
+	END ;
+	IF menu_item.type == 'carsroot' ;
+		INCLUDE 'cars/home.tt2'  car = allcars ;
+	END ;
+	IF menu_item.car ;
+		INCLUDE 'cars/car.tt2' car = menu_item.car ;
+	END ;
+	IF menu_item.type == 'model' ;
+		INCLUDE 'cars/model.tt2' menu = menu_item ;
+	END ;
+	IF menu_item.type == 'mark' ;
+		INCLUDE 'cars/mark.tt2' menu = menu_item ;
+	END ;
+	IF menu_item.register ;
+		INCLUDE 'register/view.tt2' register = menu_item.register ;
+	END ;
+	IF menu_item.type == 'user_profile' ;
+		INCLUDE 'member/profile.tt2' member = menu_item.user ;
+	END ;
+	IF menu_item.type == 'groupsroot' ;
+		INCLUDE 'localgroups/menu_list.tt2' menu_items = menu_item.children ;
+	END ;
+	IF menu_item.type == 'entrylist' ;
+		INCLUDE 'event/viewentries.tt2' event = menu_item.parent.event ;
+		meta.heading1 = menu_item.parent.event.title ;
+		meta.heading2 = 'entry list' ;
+	END ;
+	IF menu_item.type == 'entry' ;
+		# INCLUDE 'event/viewentries.tt2' event = menu_item.parent.event ;
+		meta.heading1 = menu_item.entry.title ;
+		meta.heading2 = menu_item.entry.event.title ;
+	END ;
+	IF menu_item.type == 'location' ;
+		meta.heading1 = menu_item.location.name ;
+	END ;
+	IF menu_item.type == 'locationroot' ;
+		INCLUDE 'location/list.tt2' locations  = [c.model.locations.all] ;
+		meta.heading1 = menu_item.location.name ;
+	END ;
+	IF menu_item.type == 'eventroot' ; meta.fullcalendar = 1 ;
+		INCLUDE 'event/calendar.tt2' events= past_events ;
+	END ;
+	IF menu_item.type == 'championship' ;
+		INCLUDE 'championships/view.tt2' championship = menu_item.championship ;
+		meta.heading1 = menu_item.championship.title ;
+	END ;
+	IF menu_item.type == 'clubtorque' ;
+		INCLUDE 'clubtorque/view.tt2' clubtorque = menu_item.club_torque ;
+		meta.heading1 = menu_item.heading1 ;
+	END ;
+	IF menu_item.type == 'clubtorque_root' ;
+		INCLUDE 'clubtorque/list.tt2'  ;
+		meta.heading1 = menu_item.heading1 ;
+	END ;
+	IF menu_item.type == 'clubroleroot' ;
+		INCLUDE 'club_role/list.tt2' ;
+		meta.heading1 = menu_item.heading1 ;
+	END ;
+	IF menu_item.type == 'club_role' ;
+		INCLUDE 'club_role/view.tt2' ;
+		meta.heading1 = menu_item.heading1 ;
+	END ;
+	IF menu_item.type == 'entry' ;
+		INCLUDE 'entry/summary.tt2' entry = menu_item.entry ;
+	END  ;
+	IF menu_item.type == 'search' ;
+		INCLUDE 'search/search.tt2' ;
+		meta.heading1 = menu_item.heading1 ;
+	END ;
+	IF menu_item.pid == menu_start.pid ;
+		INCLUDE menu/home.tt2 ;
+	END;
+
+END %]
+
+

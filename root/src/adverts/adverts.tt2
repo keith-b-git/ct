@@ -1,0 +1,45 @@
+
+
+[% meta.acc_count = meta.acc_count + 1 ; meta.advert_acc = meta.acc_count %]
+
+
+
+<h3>Marketplace - [% object.car_sale_count(c.user) %] Cars for Sale, [% object.part_sale_count(c.user) %] Parts for Sale,
+[% object.wanted_count(c.user) %] Wanted
+[% IF meta.advert_title ; meta.advert_title ; END %] </h3>
+[% IF c.session.advertpage && c.session.advertpage.pid == meta.pid ; advertpage = c.session.advertpage.page ; ELSE ; advertpage = 1 ; END %]
+[% IF meta.insert_point == 'adverts' %]
+<a href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view',advertpage = advertpage ) %]">Back to Marketplace Menu</a>
+[% content %][% ELSE %]
+
+
+ [% IF c.stash.menu_item.advert_addable_by(c.user) -%]
+<A HREF="[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert') %]">Create New</A>[% END -%]
+
+<table width = 100%>
+<tr><th colspan =6>
+
+</th></tr>
+[% FOREACH item IN object.adverts(c.user,10,advertpage ) -%]
+[% UNLESS item.contenttype.id == currenttype ; currenttype = item.contenttype.id %]
+<tr><th colspan =4 >[% item.contenttype.displaytype %]</th></tr>
+[% END %]
+<tr>
+	<td>
+<a href = "[% c.uri_for('/menu',c.stash.menu_item.pid,'item', item.id, 'view') %]">[% item.title %]</a></td>
+<td>[% item.content %]</td><td>
+[% IF item.contenttype.type == 'shop' %]
+&pound;[% item.price %]</td><td><form action = "[% c.uri_for('/menu',c.stash.menu_item.pid,'add_to_basket',item.id) %]"><input name = 'quantity' value = '1' size = 4>
+<input type= submit value = "add to basket"></form>
+[% ELSE %]
+<A HREF="[% c.uri_for('/member',item.author.id,'profile') %]">[% item.author.username %]</A>[% END %]</td><td>[% item.views %]</td>
+
+
+</tr>
+[% END %]
+
+
+
+</table>
+
+[% END %]

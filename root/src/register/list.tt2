@@ -1,0 +1,28 @@
+[% # This is a TT comment. -%]
+ 
+[%- # Provide a title -%]
+[% META title = 'Club News' -%]
+ 
+[% # Note That the '-' at the beginning or end of TT code  -%]
+[% # "chomps" the whitespace/newline at that end of the    -%]
+[% # output (use View Source in browser to see the effect) -%]
+ 
+[% # Some basic HTML with a loop to display books -%]
+
+<span class="news1">
+<center>
+[% # Display each book in a table row %]
+<TABLE>
+[% FOREACH item IN cars -%]
+  <TR><TD ALIGN=RIGHT>
+    [% item.id %]</TD><TD> [% item.regno %]</TD><TD> [% item.commno %]</TD><TD> [% item.triumph.triumph.model.model %][% item.triumph.triumph.mark.mark %] [% item.triumph.body.body %] 
+
+</TD>
+<TD> [% item.memno.forename %] [% item.memno.surname %]</TD>
+</TR>
+
+[% END -%]
+</TABLE>
+
+</center>
+</span>

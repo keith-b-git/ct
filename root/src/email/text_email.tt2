@@ -1,0 +1,3 @@
+[% meta.nowrap = 1 %]
+
+[% temp = 'email/' _ mail_template ; INCLUDE $temp | html_strip %]

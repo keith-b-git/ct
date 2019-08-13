@@ -1,0 +1,67 @@
+FONTLOG for Sans Guilt
+-------------------
+This file provides detailed information on the Sans Guilt font software.
+This information should be distributed along with the Sans Guilt fonts
+and any derivative works.
+
+Basic Font Information
+--------------------------
+Copyright (c) 2011, OSP (http://ospublish.constantvzw.org)
+
+The three Sans Guilt fonts have been produce during "Read The Fucking Manual", an OSP workshop at Deparment 21 (Royal College of Art), using Gimp, Fonzie and Fontforge. They are different versions of Gill Sans based on three different sources.
+
+_Sans Guilt MB: Based on a rasterized pdf made with the Monotype Gill Sans delivered with Mac OSX.
+_Sans Guilt DB: Based on early sketches by Eric Gill
+_Sans Guilt LB: Based on lead type from Royal College of Arts letterpress workshop.
+
+See:
+http://ospublish.constantvzw.org/type/not-gillty
+
+Information for Contributors
+------------------------------
+Copyright (C) 2011 OSP 
+http://ospublish.constantvzw.org.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+
+
+
+ChangeLog
+----------
+(This should list both major and minor changes, most recent first.)
+
+Acknowledgements
+-------------------------
+If you make modifications be sure to add your name (N), email (E), web-address
+(W) and description (D). This list is sorted by last name in alphabetical
+order.)
+
+N: Antoine Begon
+E: ant.begon@gmail.com
+W: begon.antoine.free.fr 
+
+N: Sophie Demay
+E: sophie.demay@network.rca.ac.uk
+
+N: Deniz Johns 
+E: deniz.johns@network.rca.ac.uk
+
+N: Alexandre Leray
+E: alexandre@stdin.fr 
+
+N: Pierre Marchand
+E: pierremarc07@gmail.com 
+
+N: Afonso Martins
+E: afonsomartins@gmail.com  
+
+N: Sébastien Sanfilippo
+E: tinomatic@gmail.com
+
+N: Stéhanie Vilayphiou
+E: stephanie@stdin.fr  
+
+
+
+
+

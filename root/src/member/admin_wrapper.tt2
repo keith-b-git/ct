@@ -1,0 +1,13 @@
+<p><a href = "[% c.uri_for('/memadmin','view_applications') %]">View Applications</a> |
+<a href = "[% c.uri_for('/memadmin','view_old_applications') %]">Applications Archive</a> |
+<a href = "[% c.uri_for('/memadmin','member_by_name') %]">Find Member by Name</a> |
+<a href = "[% c.uri_for('/memadmin','member_by_location') %]">Find Member by Location</a> |
+<a href = "[% c.uri_for('/memadmin','map') %]">View Member Locations</a> |
+<a href = "[% c.uri_for('/memadmin','statistics') %]">Statistics</a> |
+<a href = "[% c.uri_for('/memadmin','reports') %]">Reports</a> |
+<a href = "[% c.uri_for('/memadmin','val_requests') %]">Validation Requests</a> 
+</p>
+<br clear = all>
+<center><form action = "[% c.uri_for('/memadmin','search') %]"><input name=search value = "[% search%]"><input type=submit value ='Search Members'></form></center>
+<br clear = all>
+[% content %]

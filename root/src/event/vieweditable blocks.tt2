@@ -1,0 +1,41 @@
+[% meta.mapping =1 %]
+[% map = 'eventmap' %]
+<h3>[% INCLUDE 'event/date_range.tt2' start = event.start end = event.end %]</h3>
+
+
+<table width = 100%><tr><td valign = top>
+
+[% datablock = BLOCK %]
+<!--- datablock start --->
+<table class = "data">
+	<tr><th>organiser</th><td>[% event.organiser.fullname %]</td></tr>
+	[% IF event.event_type == 'ct-man' -%]
+	<tr><th>entries open</th><td>[% INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]</td></tr>
+	<tr><th>entries</th><td>[% event.entry_count %]</td></tr>
+	[% END %]
+	<tr><th>predecessor</th><td>[% event.predecessor.title %]</td></tr>
+[% FOREACH location IN event.event_locations %]
+	<tr><th>location</th><td>[% location.location.name_town %]</td></tr>
+[% END %]
+</table>
+<!--- datablock end --->
+[% END %]
+</td><td valign = top>
+[% mapblock = BLOCK %]
+<!--- mapblock start --->
+[% PROCESS map/createmapdiv.tt2 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/event_line.tt2 %]
+[% PROCESS map/event_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+</script>
+<!--- mapblock end --->
+[% END %]
+</td></tr></table>
+
+[% IF event.entry_open(c.user) %] <a href = "[% c.uri_for('/menu',event.menu_items.first.pid,'event','enter') %]">ENTER!</a> [% END %]<br>
+
+
+
+

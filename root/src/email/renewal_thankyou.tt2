@@ -1,0 +1,55 @@
+<p>
+Dear [% member.forename | lower | ucfirst %],
+</p>
+<table>
+<tr><td>[% member.fullname %]</td><td> - membership number: [% member.memno | format "%05s" %]</td></tr>
+
+[% FOREACH assoc IN member.members
+%]<tr><td>[% assoc.fullname %]</td><td> - membership number: [% assoc.memno | format "%05s" %]</td></tr>[% END %]
+</table>
+
+<p>
+Thank You for renewing your membership with Club Triumph. 
+</p>
+
+<p>
+Events and Shows:<br>
+Below are some of the events coming up in the next few months which you might enjoy.<br>
+[% FOREACH event IN c.model('ClubTriumphDB::Event').future_events %]
+<a href = "[% c.uri_for('/menu',event.menus.first.pid,'view') %]">[% event.title %]</a>[% 
+INCLUDE 'event/date_range.tt2' start = event.start end = event.end %]<br>[% END %]
+
+</p>
+<p>
+Don't forget our <a href="[% c.uri_for('/menu',7747,'shop') %]">Club Shop</a> where you can purchase a copy of the 50th Anniversary of the RBRR, T-Shirts, Hats, bags, car badges and many more Club items.  
+</p>
+<p>
+Check out the latest news or need to ask a technical question why not visit our <a href="[% c.uri_for('/menu',1,'forum') %]">forum</a>
+</p>
+<p>
+Keep in touch and follow us on <a href = "http://facebook.com/clubtriumph">Face book</a> <a href="https://twitter.com/clubtriumph">Twitter</a>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p>
+Not received your magazine, changed your address, phone number or email address? Please contact me with your new details. See below.
+[% IF member.profile %]Alternatively you can change your personal details <a href = "[% c.uri_for('/menu',member.profile.pid,'member','address_edit') %]">here</a>[% END %]
+<br><br>
+Kind Regards<br>
+Tony Pulis<br>
+ <br>
+Membership Secretary <br>
+Club Triumph<br>
+membership@club.triumph.org.uk<br>
+0208 351 9544 (Evenings 07:00pm – 09:00pm<br>
+</p>

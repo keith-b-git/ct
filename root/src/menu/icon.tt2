@@ -1,0 +1,15 @@
+[%# IF pid.page.register ; c.uri_for('/static','images','car.gif') ; 
+ ELSIF pid.page.type == "user_profile" ; c.uri_for('/static','images','person.gif') ;
+ ELSIF pid.page.type == "localgroup" ; c.uri_for('/static','images','people.gif')  ; END %]
+[% SWITCH pid.icon ;
+CASE ['Club Role','role'] ; c.uri_for('/static','images','hat.gif') ;
+CASE ['incumbent','Organiser'] ; c.uri_for('/static','images','incumbent.gif') ;
+CASE ['car','cars','mark','model','triumph','register'] ; c.uri_for('/static','images','car.gif') ;
+CASE ['member','Owner','team member','person'] ; c.uri_for('/static','images','person.gif') ;
+CASE ['Local Group','Local Group Meeting','people'] ; c.uri_for('/static','images','people.gif') ;
+CASE ['Event Entry','entrylist','entry'] ; c.uri_for('/static','images','team.gif') ;
+CASE ['location','meeting'] ; c.uri_for('/static','images','house.gif') ;
+CASE ['event'] ; c.uri_for('/static','images','steeringwheel.gif') ;
+CASE ['item'] ; c.uri_for('/static','images','document.gif') ;
+CASE ; c.uri_for('/static','images','document.gif') ;
+END %]

@@ -1,0 +1,28 @@
+<div style = "min-width:500px; border-bottom: #D0D0D0;">[% link = news.item_to_link(c) ; IF link 
+%]<a href = "[% c.uri_for_action('/menu/view',[ link.pid ] ) %]">[% END %]
+<h3 class = "news-header">[% news.title ; headline_date = news.headline_date; IF headline_date %]<div class = 'news_date'>[% headline_date.strftime('%b').upper %] [% headline_date.strftime('%d') %]</div>[% END
+%]</h3>
+[% IF link -%]</a>[% END ;
+IF link.event %]
+<center>
+[% IF link.event.my_entries(c.user).size ;
+FOREACH entry IN link.event.my_entries(c.user) ;
+	IF entry.menus ;
+		%]You are entered as <a href = "[% c.uri_for('/menu',entry.menus.first.pid,'view') %]">[% entry.menus.first.title %]</a><br>[%
+	END ;
+END ;
+ ELSIF link.event.entry_open(c.user) %]
+ <form>
+<input type = button value = "ENTER!" onclick = "document.location = '[% c.uri_for('/menu',link.pid,'event','enter') %]';">
+</form>
+[% END %]
+</center>
+[% END ;
+  news.content  %]<br clear = all>
+<span class = "item_date">
+posted [% news.created | dateformat(news.created) %]</span>
+[% IF news.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',news.id,'edit') %]';">
+<input type = button name = "delete" value = "Delete" onClick="confirm('Are you sure you want to delete this news item?',location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',news.id,'delete') %]',0);">
+[% END %]
+</div>

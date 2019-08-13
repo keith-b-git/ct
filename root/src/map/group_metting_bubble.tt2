@@ -1,0 +1,5 @@
+<STRONG>[% meeting.local_group.title %]</STRONG><BR><small>meets at - </small>
+[% meeting.location.html %]
+<small>next meeting- </small>[% meeting.nextmeeting %]<br>
+[% IF meeting.editable %]
+<small><small><a href = "[% c.uri_for( '/group_meeting', meeting.id,'/edit') %]">edit</a></small></small>'[% END %]

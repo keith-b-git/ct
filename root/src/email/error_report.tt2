@@ -1,0 +1,17 @@
+[% meta.nowrap = 1 %]
+<p>
+[% c.user.fullname %] ([% c.user.username %]) has reported the following 
+
+<br>
+[% reason %]
+</p><p>
+error- 
+<br>
+[% errors %]
+</p>
+<p>
+uri 
+<br>
+[% uri %]
+</p>
+

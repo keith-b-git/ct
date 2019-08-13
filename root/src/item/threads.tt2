@@ -1,0 +1,53 @@
+[% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = threads_per_page %]
+[% IF c.session.threadpage && c.session.threadpage.pid == menu_item.pid ; threadpage = c.session.threadpage.page ; ELSE ; threadpage = 1 ;
+ END ;
+IF local ; threads = object.local_threads(c.user,rowsize,threadpage ) ;
+ELSE ;
+threads = object.threads(c.user,rowsize,threadpage ) ;
+END ;
+thread_count = menu_item.viewable_item_count(c.user||0,5)
+%]
+<div class = 'forum_head'>
+[% UNLESS menu_item.pid == menu_start.pid ; INCLUDE 'menu/hierarchy.tt2' type = 'forum' page = menu_item ; END %]
+[% IF meta.insert_point == 'messages' %]
+<a href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view',threadpage = threadpage ) %]">Back to Message Menu</a>
+[% content %][% ELSE ;
+cat_count = menu_item.forum_category_count(c.user) ;
+IF cat_count > 1 
+%]<center> <input type = button value = "View by category" name = "forum_view" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'forum') %]';"></center>
+[% END %]
+</div>
+<table cellspacing = 1 cellpadding =5 class = "threadstable">
+[% IF c.stash.menu_item.messages_addable_by(c.user) -%]<tr><th colspan = 6>
+<input type = button name = "new_thread" value = "Create New Thread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_thread') %]';">
+</th></tr>[% END -%]
+<tr><th colspan =6>
+[% INCLUDE 'item/pagemenu.tt2' count = thread_count rowsize = rowsize param = 'threadpage' currentpage = threadpage || 1  -%]
+
+</th></tr>
+<tr><th>Subject</th><th>Replies</th><th>Author</th><th>Views</th><th>Last Action</th><th>tags</th></tr>
+[%  FOREACH item IN threads -%]
+
+<tr >
+	<td >
+<a href = "[% item.first_unread(c.user).view_uri(c,menu_item) %]" [% UNLESS item.read(c.user) %]class = "unread_item"[% END %]>[% item.title %]</a>
+[% IF item.sticky %]<div style = "float:right;">sticky</div>[% END ; replies = item.count_replies %]
+<div style = "float: right">[% INCLUDE 'item/pagemenu.tt2' count = replies rowsize =  replies_per_page param = 'messagepage' currentpage = 0 
+request = '/menu/' _ c.stash.menu_item.pid _ '/item/' _ item.id _ '/view' %]</div>
+</td><td>[% IF item.contenttype.id == 5 ; replies ; END %]</td><td>[% INCLUDE "item/userlink.tt2" user = item.author %]</td><td>[% item.views %]</td>
+<td>[% IF replies > 0 %]Reply[% ELSE %]Post[% END %] by [% INCLUDE "item/userlink.tt2" user = item.last_post.author %]<br>
+[% item.modified | dateformat(item.modified) %]</td>
+<td>[% FOREACH tag IN item.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td>
+
+</tr>
+[% END %]
+<tr><th colspan =6>
+[% INCLUDE 'item/pagemenu.tt2' count = thread_count rowsize = rowsize param = 'threadpage' currentpage = threadpage || 1  -%]
+</th></tr>
+[% IF c.stash.menu_item.messages_addable_by(c.user) -%]<tr><th colspan = 6>
+<input type = button name = "new_thread" value = "Create New Thread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_thread') %]';">
+</th></tr>[% END -%]
+</table>
+[% END ; END %]
+
+

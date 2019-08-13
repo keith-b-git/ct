@@ -1,0 +1,20 @@
+[% WRAPPER 'menu/content.tt2' ; FOREACH extra IN event.event_merchandises %]
+<table class = 'data'><tr><th colspan = '2'>[% extra.title %]</th></tr>
+[% FOREACH item IN extra.entry_merchandises %]
+<tr><td>[% item.entry.team_number %] [% item.entry.title %]</td>
+<td>[% item.find_entrant.name %]</td><td>[% item.moption %]</td></tr>
+[% END %]
+</table>
+<table class = 'data'><tr><th>[% extra.title %]</th><th>Total</th></tr>
+[% FOREACH option IN extra.options_list %]
+
+<tr><td>[% option %]</td><td>[% extra.total(option) %]</td></tr>
+
+[% END %]
+</table>
+[%
+END ; END %]
+
+
+
+

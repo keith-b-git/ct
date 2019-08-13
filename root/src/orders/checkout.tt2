@@ -1,0 +1,16 @@
+[% PROCESS "orders/details.tt2" %]
+
+<h3>Delivery Address</h3>
+[% IF form_stages ; PROCESS "form_nav_bar.tt2" ; END %]
+[% formtitle %]
+[% form.render %]
+
+
+
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>

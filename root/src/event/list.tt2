@@ -1,0 +1,49 @@
+[% meta.mapping = 0 %]
+[% map = 'eventmap' %]
+
+
+
+	[% USE date %]
+	time is [% date.now(format => '%Y') %]
+	[% USE day = date(format => '%A', locale => 'en_GB') %]
+[% day.format(date.now) %]
+	[% USE day = date(format => '%d', locale => 'en_GB') %]
+[% day.format(date.now) %]
+	[% USE month = date(format => '%B', locale => 'en_GB') %]
+[% month.format(date.now) %]
+[% month = month.format(date.now) %]
+	[% USE year = date(format => '%Y', locale => 'en_GB') %]
+[% year.format(date.now) %]
+[% year = year.format(date.now) %]
+[% INCLUDE calendar events = c.stash.future_events, type = 'future' %]
+
+[% INCLUDE calendar events = c.stash.past_events, type = 'past' %]
+
+<BR><BR>
+
+
+[% BLOCK month_header %]
+<tr><th colspan = 2 class = "calendar_month">[% month %] [% year %]</th></tr>
+[% END %]
+
+
+[% BLOCK calendar %]
+<table width = "100%"><tr><th colspan = 2>Calendar of [% type %] events</th></tr>
+[% INCLUDE month_header %]
+	<br>
+[% FOREACH event IN events %]
+
+[% IF (event.start.strftime( '%B' ) != month) || (event.start.strftime( '%Y' ) != year) ; month = event.start.strftime( '%B' ) ; year = event.start.strftime( '%Y' ) ;INCLUDE month_header ; END %]
+<tr><td>
+<table width = "100%">
+<tr><th class = "calendar_date" VALIGN = "top"><STRONG><A HREF="[% c.uri_for('/menu' event.menus.first.pid, 'view') %]">[% event.title %]</A>
+<br>[% INCLUDE 'event/date_range.tt2' start = event.start end = event.end %]</STRONG>
+[% IF event.entry_open %]<br><a href = "[% c.uri_for('/menu',event.menus.first.pid,'event','enter') %]">Enter!</a>[% END %]
+</th><td class = "calendar_body" VALIGN = "top">
+ <br>[% event.menus.first.content %]
+</td></tr>
+</table>
+</td></tr>
+[% END %]
+</table>
+[% END %]

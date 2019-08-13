@@ -1,0 +1,27 @@
+<a href="[% c.uri_for('/menu',menu_item.pid,'club_cars') %]" class = 'sb_link'>
+<table  cellspacing = '0' cellpadding = '3'>
+<tr><th>Produced from -</th><td>[% car.first.strftime( '%b %Y' ) %]</td></tr>
+<tr><th>Until - </th><td>[% car.last.strftime( '%b %Y' ) %]
+<tr><th>Home - </th><td>[% car.home %] </td></tr>
+<tr><th>Export - </th><td>[% car.export %] </td></tr>
+<tr><th>On Register - </th><td><a href="[% c.uri_for('/menu',menu_item.pid,'all_cars') %]">[% car.on_register %]</a> </td></tr>
+<tr><th>In Club - </th><td><a href="[% c.uri_for('/menu',menu_item.pid,'club_cars') %]">[% car.in_club %]</a> </td></tr>
+[% IF c.stash.menu_item.car %]
+<tr><th>Top speed</th><td>[% car.top_speed %]</td></tr>
+<tr><th>0 - 60</th><td>[% car.zero_sixty %]</td></tr>
+<tr><th>Engine Type</th><td>[% car.engtype %]</td></tr>
+<tr><th>Engine Size</th><td>[% car.cc %]cc</td></tr>
+<tr><th>BHP</th><td>[% car.bhp %] bhp</td></tr>
+<tr><th>Torque</th><td>[% car.torque %] lb/ft</td></tr>
+<tr><th>Front Suspension</th><td>[% car.front_susp %]</td></tr>
+<tr><th>Rear Suspension</th><td>[% car.rear_susp %]</td></tr>
+<tr><th>Steering</th><td>[% car.steering %]</td></tr>
+<tr><th>Front Brakes</th><td>[% car.front_brakes %]</td></tr>
+<tr><th>Rear Brakes</th><td>[% car.rear_brakes %]</td></tr>
+<tr><th>Width</th><td>[% car.width %]</td></tr>
+<tr><th>Height</th><td>[% car.height %]</td></tr>
+<tr><th>Length</th><td>[% car.length %]</td></tr>
+[% END %]
+</table>
+</a>
+

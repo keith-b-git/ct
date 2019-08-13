@@ -1,0 +1,2 @@
+[% IF user.avatar %]
+<img src = "http://club.triumph.org.uk/uploads/[% user.avatar.remove('/uploads/') %]" WIDTH = "100">[%  END %]

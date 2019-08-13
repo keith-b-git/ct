@@ -1,0 +1,10 @@
+<A HREF = "[% image.display_uri(c,'h-600') %]" 
+description = "[% image.title | html %] uploaded [% image.created.strftime( '%a %d %b %Y' ) ; IF image.author.username ; %] by [% image.author.username | html ; 
+END %]<br>tags - [% 
+FOREACH tag IN image.tags(c.user) %]<a href = '[% c.uri_for('/menu',tag.id,'gallery') %]' >[% tag.title | html %]</a> [% END ;
+IF image.editable_by(c.user) %]<A href = '[% c.uri_for('/menu',menu_item.pid,'item',image.id,'imageedit') %]'>edit</a>[% END ;
+IF image.licence %]<br>Licence - [% image.licence | cc_expand ; END ;
+IF c.user && c.user.accessible_to_user(4) ;
+ %]<br> moderator options- <A href = '[% c.uri_for('/menu',menu_item.pid,'item',image.id,'imageedit') %]'>edit</a> <A href = '[% c.uri_for('/menu',menu_item.pid,'item',image.id,'delete') %]'>delete</a>[% END ;
+IF c.user && c.user.club_member && c.user.profile.pid == menu_item.pid && c.user.id == image.author.id %]<br><a href = '[% c.uri_for('/menu',menu_item.pid,'member','avatar',image.id) %]'>select as avatar</a>[% END %]"
+title = "[% image.title | html %] uploaded [% image.created.strftime( '%a %d %b %Y' ) ; IF image.author.username ; %] by [% image.author.username | escape_js ; END %]"><img src ="[% url = 'image' _ image.id _ '.' ; image.display_uri(c,'h-150') %]"></A>

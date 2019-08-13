@@ -1,0 +1,27 @@
+[% championship.title %] [% championship.year %]
+<br>
+<table>
+	<tr>
+		<th></th>
+[% FOREACH event IN championship.events %]
+<th>
+[% event.title %]</th>
+[% END %]
+<th>Total</th><th>Position</th>
+[% FOREACH member IN championship.leaderboard %]
+</tr><th>[% member.member.fullname %]</th>
+[% FOREACH event IN championship.events %]
+<td>[% championship.points(member.member,event) %]</td>
+[% END %]
+<td>[% member.points %]</td>
+<td>[% INCLUDE endings pos = member.position %]</td>
+</tr>
+[% END %]
+</table>
+
+[% BLOCK endings ;
+SWITCH pos ;
+CASE [ '1' , '21' , '31'  ] ; pos %]st [%
+CASE [ '2' , '22' ] ; pos %]nd [%
+CASE [ '3' , '23' ] ; pos %]rd [% 
+CASE ; pos %]th [% END ; END %]

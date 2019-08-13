@@ -1,0 +1,14 @@
+[% FOREACH location IN event.event_locations -%]
+	[% IF location.location.latitude && location.location.longitude %]
+	var loc[% location.location.id %] = new mxn.LatLonPoint([% location.location.latitude %],[% location.location.longitude %]);
+	[% END -%]
+[% END -%]
+[% first = 1 -%]
+var line = new mxn.Polyline([[% FOREACH location IN event.event_locations -%]
+[% IF location.location.latitude && location.location.longitude %][% UNLESS first %],[% END ; first = 0 %]loc[% location.location.id -%]
+[% END %][% END %]]);
+line.setColor('#00A000');
+line.setWidth(2);
+line.setOpacity(1);
+[% map %].addPolyline(line);
+

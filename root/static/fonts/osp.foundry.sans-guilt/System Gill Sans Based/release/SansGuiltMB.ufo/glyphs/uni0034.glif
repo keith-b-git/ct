@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="uni0034" format="1">
+  <advance width="423"/>
+  <unicode hex="0034"/>
+  <outline>
+    <contour>
+      <point x="136" y="384" type="line" smooth="no"/>
+      <point x="10" y="228" type="line" smooth="no"/>
+      <point x="10" y="209" type="line" smooth="no"/>
+      <point x="10" y="190" type="line" smooth="no"/>
+      <point x="131" y="190" type="line" smooth="no"/>
+      <point x="252" y="190" type="line" smooth="no"/>
+      <point x="252" y="95" type="line" smooth="no"/>
+      <point x="252" y="0" type="line" smooth="no"/>
+      <point x="293" y="0" type="line" smooth="no"/>
+      <point x="335" y="0" type="line" smooth="no"/>
+      <point x="335" y="95" type="line" smooth="no"/>
+      <point x="335" y="190" type="line" smooth="no"/>
+      <point x="367" y="190" type="line" smooth="no"/>
+      <point x="399" y="190" type="line" smooth="no"/>
+      <point x="399" y="226" type="line" smooth="no"/>
+      <point x="399" y="262" type="line" smooth="no"/>
+      <point x="367" y="262" type="line" smooth="no"/>
+      <point x="335" y="262" type="line" smooth="no"/>
+      <point x="335" y="423" type="line" smooth="no"/>
+      <point x="335" y="583" type="line" smooth="no"/>
+      <point x="317" y="583" type="line" smooth="no"/>
+      <point x="298" y="583" type="line" smooth="no"/>
+      <point x="280" y="562" type="line" smooth="no"/>
+    </contour>
+    <contour>
+      <point x="187" y="263" type="curve" smooth="no"/>
+      <point x="124" y="263" type="line" smooth="no"/>
+      <point x="187" y="342" type="line" smooth="no"/>
+      <point x="250" y="422" type="line" smooth="no"/>
+      <point x="251" y="343" type="line" smooth="no"/>
+      <point x="251" y="263" type="line" smooth="no"/>
+      <point x="250" y="262"/>
+      <point x="222" y="262"/>
+    </contour>
+  </outline>
+</glyph>

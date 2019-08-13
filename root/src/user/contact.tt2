@@ -1,0 +1,11 @@
+[% 
+IF user.contactable(c.user) || c.user_exists 
+	%]<div class = 'sb_link'>	<center>
+		contact [% user.profile.title %]
+	[% IF user.contactable(c.user) 
+		%]<p><input type = button value = "e-mail" onclick = "document.location = 'mailto:[% user.email %]';"></p>
+		<p><input type = button value = "private message" onclick = "document.location = '[% c.uri_for('/menu',c.user.profile.pid,'pm_to',user.id) %]'"></p>[%
+	END 
+	%]</center></div>[% 
+END %]
+	

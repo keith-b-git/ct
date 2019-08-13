@@ -1,0 +1,6 @@
+[% WRAPPER 'menu/content.tt2' %]
+[% meta.heading1 =  entry.event.title %]
+[% meta.heading2 =  'Entry Form' %]
+
+Amount payable - £[% entry.amount_payable %]
+[% END %]

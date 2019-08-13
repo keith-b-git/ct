@@ -1,0 +1,49 @@
+[% WRAPPER 'admin/admin_wrapper.tt2' %]<table>
+	<tr><th>username</th>
+	<th>full name</th>
+	<th>e-mail</th>
+	<th>club member</th>
+	<th>mem no</th>
+	<th>exp date</th>
+	<th>last login</th>
+	<th>ip address</th>
+	<th>login outcome</th>
+</tr>
+
+<tr><th><a href = "[% c.uri_for('/admin','user',user.id,'view') %]">[% user.username %]</a></th>
+<td>[% user.fullname %]</td>
+<td>[% user.email %]</td>
+<td>[% user.club_member %]</td>
+<td>[% user.memno.memno %]</td>
+<td>[% user.memno.expdate | dateformat %]</td>
+<td>[% user.loginouts.last.time  | dateformat %]</td>
+<td>[% user.loginouts.last.ipaddress %]</td>
+<td>[% user.loginouts.last.outcome %]</td>
+
+</tr>
+
+</table>
+<p>
+<a href="[% c.uri_for('/admin','user',user.id,'edit') %]">edit</a>
+</p>
+<p>
+<a href="[% c.uri_for('/menu',user.profile.pid,'view') %]">view profile</a>
+</p>
+<p>
+<a href="[% c.uri_for('/admin','user',user.id,'create_profile') %]">create profile</a>
+</p>
+<p>
+<a href="[% c.uri_for('/admin','history','user',user.id) %]">history</a>
+</p>
+<p>
+
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to permanently delete user [% user.username %]?')) {location.href='[% c.uri_for('/admin','user',user.id,'delete') %]'};">
+<input type = button name = "delete content" value = "Delete User's Content" onClick="if (confirm('are you sure you want to permanently delete all content for user [% user.username %]?')) {location.href='[% c.uri_for('/admin','user',user.id,'content_delete') %]'};">
+
+
+</p>
+
+<br clear = all>
+<center><form action = "[% c.uri_for('/admin','user',user.id,'link_to_member') %]"><input name="memno"  value = "[% user.memno.memno %]"><input type=submit value ='Link to Member no.'></form></center>
+<br clear = all>
+[% END %]

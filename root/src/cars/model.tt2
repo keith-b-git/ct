@@ -1,0 +1,5 @@
+<div class = 'sb_link'>
+[% model = menu.menus.first.menus.first.car.triumph.model || menu.menus.first.car.triumph.model ;
+meta.heading1 = model.model %]
+[% PROCESS 'cars/stats.tt2' car = model %]
+</div>

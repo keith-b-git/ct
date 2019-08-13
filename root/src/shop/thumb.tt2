@@ -1,0 +1,3 @@
+[% IF image.image_exists(c) %]<img src ="[% url = 'image' _ image.id _ '.jpg' ; c.uri_for('/image','w-150',url) %]">[% END ;
+ image.title | html %] £[% image.price %] [% image.price_text %]
+

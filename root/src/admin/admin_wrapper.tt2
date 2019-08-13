@@ -1,0 +1,7 @@
+<p><a href = "[% c.uri_for('/admin','statistics') %]">Statistics</a> |
+<a href = "[% c.uri_for('/admin','recent_users') %]">Recent Users</a> |
+</p>
+<br clear = all>
+<center><form action = "[% c.uri_for('/admin','search') %]"><input name=search value = "[% search%]"><input type=submit value ='Search Users'></form></center>
+<br clear = all>
+[% content %]

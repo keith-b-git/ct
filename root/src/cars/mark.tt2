@@ -1,0 +1,7 @@
+<div class = 'sb_link'>
+[% triumph = menu.menus.first.car.triumph %]
+[% meta.heading1 = mark.model.model %]
+[% triumph.model.model %] [% triumph.mark.mark %]
+
+[% INCLUDE 'cars/stats.tt2' car = triumph %]
+</div>

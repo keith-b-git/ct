@@ -1,0 +1,68 @@
+[% WRAPPER  menu/admin.tt2 ; meta.mapping =1 ; map = 'eventlocmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+<table><tr><TD>
+	[% FOREACH location IN event.event_locations %]
+
+[% location.location.name_town %]
+<A HREF = "[% c.uri_for('id',event.id,'location',location.id,'remove') %]">Delete</A>
+<A HREF = "[% c.uri_for('id',event.id,'location',location.id,'up') %]">up</A>
+<A HREF = "[% c.uri_for('id',event.id,'location',location.id,'down') %]">down</A>
+
+<BR>
+
+[% END %]
+	
+
+    
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+
+
+
+[% map = 'eventmap' %]
+
+
+[% event.title %]</A></STRONG><BR>
+</TD>
+<TD>
+<A HREF="javascript:[% map %].autoCenterAndZoom();">Return to Overview</A><BR>
+[% PROCESS map/createmapdiv.tt2 %]
+
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/event_markers.tt2 %]
+[% PROCESS map/event_line.tt2 %]
+[% map %].autoCenterAndZoom();
+</script>
+</TD>
+<TD>    
+	[%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+</TD>
+<TD>
+[% map = 'eventlocmap' %]
+
+<style type="text/css">
+
+</style>
+<A HREF="javascript:[% map %].autoCenterAndZoom();">Return to Overview</A><BR>
+
+
+[% PROCESS map/edit_map.tt2 %]
+
+
+</TD>
+</TR>
+</TABLE>
+[% END %]

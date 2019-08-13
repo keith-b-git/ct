@@ -1,0 +1,15 @@
+<h2 style = "text-align:center">Reporting [% item.contenttype.displaytype %] '[% item.title %]' by [% item.author.fullname %] ([% item.author.username %])</h2>
+[% IF item.contenttype.id == '3' ; item.thumbnail('w-600') ; END %]
+<div class = 'item_body'><blockquote>[% item.content %]</blockquote></div>
+<p>Please ONLY report messages if they are offensive, spam, or violate the registration agreement.</p>
+[% form.render %]
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+
+
+

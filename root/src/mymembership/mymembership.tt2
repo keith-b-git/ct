@@ -1,0 +1,129 @@
+<TABLE>
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#D8D8D8">
+Name-</TH>
+<TD BGCOLOR="#D8D8D8" VALIGN=TOP>
+[% member.title %] [% member.forename %] [% member.surname %]<BR></TD>
+<TD BGCOLOR="#D8D8D8">
+<FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="namechange" VALUE="Update"><INPUT TYPE=HIDDEN NAME="memno" VALUE="85645"></FORM>
+</TD>
+</TR>
+	<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#F0F0F0">
+Joint member-</TH>
+<TD BGCOLOR="#F0F0F0" VALIGN=TOP><A HREF="?summary=98076">
+[% FOREACH assoc IN assocs -%]
+<A HREF="?summary=[% assoc.memno %]">
+[% assoc.title %] [% assoc.forename %] [% assoc.surname %]
+<BR>
+</A>
+[% END -%]
+</A></TD>
+<TD BGCOLOR="#F0F0F0"><FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="namechange" VALUE="Update"><INPUT TYPE=HIDDEN NAME="memno" VALUE="98076"></FORM>
+</TD>
+</TR>
+
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#D8D8D8">
+Address-</TH>
+<TD BGCOLOR="#D8D8D8" VALIGN=TOP>
+[% member.address1 %]<BR>
+[% member.address2 %]<BR>
+[% member.address3 %]<BR>
+[% member.address4 %]<BR>
+[% member.address5 %]<BR>
+
+
+[% member.postcode %]<BR>
+</TD>
+<TD BGCOLOR="#D8D8D8">
+<FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="addresschange" VALUE="Update">
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"></FORM>
+</TD>
+
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#F0F0F0">
+Telephone-</TH>
+<TD BGCOLOR="#F0F0F0" VALIGN=TOP>
+[% member.tel %]<BR></TD>
+<TD BGCOLOR="#F0F0F0">
+<FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="addresschange" VALUE="Update">
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"></FORM>
+</TD>
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#D8D8D8">
+Email-</TH>
+<TD BGCOLOR="#D8D8D8">
+[% member.email %]<BR>
+</TD>
+<TD BGCOLOR="#D8D8D8">
+<FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="emailchange" VALUE="Update">
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"></FORM>
+</TD>
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#F0F0F0">
+Password-</TH>
+<TD BGCOLOR="#F0F0F0" VALIGN=TOP>
+[% member.userid.password %]
+
+
+
+</TD>
+<TD BGCOLOR="#F0F0F0">
+
+</TD>
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#F0F0F0">
+Forum Login-</TH>
+<TD BGCOLOR="#F0F0F0">
+<A HREF="/cgi-bin/forum/Blah.pl?v-memberpanel/a-view/u-Keith/">[% member.userid.username %]</A><BR>
+</TD>
+<TD BGCOLOR="#F0F0F0">
+<FORM METHOD=POST><INPUT TYPE=SUBMIT NAME="forumchange" VALUE="Update">
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"></FORM>
+</TD></TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#D8D8D8">
+Cars-</TH>
+<TD BGCOLOR="#D8D8D8" VALIGN=TOP>
+
+
+
+<A HREF="/cgi-bin/content/content.cgi?pagetitle=Triumph+Register&printentry=1&recno=1">Herald 12/50 Saloon</A><BR><A HREF="/cgi-bin/content/content.cgi?pagetitle=Triumph+Register&printentry=1&recno=2">Herald 1200 Convertible</A><BR><A HREF="/cgi-bin/content/content.cgi?pagetitle=Triumph+Register&printentry=1&recno=3">TR4A Convertible</A><BR><A HREF="/cgi-bin/content/content.cgi?pagetitle=Triumph+Register&printentry=1&recno=3325">Dolomite 1850HL Saloon</A><BR>
+</TD>
+<TD BGCOLOR="#D8D8D8">
+<FORM METHOD=POST ACTION = "/cgi-bin/content/content.cgi"><INPUT TYPE=SUBMIT VALUE="Update"><INPUT TYPE=HIDDEN NAME="pagetitle" VALUE="Triumph Register"><INPUT TYPE=HIDDEN VALUE="1" NAME="ownentry"></FORM>
+</TD></TR>
+
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#F0F0F0">
+Blog-</TH>
+<TD BGCOLOR="#F0F0F0" VALIGN=TOP>
+<A HREF=""></A>
+
+
+
+</TD>
+<TD BGCOLOR="#F0F0F0">
+<FORM METHOD=POST><INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"><INPUT TYPE=SUBMIT NAME="blogupdate" VALUE="Update"></FORM>
+</TD>
+</TR>
+<TR><TH ALIGN=RIGHT VALIGN=TOP BGCOLOR = "#D8D8D8">
+Membership no.</TH>
+<TD BGCOLOR="#D8D8D8">
+[% member.memno %]<BR>
+</TD>
+<TD BGCOLOR="#D8D8D8">
+<FORM METHOD=GET onSubmit="if (!confirm('Do you really want to delete MR KEITH BENNETT?')){return false}">
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645"><INPUT TYPE=SUBMIT NAME="deletemember" VALUE="Delete"></FORM>
+
+</TD></TR>
+<TR><TD BGCOLOR="#F0F0F0" COLSPAN=3><CENTER>Ordinary member (UK) until 31st March 2014<BR>Mailsort Magazine Recipient
+<BR>Joined on 02nd April 1985
+<FORM METHOD=GET><INPUT TYPE=SUBMIT VALUE="Update" NAME="statusform">
+<INPUT TYPE=HIDDEN NAME="memno" VALUE="85645">
+</FORM>
+<FORM METHOD=GET><INPUT TYPE=SUBMIT VALUE="Renew" NAME="renewform">
+
+<INPUT TYPE=HIDDEN NAME = "memno" VALUE="85645">
+</FORM>
+</TD></TR></TABLE>
+
+
+

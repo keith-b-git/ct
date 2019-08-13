@@ -1,0 +1,3 @@
+[% WRAPPER 'menu/admin.tt2' %]
+[% PROCESS 'menu/details.tt2' %]
+[% END %]

@@ -1,0 +1,5 @@
+<p>Dear [% entry.member.forename | lower | ucfirst %],</p>
+<p>[% FOREACH crew IN entry.entrants %]</p>
+<p>name [% crew.name %] mobile [% crew.mobile %]</p>
+<p>[% END %]</p>
+<p>&nbsp;</p>

@@ -1,0 +1,156 @@
+[%# meta.hierachy = object.hierachy %]
+[%# meta.heading1 = object.heading1 || object.title %]
+[%# meta.heading2 = object.heading2 || object.author.username %]
+[% meta.title = 'Club Triumph - ' _ c.stash.menu_item.title _ ' - ' _ object.title %]
+[% meta.item = object %]
+
+[% WRAPPER 'menu/content.tt2' %] [% object = c.stash.item %]
+
+<table border =0 WIDTH = 100%>
+<tr><td style = "width:160px">[% IF menu_item.next(c.user,object) %]<a  class = "item_next" href = "[% c.uri_for('/menu',menu_item.pid,'item',menu_item.next(c.user,object).id,'view') %]">&lt; [% menu_item.next(c.user,object).title %]</a>[% END %]</td>
+<th  class = "item_title">[% object.title %]
+ </th>
+<td style = "width:160px">[% IF menu_item.previous(c.user,object) %]<a  class = "item_prev" href = "[% c.uri_for('/menu',menu_item.pid,'item',menu_item.previous(c.user,object).id,'view') %]">[% menu_item.previous(c.user,object).title %] &gt;</a> [% END %] </td></tr>
+
+
+[% IF object.contenttype.type == 'Image' ; INCLUDE image_block object= object ; meta.insert_point = 'gallery' ; meta.gallery_title = "Viewing '$object.title'" ; END %]
+[% IF object.contenttype.type == 'Thread' ; INCLUDE message_block object= object ; meta.insert_point = 'messages' ; meta.thread_title = "Viewing '$object.title'" ;END %]
+[% IF object.contenttype.type == 'PM' ; INCLUDE message_block object= object ; meta.insert_point = 'pms' ; meta.pm_title = "Viewing '$object.title'" ;END %]
+[% IF ( object.contenttype.type == 'shop' || object.contenttype.type == 'carforsale' || object.contenttype.type == 'partsforsale' || object.contenttype.type == 'wanted' ) ; INCLUDE 'adverts/advert.tt2' object= object ; meta.insert_point = 'adverts' ; meta.advert_title = "Viewing '$object.title'" ;END %]
+
+
+</table>
+
+
+[% BLOCK image_block %]
+<tr>
+<td class = "item_author" valign = top>[% PROCESS "item/authorblock,tt2" member = object.author %]</td>
+<td class = "item_body"><p class = "item_date">uploaded [% object.created.strftime( '%a %d %b %Y %r' ) %]</p>[% object.html %]<br clear = all >
+[% IF object.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'imageedit') %]';">
+[% END -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'report') %]';">
+</td>
+[% INCLUDE tags %]
+</tr>
+[% END %]
+
+
+[% BLOCK message_block %]
+[% IF c.session.messagepage && c.session.messagepage.id == c.stash.item.id ; messagepage = c.session.messagepage.page ; ELSE ; messagepage = 1 ; END %]
+<tr>
+[% reply_no = 0 %]
+[% count = object.no_replies %]
+<tr><td></td><td>
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = 10 param = 'messagepage' currentpage = messagepage || 1  -%]
+</td></tr>
+[% IF messagepage == 1 ; INCLUDE message_body object = object ; END %]
+[% IF object.contenttype.id == 5 || 6 || 7 %]
+[% reply_no = reply_no + (messagepage - 1) * 10 %]
+[% FOREACH item IN object.replies(10,messagepage) %]
+[% reply_no = reply_no + 1 %]
+[% INCLUDE message_body object = item reply_no = reply_no count = count %]
+
+[% END %]
+[% IF newreply.thread == object %]
+[% INCLUDE message_body object = newreply %]
+[% END %]
+[% END %]
+[% IF ( ( object.contenttype.id == 5  ) && ( object.replyable_by(c.user) ) || ( object.contenttype.id == 7  ) ) %]
+[% meta.mceedit = 1 ; meta.mcewidth = '"100%"'; meta.imagebank = c.user.imagebank %]
+<tr><td></td><td>
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = 10 param = 'messagepage' currentpage = messagepage || 1  -%]
+</td></tr>
+<tr><td class = 'item_author'><a id = "reply"></a>reply to <strong>[% object.title %]</strong></A></td>
+<td colspan>
+<center>
+	
+<form name = 'reply_form' method = post>
+<div>
+[% IF object.contenttype.id == 7  ; form.field('title').render ; END %]
+[% form.field('content').render %]
+</div>
+<div>
+
+[%  form.field('submit').render %]
+[%  form.field('preview').render %]
+
+</div>
+[% UNLESS object.contenttype.type == 'PM' %]</form>[% END %]
+</center>
+</td>[% IF object.contenttype.type == 'PM' ; PROCESS toform ; ELSE ;PROCESS tags ; END %]</tr>
+[% END %]
+[% END %]
+
+[% BLOCK message_body %]
+<tr><td class = "item_author" valign = top><A id = num[% reply_no %]></A>[% INCLUDE "item/authorblock.tt2" member = object.author %]</td>
+<td class = "item_body"><span class = "item_date">
+[% IF object == newreply %]preview </span>[% ELSE %]posted [% object.created.strftime( '%a %d %b %Y %r' ) %]</span>
+[% IF reply_no %]<span class = 'reply_no'>reply [% reply_no %] of [% count %]</span>[% END %]
+[% END %]<span id="content[% object.id %]">[% object.content | highlight(c.req.params.search)  %]</span>
+<span class = "signature">[% object.author.sig %]</span>
+[% IF  object != newreply  %]
+[% IF object.replyable_by(c.user) || c.stash.item.contenttype.type == 'PM' %]<br>
+<input type = button name = "quote" value = "Quote" onClick="tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent()+
+'<blockquote><strong>Quoted from [%object.author.username %]-</strong><br>'
++document.getElementById('content[% object.id %]').innerHTML+'</blockquote><p></p>');location.hash='reply';">
+[% END -%]
+[% UNLESS c.stash.item.contenttype.type == 'PM' -%]
+[% IF object.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'edit') %]';">
+[% END -%]
+[% IF c.user -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'report') %]';">
+[% END -%]
+[% END -%]
+[% END %]
+</td>
+[% IF c.stash.item.contenttype.type == 'PM' ; PROCESS tolist ; ELSE ; PROCESS tags ; END %]</tr>
+[% END %]
+[% BLOCK tags %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TAGS</th></tr>
+
+[% FOREACH pid IN c.stash.item.menu_items %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table></td>
+[% END %]
+
+[% BLOCK tolist %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TO</th></tr>
+[% FOREACH recipient IN object.userpms %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',recipient.menus.first.pid,'view') %]">[% recipient.username %]</a>
+</td></tr>
+[% END %]
+</table></td>
+[% END %]
+
+[% BLOCK toform %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TO</th></tr>
+
+<tr><td>
+[% form.field('recipients').render %]
+</form>
+</td></tr>
+
+</table></td>
+[% END %]
+
+[% END %]
+
+
+
+
+

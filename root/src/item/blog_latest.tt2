@@ -1,0 +1,24 @@
+<div  class = 'blog_latest'>
+<img src="[% c.uri_for('/static','images','blog.png') %]" align = 'left' WIDTH = 60px>
+<h3>LATEST BLOGS</h3>
+<ul>
+[% FOREACH item IN menu_item.blogs(c.user,5 ) -%]
+<a href = "[% c.uri_for('/menu',menu_item.pid,'item',item.id,'view') %]">	
+<li>
+[% IF item.blog_image
+	%]<img src = "[% item.blog_image %]" WIDTH = "150" style ="float:right;">[% 
+END %]
+[% item.modified | dateformat %]<br>
+<strong>
+[% 
+	item.title 
+%]</strong>
+<br>[% item.author.profile.title %]<br>
+</li></a><br clear=all>
+[% END %]
+
+
+</ul>
+
+
+</div>

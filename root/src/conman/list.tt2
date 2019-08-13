@@ -1,0 +1,34 @@
+[% # This is a TT comment. -%]
+ 
+[%- # Provide a title -%]
+[% META title = 'Club News' -%]
+ 
+[% # Note That the '-' at the beginning or end of TT code  -%]
+[% # "chomps" the whitespace/newline at that end of the    -%]
+[% # output (use View Source in browser to see the effect) -%]
+ 
+[% # Some basic HTML with a loop to display books -%]
+<p>stuff</P>
+<span class="news1">
+<center>
+[% # Display each book in a table row %]
+<TABLE>
+[% FOREACH item IN content -%]
+  <TR><TD ALIGN=RIGHT>
+    [% item.pagetitle%]
+
+</TD>
+<TD><A HREF="[% c.uri_for('/content',item.pid,'content') %]">VIEW</A></TD>
+<TD><A HREF="[% c.uri_for('pid', item.pid, 'edit') %]">EDIT</A></TD>
+</TR>
+
+[% END -%]
+</TABLE>
+mem no  [% c.user.memno.title %] [% c.user.memno.forename %] [%c.user.memno.surname %]X
+[% FOREACH mem IN members -%]
+  
+    <h2>[% memno.memno %]</h2>
+ [% END -%]
+
+</center>
+</span>

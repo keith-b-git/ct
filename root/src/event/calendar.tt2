@@ -1,0 +1,3 @@
+[% global.fullcalendar = 1 %]
+
+<div id='calendar'></div>

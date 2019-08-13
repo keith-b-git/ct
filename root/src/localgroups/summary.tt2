@@ -1,0 +1,29 @@
+[% IF localgroup.organiser && localgroup.organiser.club_member && localgroup.organiser.userid; 
+	PROCESS 'menu/thumb.tt2' pid = localgroup.organiser.profile thumb_context = 'Organiser-' ; 
+END %]
+<a class = "sb_link" href= "[% c.uri_for('/menu',menu_item.pid,'map') %]">
+<img src = "[% c.uri_for('/static','images','map.png') %]" width = 30 align = right>
+<strong>meets at- </strong> <br>
+[% FOREACH meeting IN localgroup.group_meetings %]
+<strong>[% meeting.location.name %]</strong>
+	[% meeting.meetingtext %]
+	next meeting [% meeting.nextmeeting %]<br>
+[% END %]
+[% UNLESS c.action == "menu/map"
+%]
+<strong>View map</strong>
+[% END %]
+</a>
+[% IF c.user
+%]<a class = "sb_link" href = "[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','members') %]"><img src = "[% c.uri_for('/static','images','Persons.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong>
+This Group has [% FILTER inflect %]<#n:[% localgroup.members_rs.current_members.unique.size || 0 %]> <N:member>[% END 
+%]</strong>
+ [% IF c.user.club_member && c.user.memno.local_group.id == c.stash.menu_item.local_group.id %]<p>This is your Local Group</p>
+[%  END %]
+</a>[% 
+ELSE 
+%]<div class = "sb_link" ><img src = "[% c.uri_for('/static','images','Persons.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong>
+This Group has [% FILTER inflect %]<#n:[% localgroup.members_rs.current_members.unique.size || 0 %]> <N:member>[% END %]</strong></div>
+[% END %]
+
+

@@ -1,0 +1,56 @@
+[% WRAPPER member/admin_wrapper.tt2  %]
+<table>
+<tr><td style = "text-align:right;">
+<form>
+<select name = "town" class = "chosen-select">
+[% FOREACH town IN towns -%]
+<option value = "[% town %]" [% IF c.req.params.town == town %]selected [% END %]>[% town %]</option>[% END %]
+</select></td><td>
+<input type = submit  value = "Search by Town">
+</form></td></tr><tr><td style = "text-align:right;">
+<form>
+<select name = "county" class = "chosen-select">
+[% FOREACH county IN counties -%]
+<option value = "[% county %]" [% IF c.req.params.county == county %]selected [% END %]>[% county %]</option>[% END %]
+</select></td><td>
+<input type = submit  value = "Search by County">
+</form></td></tr><tr><td style = "text-align:right;">
+<form>
+<select  name = "postcode" class = "chosen-select" >
+[% FOREACH postcode IN postcodes -%]
+<option value = "[% postcode %]" [% IF c.req.params.postcode == postcode %]selected [% END %]>[% postcode %]</option>[% END %]
+</select></td><td>
+<input type = submit  value = "Search by Postcode">
+</form></td></tr><tr><td style = "text-align:right;">
+<form>
+<select multiple=""  name = "pc_zone" class = "chosen-select" >
+[% FOREACH postcode IN pc_zones -%]
+<option value = "[% postcode %]" [% FOREACH pc_zone IN c.req.params.pc_zone ; IF pc_zone == postcode %] selected [% END ; END %]>[% postcode %]</option>[% END %]
+</select></td><td>
+<input type = submit  value = "Search by Postcode Zone">
+</form></td></tr><tr><td style = "text-align:right;">
+<form>
+<select name = "country" class = "chosen-select">
+[% FOREACH country IN countries -%]
+<option value = "[% country %]" [% IF c.req.params.country == country %]selected [% END %]>[% PERL %]use Geography::Countries; print scalar(country('[% country %]'))[% END %]</option>[% END %]
+</select></td><td>
+<input type = submit  value = "Search by Country">
+</form></td></tr>
+</table>
+<script language = 'javascript'>
+   $(".chosen-select").chosen({width: "200px"})
+</script>
+[% IF members ; members.size %] result[% IF members.size > 1 %]s[% END %]
+<table>
+	<tr><th>Name</th><th>Status</th><th>Address</th></tr>
+[% FOREACH member IN members %]
+	<tr><td><a href = "[% c.uri_for('/memadmin','member', member.memno,'view') %]">[% member.formalname %]</a></td>
+	<td>[% member.status %]</td>
+	<td>[% member.address1 %] [% member.address2 %] [% member.address3 %] [% member.address4 %] [% member.address5 %] [% member.postcode %] [% member.country %]</td>
+
+
+	</tr>
+[% END %]
+</table>
+
+[% END ; END %]

@@ -1,0 +1,11 @@
+[% 
+FOREACH meeting IN localgroup.group_meetings ;
+	IF meeting.location.latitude && meeting.location.longitude %]
+	var loc[% meeting.location.id %] = new mxn.LatLonPoint([% meeting.location.latitude %],[% meeting.location.longitude %]);
+	var marker[% meeting.location.id %] = new mxn.Marker(loc[% meeting.location.id %]);
+	marker[% meeting.location.id %].setIcon('[% c.uri_for('/static','images','marker.png') %]', [20,50],[1,49]); 
+	marker[% meeting.location.id %].setInfoBubble('[% PROCESS 'map/group_meeting_bubble.tt2' meeting = meeting %]');
+	[% map %].addMarker(marker[% meeting.location.id %]); [%
+	END ;
+END %]
+

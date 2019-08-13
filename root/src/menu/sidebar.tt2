@@ -1,0 +1,192 @@
+<div id = 'sidebar'>
+[% INCLUDE adverts/banner.tt2 type = 'mpu' %]
+<div id = "home_links" class ='link_group'>
+<h3><a  style="color:white;" href = "[% c.uri_for('/menu',menu_item.pid,'view') %]">[% menu_item.title %]</a></h3>
+[% UNLESS (c.action == 'menu/view') ||  menu_item.type == 'forum' ||
+	((menu_item.content =='') && (menu_item.news_count == 0 ) && menu_item.type != 'profile' && menu_item.type != 'register' && menu_item.type != 'club_role' && menu_item.type != 'entry') ;
+	INCLUDE 'menu/thumb.tt2' pid = menu_item thumb_home = 'home' ;
+ END ;
+IF menu_item.promote_child ; 
+	FOREACH child IN menu_item.viewable_children($c.user,menu_item.promote_child,1);
+		INCLUDE 'menu/thumb.tt2' pid = child; 
+	END;
+END; 
+IF (c.action == 'item/shop') ;
+	INCLUDE 'menu/thumb.tt2' pid = c.model('ClubTriumphDB::ClubRole').shopkeeper.menus.first ;
+END ;
+INCLUDE menu/summary.tt2 ;
+IF c.stash.menu_item.shop_count(c.user)  && c.action != 'item/shop' 
+%]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'shop') %]"><img src = "[% c.uri_for('/static','images','ShoppingCart.png') %]" width = 30 align = 'right'><div class = 'sb-head'>Club Shop</div>[% shopcount = c.stash.menu_item.shop_count(c.user) ;
+shopcount %] Item[%
+UNLESS shopcount == 1 %]s[% END %] for Sale<br>
+[% INCLUDE 'shop/thumb.tt2' image = menu_item.random_item(c.user,8) %]</a>
+[% END ;
+cal_entries_future = menu_item.calendar_entries_future(c.user) ;
+cal_entries_past = menu_item.calendar_entries_past(c.user) ;
+cal_entries_recurring =  menu_item.calendar_entries_recurring(c.user) ;
+IF cal_entries_future+cal_entries_past + cal_entries_recurring > 0 
+%]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'calendar') %]">
+	<img src = "[% c.uri_for('/static','images','Calendar.png') %]" width = 30 align = 'right'><strong>Calendar</strong><br>
+[% FILTER inflect %]<#n:[% cal_entries_future %]> <N:future entry>[% END %]<br>
+[% FILTER inflect %]<#n:[% cal_entries_past %]> <N:past entry>[% END %]<br>
+[% FILTER inflect %]<#n:[% cal_entries_recurring %]> <N:recurring entry>[% END %]
+</a>[% 
+END ; 
+IF menu_item.type == 'user_profile' ;
+	UNLESS (c.action == 'user/profile') ;
+		INCLUDE 'menu/thumb.tt2' pid = menu_item thumb_home = 'home' ;
+	END ;
+	IF menu_item.user.id == c.user.id 
+		%]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'user','private_messages','inbox') %]"><strong>Private Messages</strong><br>
+Inbox - [% c.user.pm_count('inbox') %] messages<br>New - [% c.user.new_pm_count('inbox') %]<br>Sent - [% c.user.pm_count('sent') %]</a>[% 
+	ELSE ;
+		INCLUDE 'user/contact.tt2' user = menu_item.user ;
+	END ; 
+END ;
+IF menu_item.type == 'register' && menu_item.register.memno.club_member && menu_item.register.memno.userid ;
+ INCLUDE 'menu/thumb.tt2' pid = menu_item.register.memno.userid.profile thumb_context = 'Owner-' ; END ;
+FOREACH event IN menu_item.ancestors_rs.related_resultset('event').all ;
+	UNLESS event.menus.first.pid == menu_item.pid ; INCLUDE 'menu/thumb.tt2' pid = event.menus.first thumb_context = 'Event-' ; END ;
+END;
+FOREACH group IN menu_item.ancestors_rs.related_resultset('local_group').all ;
+	UNLESS group.menus.first.pid == menu_item.pid ; INCLUDE 'menu/thumb.tt2' pid = group.menus.first  thumb_context = 'Local Group-'; END ;
+END;
+FOREACH role IN menu_item.ancestors_rs.related_resultset('linked_role').all.reverse ;
+	INCLUDE 'menu/thumb.tt2' pid = role.menus.first  ; 
+END;
+%]
+<br clear =all></div>
+
+<div id = "media" class ='link_group'>
+<h3>Media</h3>
+[% 
+thread_count = menu_item.viewable_item_count(c.user||0,5) ;
+local_thread_count = menu_item.local_item_count(c.user||0,5) ;
+latest = menu_item.latest_item(c.user,5);
+UNLESS c.action == 'item/forum' ; 
+	IF c.stash.menu_item.messages_viewable_by(c.user) || thread_count || menu_item.type == 'user_profile' || 1;
+		IF (thread_count > local_thread_count) && (menu_item.type != 'user_profile') 
+			%]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'forum') %]" id = "threads_thumb">
+			<div class = 'sb-head'>
+		<img src = "[% c.uri_for('/static','images','Forum.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong>Forum</strong> - [% 
+		ELSIF latest
+			%]<a class = 'sb_link' href="[% latest.first_unread(c.user).view_uri(c,menu_item) %]" id = "threads_thumb"><div class = 'sb-head'>
+			<img src = "[% c.uri_for('/static','images','Forum.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong> Discussion</strong>[%  
+		ELSE 
+			%]<a class = 'sb_link' href="[% c.uri_for(baseurl.0,baseurl.1,'threads')  %]" id = "threads_thumb"><div class = 'sb-head'>
+		<img src = "[% c.uri_for('/static','images','Forum.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong> Discussion</strong>[% 
+		END %]</div>[% 
+		IF meta.thread_title ; 
+			meta.thread_title ; 
+		ELSE ;  thread_count %] thread[% UNLESS thread_count == 1 %]s[% END ; 
+			IF c.user %],  [% 
+				thread_count - c.stash.menu_item.read_item_count(c.user,'5') %] unread.[% 
+			END ; 
+		END ;
+		latest = menu_item.latest_item(c.user,5); 
+		IF latest 
+	 %]<p><br><strong>Latest -</strong> [% latest.title %]<br> by [% latest.last_post.author.username ; 
+		END %]</p></a>[%
+	END ;
+END %]
+[% IF c.stash.menu_item.images_viewable_by(c.user) && c.action != 'item/gallery' %]
+<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'gallery') %]" id = "gallery_thumb" style = "padding-right: 0.5em;">
+	<img src = "[% c.uri_for('/static','images','Gallery.png') %]" width = 30 align = right style = "padding-right: 0.5em;"><strong>Gallery</strong><br>
+ [% image_count = menu_item.viewable_item_count(c.user||0,3) ;
+ IF meta.gallery_title ; meta.gallery_title ; ELSE ; image_count %] image[% UNLESS image_count == 1 %]s[% END ; IF c.user %],
+ [% image_count - c.stash.menu_item.read_item_count(c.user,'3') %] unviewed.[% END ; END ;
+ latest = menu_item.latest_item(c.user,3); IF latest %]
+ <img src = "[%  latest.display_uri(c,'w-150') %]" title = "Latest - [% latest.title %]" >[% END %]</a>
+[% END %]
+[% IF c.stash.menu_item.blogs_viewable_by(c.user)  && c.action != 'item/blog' %]
+<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'blog') %]">
+	<img src = "[% c.uri_for('/static','images','blog.png') %]" width = 30 align = 'right'><strong>Blog</strong> - [% 
+FILTER inflect %]<#n:[% c.stash.menu_item.viewable_blog_count(c.user) %]> <N:entry>[% END %]<br>[%
+ latest = menu_item.latest_item(c.user,2); IF latest %]
+<strong>Latest -</strong> [% latest.title %] by [% latest.author.username ; IF latest.blog_image
+%]<br clear = 'all'> <img src = "[% latest.blog_image %]" WIDTH = "150">[% END %][% END %]</a>
+[% END %]
+[% IF c.stash.menu_item.adverts_viewable_by(c.user)  && c.action != 'item/adverts' %]
+<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'market') %]">
+	<img src = "[% c.uri_for('/static','images','Marketplace.png') %]" width = 30 align = 'right'><strong>Marketplace</strong><br>
+[% FILTER inflect ; '<#n:' _ menu_item.car_sale_count(c.user) %]> <N:car> for sale,<br> [% END ;
+FILTER inflect ; '<#n:' _ menu_item.part_sale_count(c.user) %]> <N:part> for sale,<br> [% END ;
+FILTER inflect ; '<#n:' _ menu_item.wanted_count(c.user) %]> wanted <N:item> [% END %]</a>
+[% END %]
+[% IF c.stash.menu_item.diary_viewable_by(c.user)  && c.action != 'item/diary' %]
+<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'diary') %]"><strong>Message Diary</strong><br>
+[% FILTER inflect ; '<#n:' _ menu_item.items_bytype_viewable_count(c.user,14) %]> <N:entry> [% END %][%
+latest = menu_item.latest_item(c.user,14); IF latest %]
+<br><strong>Latest -[% latest.tags.first.title %]</strong><br> [% latest.content %]  [% END %]</a>
+[% END %]
+<br clear = all>
+[% IF c.user_exists && c.user.club_member;
+	notification = menu_item.notified(c.user) ;
+	IF notification ;
+		IF notification.menu.pid == menu_item.pid %]e-mail notification on <a href="[% c.uri_for('/menu',notification.menu.pid,'denotify') %]">switch off</a>[% 
+		ELSE %]<span title ="enabled for parent page [% notification.menu.title %]">e-mail notification on</span> [%
+		END ;
+	ELSE 
+	%]e-mail notification off <a href="[% c.uri_for('/menu',menu_item.pid,'notify') %]" title = "receive e-mail notification of all new content on this page and its subpages">switch on</a>[%
+	END ;
+END %]
+<br clear = all></div>
+
+
+
+	
+[% link_count = menu_item.viewable_link_count(c.user) ;
+IF menu_item.type == 'event' && menu_item.event.website ;
+	link_count = link_count + 1 ;
+	external_link = menu_item.event.website ;
+END;
+IF link_count && !(c.action == 'menu/links') && ! (menu_item.pid == menu_start.pid)
+	%] <div id = "links" class ='link_group'>
+<h3>Links</h3>[% 
+IF link_count == 6 ; displayed = 6 ; ELSE ; displayed = 5 ; END ;
+IF external_link 
+	%]<a class = 'sb_link' href="[% menu_item.event.weblink %]"><h3>External Link</h3><strong> [% menu_item.event.website %] </strong></a>[%
+	displayed = displayed - 1 ;
+END ;
+FOREACH pid IN menu_item.viewable_links(c.user,displayed) ;
+PROCESS 'menu/thumb.tt2' pid = pid ;
+  END ;
+IF link_count > 6 %]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'links') %]"><strong> plus [% link_count - 5 %] more </strong></a>[% 
+END %]<br clear = all></div>
+<br clear = all>[% 
+END ; # of if link count ;
+
+IF menu_item.pid == menu_start.pid ; 
+	future_event_count = menu_item.future_event_count(c.user) ;
+ELSE ;
+	future_event_count = menu_item.current_future_event_count(c.user);
+END ;
+IF future_event_count ;
+ %]
+ <div id = "future_events" class ='link_group'>
+<h3>[% IF menu_item.pid != menu_start.pid %]Current and [% END %]Future Events</h3>
+ [% IF future_event_count == 6 ; displayed = 6 ; ELSE ; displayed = 5 ; END ; 
+IF menu_item.pid == menu_start.pid ; 
+	FOREACH pid IN menu_item.future_events(c.user,displayed) ;
+	PROCESS 'menu/thumb.tt2' pid = pid ;
+	END ;
+ELSE ;
+	FOREACH pid IN menu_item.current_future_events(c.user,displayed) ;
+	PROCESS 'menu/thumb.tt2' pid = pid ;
+	END ;
+END 
+%]
+ [% IF future_event_count > 6 %]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'future_events') %]"><strong> plus [% future_event_count - 5 %] more future events</strong></a>[% 
+ END %] <br clear = all></div>
+ <br clear = all>[% END ; # of if future events %]
+ [% past_event_count = menu_item.non_current_event_count ; 
+IF past_event_count && ! (menu_item.pid == menu_start.pid) 
+	%] <div id = "past_events" class ='link_group'>
+<h3>Past Events</h3>
+ [% IF past_event_count == 6 ; displayed = 6 ; ELSE ; displayed = 5 ; END ; FOREACH pid IN menu_item.non_current_events(c.user,displayed) ;
+PROCESS 'menu/thumb.tt2' pid = pid ;
+  END %]
+ [% IF past_event_count > 6 %]<a class = 'sb_link' href="[% c.uri_for('/menu',menu_item.pid,'past_events') %]"><strong> plus [% past_event_count - 5 %] previous past events</strong></a>[% 
+ END %] <br clear = all></div>
+<br clear = all>[% END ; # of if past events %]
+</div>

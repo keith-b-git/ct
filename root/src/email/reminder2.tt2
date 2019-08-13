@@ -1,0 +1,29 @@
+
+<p>
+Dear [% member.forename | lower | ucfirst %],
+</p>
+<p>
+I write to remind you that your membership expired at the end of last month. In order to continue to receive the club magazine/news letter and other benefits, including discounted insurance, please forward your renewal subscription of £[% member.area.fee %] for a single member (UK) plus 
+£2 for each additional member at the same address.  
+</p><p>
+
+Your membership details are currently as follows-
+</p><p>
+<table>
+<tr><td>[% member.formalname %]</td><td>£[% member.area.fee ; total = member.area.fee %]</td></tr>
+[% FOREACH assoc IN member.members %]
+<tr><td>[% assoc.formalname %]</td><td>£[% member.area.ass_fee ; total = total + member.area.ass_fee %]</td></tr>
+<tr><td>Total</td><td>£[% total %]</td></tr>
+[% END %]
+</table>
+</p><p>
+Your can renew easily online and pay by credit or debit card by clicking on the link below-
+ </p><p> 
+<a href = "[% c.uri_for('/renew',member.generate_renew_code) %]">[% c.uri_for('/renew',member.generate_renew_code) %]</a>
+ </p><p> 
+Yours Sincerely, 
+</p><p>
+Tony Pulis (Club Triumph Membership Secretary)<br>
+e-mail membership@club.triumph.org.uk
+
+</p>

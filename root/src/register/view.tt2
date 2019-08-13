@@ -1,0 +1,46 @@
+
+[% INCLUDE 'menu/top_pic.tt2'  menu_item = c.stash.menu_item %]
+<table><tr><td valign = "top"><div class='data'>
+<table cellspacing = '0' cellpadding = '3'>
+<tr><th>owner</th><td>[%  IF c.user.club_member && register.allowmem && register.memno.club_member ; register.memno.fullname ; ELSE ; IF register.memno.club_member %]club member[% ELSE %]-[% END ; END %]</td></tr>
+<tr><th>model</th><td>[% register.triumph.shortname %]</td></tr>
+<tr><th>body style</th><td>[% register.triumph.body.body %]</td></tr>
+<tr><th>registration number</th><td>[% register.blank_reg %]</td></tr>
+<tr><th>commission number</th><td>[% register.blank_commno %]</td></tr>
+<tr><th>date of manufacture</th><td>[% register.mandate | dateformat %]</td></tr>
+<tr><th>date of registration</th><td>[% register.regdate | dateformat %]</td></tr>
+<tr><th>date acquired</th><td>[% register.acquired | dateformat%]</td></tr>
+<tr><th>date sold (if applic)</th><td>[% register.sold | dateformat %]</td></tr>
+</table>
+</div>
+</td><td valign = "top">
+<div class='data'>
+<table cellspacing = '0' cellpadding = '3'>
+
+<tr><th>engine number</th><td>[% register.blank_engno %]</td></tr>
+<tr><th>engine size</th><td>[% register.engsize %]</td></tr>
+<tr><th>Colour</th><td>[% register.colour %]</td></tr>
+<tr><th>trim colour</th><td>[% register.trim %]</td></tr>
+<tr><th>transmission</th><td>[% register.tx %]</td></tr>
+</table>
+</div>
+</td><td valign = "top">
+
+</td></tr></table>
+<br clear =all>
+[% FOREACH entry IN register.entries  ;
+	UNLESS entry.status == 'withdrawn' || entry.status == 'draft' || entry.menus.size < 1 ; 
+		INCLUDE 'menu/thumb.tt2' pid = entry.menus.first thumb_context = 'Event Entry' ;
+	END ;
+END %]
+<br clear = all>[% IF register.menus.first.editable_by(c.user) %]
+<center><form>
+<input type = button value = " Edit Register Entry" onclick = "document.location = '[% c.uri_for('/menu',register.menus.first.pid,'register','edit') %]';">
+</form></center>
+[% END %]
+
+
+
+
+
+

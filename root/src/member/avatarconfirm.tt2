@@ -1,0 +1,9 @@
+[% WRAPPER 'menu/content.tt2' %]
+<center>
+<H2>make this your avatar image?</H2>
+<img src = "[% url = 'image' _ image.id _ '.jpg' ; c.uri_for('/image','w-300',url) %]">
+<form>
+<input type = button value = "Select Avatar" onclick = "document.location = '[% c.uri_for('/menu',menu_item.pid,'member','avatarchange',image.id) %]';">
+</form>
+</center>
+[% END %]

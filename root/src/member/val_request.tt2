@@ -1,0 +1,35 @@
+[% WRAPPER member/admin_wrapper.tt2 ;  %]
+<center>
+	username <a href = "[% c.uri_for('/menu',request.user.profile.pid,'view') %]">[% request.user.username %]</a>
+<table><tr><td valign =top>
+<table >
+<tr><th colspan =32>Submitted info-</th></tr>
+<tr><th>Name</th><td>[% request.forename %] [% request.surname %]</td></tr>
+<tr><th>E-mail</th><td>[% request.email %]</td></tr>
+<tr><th>Address1</th><td>[% request.address1 %]</td></tr>
+<tr><th>Town</th><td>[% request.town %]</td></tr>
+<tr><th>Post Code</th><td>[% request.postcode %]</td></tr>
+<tr><th>Country</th><td>[% request.country %]</td></tr>
+<tr><th>Membership no</th><td>[% request.membership_no %]</td></tr>
+</table>
+</td><td valign = top >
+[% IF c.model('ClubTriumphDB::member').find(request.membership_no) ; member = c.model('ClubTriumphDB::member').find(request.membership_no) %]
+<table><th colspan =2>Database Info-</th>
+<tr><th>Name</th><td>[% member.fullname %]</td></tr>
+<tr><th>E-mail</th><td>[% member.email %]</td></tr>
+<tr><th>Address</th><td>[% member.address1 %]</td></tr>
+
+<tr><th></th><td>[% member.address4 %]</td></tr>
+<tr><th>Post Code</th><td>[% member.postcode %]</td></tr>
+<tr><th>Country</th><td>[% member.country %]</td></tr>
+</table>
+[% ELSE %]
+Member [% request.membership_no %] not found!
+[% END %]
+</td></tr></table>
+<form>
+<input type = button value = " Accept Request " onclick = "document.location = '[% c.uri_for('/memadmin','proc_req',request.id,'accept') %]';">
+<input type = button value = " Reject Request " onclick = "document.location = '[% c.uri_for('/memadmin','proc_req',request.id,'reject') %]';">
+</form>
+</center>
+[% END %]

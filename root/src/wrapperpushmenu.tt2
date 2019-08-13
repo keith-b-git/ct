@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" [%#
+    %]"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	
+<HEAD>
+<title>[% 'Club Triumph - ' _ c.stash.menu_item.title _ ' - ' _ c.stash.item.title  %]</title>
+[% PROCESS 'header_js.tt2' %]
+</HEAD>
+<!--BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#808080" ALINK="#FF0000"-->
+<body class="mainbody" style = "width: 1110px;">
+<div>
+    <!-- Push Wrapper -->
+    <div class="mp-pusher" id="mp-pusher">
+ 
+        <!-- mp-menu -->
+[% INCLUDE menu/pushmenu.tt2  %]
+        <!-- /mp-menu -->
+ 
+        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+            <div class="scroller-inner">
+                <!-- site content goes here -->
+             
+
+
+<DIV CLASS="header">
+
+
+<div class="mainheader" style = " max-height:180px;">
+<p><a href="#" id="trigger" class="menu-trigger"><img align = 'left' src = "/static/images/ctlogob.gif"></a>
+<h1>Club Triumph</h1>
+<h2>... the club for all Triumphs</h2>
+<br clear = all>
+</div>
+<div id = 'searchformdiv'>
+<form name = 'searchform' method = 'post' action ="[% c.uri_for('/menu',1,'search') %]">
+<input name = 'search' size = '30' value = '[% IF c.req.params.search ; c.req.params.search ; ELSE %]Search all of Club Triumph[% END %]' onclick="if(this.value=='Search all of Club Triumph')this.value='';" onblur="if(this.value=='')this.value='Search all of Club Triumph';" type="text"><input class='search_button' type = submit value = "Search">
+</form></div><br clear=all>
+
+
+
+
+
+
+[% INCLUDE menu/user_panel.tt2 %]<br clear = all>
+</DIV>
+	<BR><BR>
+		    <span class="message">[% status_msg %]</span>
+    <span class="error">[% error_msg %]</span>
+
+
+
+
+<BR CLEAR=ALL>
+<div id="xxcontent">
+
+<table width ='100%'>
+	<tr><td valign = 'top'>
+
+    [%# This is where TT will stick all of your template's contents. -%]
+    [% content %]
+</td>
+</tr>
+</table>
+
+</div><!-- end content -->
+<!-- </div><!-- end bodyblock -->
+
+<div id="footer">
+[% INCLUDE menu/footer.tt2 %]
+</div>
+
+
+            </div><!-- /scroller-inner -->
+        </div><!-- /scroller -->
+ 
+    </div><!-- /pusher -->
+</div><!-- /container -->
+
+		<script src="/static/js/classie.js"></script>
+		<script src="/static/js/mlpushmenu.js"></script>
+		<script>
+			new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );
+		</script>
+ 
+</body>
+</html>

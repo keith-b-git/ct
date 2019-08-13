@@ -1,0 +1,37 @@
+[% meta.mapping =1 %]
+[% map = 'locationmap' %]
+[% locations = c.stash.locations %]
+
+
+<div>
+<form name = 'locationform'>
+
+<select name="location" id="location" class="chosen-select" onChange="showSelected();">
+	<option value="">---Select---</option>
+[% FOREACH location IN locations %]
+	<option value="[% location.id %]" class="chosen-select" onChange="showSelected();">[% location.name %]</option>
+[% END %]
+</select>
+</form>
+</div>
+<br clear = all>
+[% PROCESS map/createmapdiv.tt2 %]
+<script language = 'javascript'>
+
+[% PROCESS map/createmap.tt2 ;
+PROCESS map/select_location_markers.tt2 ;
+IF c.user ; PROCESS map/click_to_create.tt2 ; END %]
+[% map %].autoCenterAndZoom();
+
+if (document.locationform.location.value) {showSelected()}
+
+function showSelected()
+{
+	var loc = document.locationform.location.value;
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+ $(".chosen-select").chosen()
+</script>
+
+

@@ -1,0 +1,26 @@
+
+StartChar: uni003C
+Encoding: 60 60 29
+Width: 496
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+48 335 m 1
+ 47 299 l 1
+ 46 263 l 1
+ 244 179 l 2
+ 353 132 443 94 445 93 c 0
+ 449 92 449 95 449 130 c 2
+ 448 168 l 1
+ 295 232 l 2
+ 211 267 140 296 138 297 c 0
+ 135 298 175 315 292 363 c 2
+ 449 428 l 1
+ 449 466 l 2
+ 449 487 448 504 448 504 c 2
+ 447 504 356 466 247 420 c 2
+ 48 335 l 1
+EndSplineSet
+Substitution2: "sous-table 'rtla' Formes alternatives droite-+AOAA--gauche (ARA) lookups0" uni003E
+EndChar

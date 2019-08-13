@@ -1,0 +1,37 @@
+[% WRAPPER menu/content.tt2 ; meta.mapping =1 ; map = 'carmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+<table><tr><TD VALIGN = top>
+
+
+</TD>
+
+<TR>
+<TD VALIGN ='top'>
+
+</TD>
+<TD>
+[% map = 'carmap' %]
+
+[% PROCESS map/createmapdiv.tt2  %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+
+
+[% PROCESS map/car_markers.tt2 %]
+
+[% map %].autoCenterAndZoom();
+[% map %].declutterMarkers();
+
+
+</script>
+</TD>
+</TR>
+</TABLE>
+[% END %]
+

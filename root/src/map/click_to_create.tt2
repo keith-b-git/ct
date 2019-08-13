@@ -1,0 +1,9 @@
+[% map %].click.addHandler(function(eventName, eventSource, eventArgs) {
+var coords = eventArgs.location;
+if ( clickmarker != undefined) {clickmarker.hide()};
+var clickmarker = new mxn.Marker(coords);
+clickmarker.setInfoBubble('<strong>Lon: </strong>'+coords.lon+'<br><strong>Lat: </strong>'+coords.lat+'<br><A href="/menu/[% c.stash.menu_item.pid %]/location/create?latitude='+coords.lat+'&longitude='+coords.lon+'">add new location</a>');
+[% map %].addMarker(clickmarker)
+clickmarker.openBubble();
+clickmarker.hide();
+});

@@ -1,0 +1,49 @@
+[%# IF c.user && c.user.memno && c.user.memno.location %]
+
+var markerhere=0;
+var heremarkeropening =0;
+
+function showhere() {
+	if (markerhere) {
+		markerhere.closeBubble()
+		[% map %].removeMarker(markerhere);
+		markerhere = 0;
+	}
+	else {
+		var geo_options = {
+			enableHighAccuracy: true,
+			maximumAge : 30000,
+			timeout : 27000
+		};
+		if (navigator.geolocation && !heremarkeropening){
+			heremarkeropening = 1;
+			navigator.geolocation.getCurrentPosition(success, error, geo_options);
+		}
+	}
+	 
+	function success(position) {
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		var altitude = position.coords.altitude;
+		var accuracy = position.coords.accuracy;
+		var here = new mxn.LatLonPoint(latitude,longitude);
+		markerhere = new mxn.Marker(here);
+		markerhere.setIcon('[% c.uri_for( '/static','images','car.gif') %]', [30,30],[1,49]); 
+		markerhere.setInfoBubble("I am here-<br>latitude: "+latitude+"<br>longitude: "+longitude+"<br>altitude: "+altitude+"<br><a onClick ='markerhere.closeBubble();[% map %].removeMarker(markerhere);markerhere=0;'>hide</a>");
+		[% map %].addMarker(markerhere);
+		[% map %].autoCenterAndZoom();
+		heremarkeropening = 0;
+	};
+
+ 
+	function error(error) {
+		heremarkeropening = 0;
+		alert("Unable to retrieve your location due to "+error.code + " : " + error.message);
+	};
+	
+	
+	
+}
+
+[%# END %]
+

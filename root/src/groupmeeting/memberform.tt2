@@ -1,0 +1,54 @@
+[% meta.mapping =1 ; map = 'eventlocmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+<table><tr><TD VALIGN = top>
+<STRONG>Local Group Form</STRONG><BR>
+
+</TD>
+
+<TR>
+<TD VALIGN ='top'>
+<div style="max-width: 400px">
+    [% form.render %]
+
+
+
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+</div>
+</TD>
+<TD>
+[% map = 'groupmap' %]
+
+[% PROCESS map/createmapdiv.tt2 width = 500 height = 600 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% measure_location = member.location %]
+var grouplocation = [];
+[% FOREACH localgroup IN localgroups ;
+ PROCESS map/select_group_meeting_markers.tt2 ; END %]
+[% map %].autoCenterAndZoom();
+if (document.getElementById('groupform').local_group.value) {showSelected()}
+[% PROCESS map/member_marker.tt2  %]
+function showSelected()
+{
+	var loc = grouplocation[ document.getElementById('groupform').local_group.value];
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+</script>
+</TD>
+</TR>
+</TABLE>
+
+

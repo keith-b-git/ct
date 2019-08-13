@@ -1,0 +1,14 @@
+
+<p>
+Dear [% user.first_name | ucfirst %],
+</p>
+<p>
+A password reset has been requested for your account.
+<br>
+To reset your pasword please click on the link below or paste it into your web browser.
+</p><p>
+<a href = "[% c.uri_for ('/resetpassword',user.forgotpass) %]">[% c.uri_for ('/resetpassword',user.forgotpass) %]</a>
+</p><p>
+If you have not requested a password reset please ignore this e-mail.
+
+</p>

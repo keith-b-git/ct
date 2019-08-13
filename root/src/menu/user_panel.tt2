@@ -1,0 +1,39 @@
+<DIV CLASS='welcome'><div style = "float:left; margin-right:100px;">   
+[% IF c.user_exists %]
+    You are logged in as <A HREF="[% c.uri_for('/menu' c.user.profile.pid 'view') %]">'[% c.user.username %]'</A>. <a href="[% c.uri_for('/logout') %]">Logout</a> <br><br>
+[% c.session.level_fake ; ELSE %]
+
+<form method="post" action="[% c.uri_for('/login') %]">
+Please log in to use the full features of this site, or <a href = "/register">register here</a>
+<br>
+Username:
+   <input type="text" name="username" size="20" />
+[% IF mobile %]<br>[% END %]
+Password:
+ <input type="password" name="password" size="20" />[% IF mobile %]<br>[% END %]
+ <span title = 'Store your login details on this computer? This will set a persistent cookie on this machine so do not use on a shared use computer'>Remember? (in cookie)</span>
+ <input type="checkbox" name="remember" />[% IF mobile %]<br>[% END %]
+ <input type="submit" name="submit" value="Log in" />[% IF mobile %]<br>[% END %]
+<a href = "/forgotpass">forgotten password?</a>
+</form>
+
+[% END %]
+</div>
+<div id="basket" style = "float:right">   
+[% basket = c.model('ClubTriumphDB::basket').basket_items(c) || 0;
+IF basket < 1 %]
+ Your shopping basket is empty
+ [% ELSE %]
+Shopping Basket - [% basket %] item[% IF basket > 1 %]s[% END %] - &pound;[% c.model('ClubTriumphDB::basket').basket_total(c) | format('%1.2f') %]
+ <div id = "basket_popup">[% INCLUDE 'basket/basket_popup.tt2' purchases = c.model('ClubTriumphDB::basket').all_items(c) %]</div>
+  [% END %]</div> 
+[% IF c.user_exists %]
+ <center>
+You have [% c.user.pm_count('inbox') %] ([% c.user.new_pm_count('inbox') %] unread) <A HREF="[% c.uri_for('/menu' c.user.profile.pid 'user','private_messages','inbox') %]">private messages</A>
+</center>
+[% END ; menu_item.access_level(c) %]
+  
+
+
+</DIV>
+

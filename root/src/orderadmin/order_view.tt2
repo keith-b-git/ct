@@ -1,0 +1,28 @@
+
+
+<br>
+[% purchases = order.baskets ;
+ INCLUDE 'orders/details.tt2' ; 
+ INCLUDE 'orders/name_address.tt2' 
+ %]</p>
+<div class = 'orderform'>
+<h3>Payment Info</h3>
+
+<table>
+	<tr><th>status</th><td>[% order.status %]</td></tr>
+	<tr><th>approval code</th><td>[% order.approval_code %]</td></tr>
+	<tr><th>ref number</th><td>[% order.ref_number %]</td></tr>
+	<tr><th>txndate processed</th><td>[% order.txndate_processed %]</td></tr>
+	<tr><th>tdate</th><td>[% order.tdate %]</td></tr>
+	<tr><th>fail reason</th><td>[% order.fail_reason %]</td></tr>
+	<tr><th>processor response code</th><td>[% order.processor_response_code %]</td></tr>
+	<tr><th>fail rc</th><td>[% order.fail_rc %]</td></tr>
+	<tr><th>terminal id</th><td>[% order.terminal_id %]</td></tr>
+	<tr><th>ccbin</th><td>[% order.ccbin %]</td></tr>
+	<tr><th>cccountry</th><td>[% order.cccountry %]</td></tr>
+	<tr><th>ccbrand</th><td>[% order.ccbrand %]</td></tr>
+	<tr><th>response code 3dsecure</th><td>[% order.response_code_3dsecure %]</td></tr>
+	<tr><th>oid</th><td>[% order.oid %]</td></tr>
+	<tr><th>last 4</th><td>[% order.last_four %]</td></tr>
+</table>
+</div>

@@ -1,0 +1,13 @@
+[% IF entry.status == 'draft' ; global.countdown = 1 
+%]This draft entry will expire at [% entry.will_expire.strftime('%H:%M :%S %Z') %] if not completed
+<p>
+<div id="countboxentry" > until this entry expires if not completed</div>
+<script>
+window.addEventListener('load',function(){
+	var cdown1 = new CDown();
+	cdown1.add(new Date([% entry.will_expire.year %],[% entry.will_expire.mon - 1 %],[% entry.will_expire.day %],[% entry.will_expire.hour %],[% entry.will_expire.minute %],[% entry.will_expire.sec %]), "countboxentry",'entry will expire');
+})
+</script>
+</p>
+[% END %] 
+

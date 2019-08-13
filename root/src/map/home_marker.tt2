@@ -1,0 +1,22 @@
+[% IF c.user && c.user.memno && c.user.memno.location.lat %]
+
+var markerhome=0;
+
+function showhome() {
+	if (markerhome) {
+		markerhome.closeBubble()
+		[% map %].removeMarker(markerhome);
+		markerhome = 0;
+	}
+	else {
+		var home = new mxn.LatLonPoint([% c.user.memno.location.lat %],[% c.user.memno.location.lon %]);
+		markerhome = new mxn.Marker(home);
+		markerhome.setIcon('[% c.uri_for( '/static','images','house.gif') %]', [30,30],[1,49]); 
+		markerhome.setInfoBubble("[% c.user.memno.address1 %]<br><a onClick ='markerhome.closeBubble();[% map %].removeMarker(markerhome);markerhome=0;'>hide</a>");
+		[% map %].addMarker(markerhome);
+		[% map %].autoCenterAndZoom();
+	}
+}
+
+[% END %]
+

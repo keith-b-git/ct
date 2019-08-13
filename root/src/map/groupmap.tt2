@@ -1,0 +1,23 @@
+[% map = 'groupmap' %]
+
+
+	<style type="text/css">
+	#[% map %] {
+		height: 400px;
+		width:400px;
+	}
+	</style>
+
+	<div id="[% map %]"></div>
+
+[% PROCESS map/createmap.tt2 %]
+
+
+]
+
+<script language = 'javascript'>
+[% FOREACH group IN localgroups %]
+[% PROCESS map/group_meeting_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+[% END %]
+</script>

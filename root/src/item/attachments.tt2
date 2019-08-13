@@ -1,0 +1,13 @@
+<span class = 'attachments'>[% 
+FOREACH attachment IN menu_item.menu_attachments(c.user,4) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]
+<video controls="controls" height="260" width="520"><source src="[% attachment.download_uri(c) %]"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a>[%
+		IF attachment.licence %] Licence - [% attachment.licence | cc_expand ; END %]<br>[% 
+		END ; 
+	END ;
+END %]
+</span>
+

@@ -1,0 +1,23 @@
+[% meta.hierachy = object.hierachy %]
+[% meta.heading1 = object.heading1 || object.title %]
+[% meta.heading2 = object.heading2 || object.author.username %]
+[% meta.item = object %]
+[% meta.pid = pid %]
+[% IF menu_item %]
+[% meta.pid = menu_item.pid %]
+[% meta.menu_item = menu_item %]
+[% object.id %]
+here it is-
+next [% menu_item.next_image(c.user,object).id %] prev [% menu_item.images(c.user,99999).prev_item.id %]
+[% FOREACH image IN menu_item.images(c.user) %] <br>image - [% image.id %] [% END %]
+[% END %]
+[% object.html %]
+
+[% IF object.contenttype.type == 'Thread' %]
+<br><A HREF = "[% c.uri_for('/item', object.id,'new_reply') %]">Reply</A>
+[% FOREACH item IN object.items %]
+[% INCLUDE 'item/message.tt2' object = item %]
+[% END %]
+
+[% END -%]
+

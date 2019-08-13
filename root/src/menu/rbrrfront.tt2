@@ -1,0 +1,82 @@
+[% rbrr = c.model('ClubTriumphDB::Menu').find(17312) ; rbrwidth = 440 ;
+IF rbrr.event.entries_rs.locatable.size ;
+mapon = 1 ; diarycount = 2 ;
+ELSE ; mapon = 0 ; diarycount = 5 ; 
+END %]
+<div id = "news-header"><img src = "/static/images/news.png" style="vertical-align:middle;"><span style="vertical-align:middle;"> LATEST NEWS</span></div>
+<div style = "min-width:500px; border-bottom: #D0D0D0;">[% link = rbrr ; IF link ||1
+%]<a href = "[% c.uri_for_action('/menu/view',[ link.pid ] ) %]">[% END %]
+<h3 class = "news-header">The Club Triumph Round Britain Reliablility Run is underway!</a></h3>
+</div>
+<table>
+<tr><td valign = 'top' style = 'width:220px'>
+<img src = "[% c.uri_for('/static','images','rbrr18.png') %]" width = 200  vspace = 20>
+
+<p>This weekend 130 Triumph cars are driving 2000 miles round Britain to raise money for <a href = "https://www.epilepsyresearch.org.uk/">Epilepsy Research UK</a>
+</p>
+<p>Please help us to raise over £65,000 by <a href="https://www.justgiving.com/companyteams/RBRR2018">sponsoring a team or making a donation.</a></p><p>
+Every day 87 people are diagnosed with epilepsy in the UK. It means that right now 1 in 103 of us is living with this difficult and potentially dangerous condition.
+</p>
+<p><img src = "[% c.uri_for('/static','images','raider.jpg') %]" width = 200  vspace = 10><br>Last year we lost stalwart Club supporter and event organiser Martin Randle to epilepsy, and the event is held in his memory.</p>
+<p>
+Little is known about epilepsy, so scientific research into the causes, treatments and prevention of epilepsy is absolutely vital.
+Episepsy Resaearch UK is the only national charity in the UK dedicated to independent research into epilepsy, funding around £800,000 of research every year.
+</p>
+<a href = "https://www.epilepsyresearch.org.uk/"><img src = "[% c.uri_for('/static','images','epilepsy_research.jpg') %]"  ></a>
+</td>
+<td style = 'background-color:#EEEEEE;width:[%rbrwidth + 20 %]px;' valign='top' >
+<table cellspacing = 1 cellpadding =5 >
+<tr><th colspan  ></th></tr>
+<tr><th><a href = "[% c.uri_for('/menu',rbrr.pid,'diary') %]" >Latest from teams</a></th></tr>
+[% FOREACH item IN c.model('ClubTriumphDB::Menu').find(17312).items_bytype_viewable_by(c.user,14,diarycount,1 ) -%]
+
+<tr>
+	<td valign = top style = 'border-style: solid;border-width: 5px;border-color: #EEEEEE;background-color: white;'>
+<p><a href = "[% c.uri_for('/menu',item.tags(c.user).first.pid,'view') %]">[% item.tags(c.user).first.entry.teamdesc %]</a><p>
+<span class = "item_date">
+[%  item.created | dateformat('date_time') %]</span>[% entry = item.menu_items_rs.related_resultset('entry').first ; IF entry && entry.charity_link %]<a href= "[% entry.charity_link%]"><button style ="float:right; background-color: green; color:white;cursor:pointer;">Donate</button></a>[% END %]
+<p>
+<span id="content[% item.id %]">[% item.content | highlight(c.req.params.search)  %]</span>
+</p>
+[% FOREACH attachment IN item.unembedded_attachments(c) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]
+<video controls="controls" height="260" width="[% rbrwidth %]"><source src="[% attachment.download_uri(c) %]" type ="video/mp4"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a><br>[% 
+		END ; 
+	END ;
+	IF attachment.contenttype.id ==  3 ;
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% attachment.display_uri(c,'w-' _ rbrwidth) %]"></a> [% 
+	END ;
+END %]
+
+
+</td>
+
+
+
+</tr>
+[% END %]
+
+<tr><th><a href = "[% c.uri_for('/menu',rbrr.pid,'diary') %]" >more</a></th></tr>
+</table>
+
+[% IF mapon ;
+ meta.mapping =1 ; event = c.model('ClubTriumphDB::Menu').find(17312).event ;
+ map = 'eventmap' %]
+
+[%  PROCESS map/createmapdiv.tt2 menu_item = c.model('ClubTriumphDB::Menu').find(17312) width = rbrwidth - 80 %]
+
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[%# PROCESS map/event_line.tt2 event = event %]
+[%# PROCESS map/event_markers.tt2 event = event %]
+[% PROCESS map/item_markers.tt2 event = event %]
+[% PROCESS map/entry_markers.tt2 event = event %]
+showentries();
+
+[% map %].autoCenterAndZoom();
+</script>
+[% END %]
+</td></tr></table>

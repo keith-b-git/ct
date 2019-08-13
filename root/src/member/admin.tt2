@@ -1,0 +1,53 @@
+[% WRAPPER 'member/admin_wrapper.tt2' ; warning = '' %]
+<table>
+	<tr><th></th><th>Name</th><th>DoB</th><th>Membership Fee</th><th>Joining Fee</th><th></th><th>Membership no</th></tr>
+	<tr><th>Principle member</th><td>[% application.formalname %]</td>
+	<td>[% application.dob.strftime( '%e' ) %]/[% application.dob.strftime( '%m' ) %]/[% application.dob.strftime( '%Y' ) %]</td><td>£[% application.area.fee %]</td><td>£[% application.join_fee %]</td>
+	<td>[% IF (application.young_check) %]Eligible fo a 50% reducton in membership fee[% END %]</td><td>[% PROCESS membership_warning memno = application.memno %]</td></tr>
+[% FOREACH joint IN application.memforms %]
+	<tr><th>Joint member</th><td>[% joint.formalname %]</td><td></td><td>£[% application.area.ass_fee %]</td>
+	<td></td><td></td><td>[% PROCESS membership_warning memno = joint.memno %]</td></tr>
+[% END %]
+<tr><th>Total</th><td><td></td><td></td><td></td><td>£[% application.total %]</td></tr>
+</table>
+<table><tr><th>Address</th><td>
+[% application.address1 %]<br>
+[% application.address2 %]<br>
+[% application.address3 %]<br>
+[% application.address4 %]<br>
+[% application.address5 %]<br>
+[% application.postcode %]<br>
+</td></tr>
+<tr><th>Phone</th><td>[% application.tel %]</td></tr>
+<tr><th>Mobile</th><td>[% application.mobile %]</td></tr>
+<tr><th>E-mail</th><td>[% application.email %]</td></tr>
+<tr><th>Local Group</th><td>[% application.local_group.title %]</td></tr>
+<tr><th>Amount Due</th><td>£[% application.amount_due %]</td></tr>
+<tr><th>Amount Paid</th><td>£[% application.amount_paid %]</td></tr>
+<tr><th>Payment Type</th><td>[% application.payment_type %]</td></tr>
+<tr><th>Payment Reference</th><td>[% application.payment_reference %]</td></tr>
+<tr><th>Status</th><td>[% application.status %]</td></tr>
+<tr><th>Order</th><td><a href = "[% c.uri_for('/orders',application.orders.first.id,'order_view') %]">[% application.orders.first.id %]</a></td></tr>
+</table>
+
+
+<form>
+<input type = button value = " Edit Details" onclick = "document.location = '[% c.uri_for('/memadmin','application',application.id,'admin_edit') %]';">
+<input type = button value = " Change Local Group" onclick = "document.location = '[% c.uri_for('/memadmin','application',application.id,'group_edit') %]';">
+<input type = button value = " Process Membership" onclick = "process_application();">
+
+</form>
+
+<script>
+function process_application() {
+[% IF warning %] if (confirm ('Are you sure that you want to overwrite the membership data for [% warning %]?')) [% END %] 
+	{document.location = '[% c.uri_for('/memadmin','application',application.id,'process_application') %]';}
+	}
+</script>
+
+[% END %]
+
+[% BLOCK membership_warning ; memno ; member = c.model('ClubTriumphDB::Member').find(memno) ;
+IF member.memno ; warning = warning _ member.fullname _ ' ' %] WARNING this membership number belongs to <A HREF="[% c.uri_for('/memadmin','member',member.memno,'view') %]">[% member.fullname %]</A>
+
+[% END ; END %]

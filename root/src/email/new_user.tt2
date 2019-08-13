@@ -1,0 +1,10 @@
+
+<p>
+	A new user has registered on the Club Triumph website.
+	User name: [% user.username %]<br>
+	Name: [% user.fullname %]<br>
+	e-mail: [% user.email %]<br>	
+	IP address: [% c.req.address %]<br>
+
+
+</p>

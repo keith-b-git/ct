@@ -1,0 +1,47 @@
+
+<div id = "accordion">
+[% repliesperpage = 10 %]
+<h3>Latest-</h3>
+<div>
+<table>
+[% FOREACH item IN latest %]
+[% context = item.display_context(c.stash.menu_item,c.user).pid %]
+<tr><td>
+[% IF item.thread ; replyno = item.replyno ; USE  Math ; pageno =  Math.int ( (replyno - 1) / repliesperpage ) + 1 -%]
+<a class="page_link" href="[% c.uri_for('/menu',context,'item',item.thread.id,'view',{messagepage => pageno} ) _ '#num' _ replyno %]">reply to '[% item.thread.title %]' by [% item.author.username %]</a>
+[% ELSE -%]
+<a class="page_link" href="[% c.uri_for('/menu',context,'item',item.id,'view') %]">new [% item.contenttype.displaytype %] '[% item.title %]' by [% item.author.username %]</a>
+[% END -%]
+</td></tr>
+[% END %]
+</table>
+</div>
+
+<h3>Popular-</h3>
+<div>
+<table>
+[% FOREACH item IN history.popular(c.user,10) %]
+[% pid = item %]
+
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table>
+</div>
+[% IF c.user %]
+
+<h3>Recently viewed-</h3>
+<div>
+<table>
+[% user = c.user %]
+[% FOREACH item IN history.recent(c.user,10) %]
+[% pid = item %]
+<tr><td>
+<a class="page_link"  href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table>
+[% END %]
+</div>
+</div>

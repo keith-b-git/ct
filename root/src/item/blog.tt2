@@ -1,0 +1,40 @@
+<A id = num[% blog_no %]></A>
+<table border = 0 valign =top>
+<tr><td class = "item_author" valign = top><A id = num[% count %]></A>[% INCLUDE "item/authorblock.tt2" member = blog.author %]</td>
+<th Valign = top><div class = "blog_title" ><h3 align =center>[% blog.title %]</h3></div>
+</th>[% PROCESS blogtags myblog = blog %]</tr>
+<tr>
+
+<td class = "blog_body" colspan = 3 >
+<span id="content[% blog.id %]">[%  blog.content | highlight(c.req.params.search)  %]</span>
+<span class = "item_date">
+[% IF blog == newreply %]preview [% ELSE %]posted [% blog.created | dateformat(blog.created) ; END %]</span>
+[% IF  blog != newreply  %]
+
+[% IF blog.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',blog.id,'edit') %]';">
+[% END -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',blog.id,'report') %]';">
+[% END %]
+[% IF c.user && c.user.access_level <= 4 %]<div style="float:right;">moderator options-
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to delete this [%
+object.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',blog.id,'delete') %]'};">
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',blog.id,'edit') %]';"></div>
+[% END %]
+</td>
+</tr>
+
+</table>
+
+[% BLOCK blogtags %]
+<td VALIGN='top' >
+<div class = "blog_tags">
+<table  style = "width:160px">
+<tr><th>TAGS</th></tr>
+[% FOREACH pid IN myblog.tags(c.user) %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',pid.pid,'blog') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table></div></td>
+[% END %]

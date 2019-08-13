@@ -1,0 +1,13 @@
+[% WRAPPER  menu/admin.tt2 %]
+    [% form.render %]
+    
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+
+
+[% END %]

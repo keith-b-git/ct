@@ -1,0 +1,11 @@
+[% IF member && member.location_postcode ; memberlocation =  member.location ; IF memberlocation.lat && memberlocation.lon %]
+		var member = new mxn.LatLonPoint([% memberlocation.lat %],[% memberlocation.lon %]);
+		markermember = new mxn.Marker(member);
+		markermember.setIcon('/static/images/person.gif', [30,30],[15,25]); 
+		markermember.setInfoBubble("[% member.address1 %]<br>");
+		[% map %].addMarker(markermember);
+		[% map %].setCenterAndZoom(eval(member), 10);	
+
+
+[% END ; END %]
+

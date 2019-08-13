@@ -1,0 +1,2 @@
+[% no %] [% IF no == 1 -%][% single -%]
+[% ELSE %][% plural %][% END -%]

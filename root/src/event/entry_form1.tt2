@@ -1,0 +1,58 @@
+[% WRAPPER 'menu/admin.tt2' %]
+[% meta.heading1 =  entry.event.title %]
+[% meta.heading2 =  'Entry Form' %]
+
+<script language = 'javascript'>
+$(document).ready(function() {
+  var rep_index = {"entrants":[% entry.event.min_team %] -1 };
+ var rep_html = {"entrants":"\n<div class=\"hfh-repinst\" id=\"entrants.{index-1}\">\n<div>\n<input type=\"hidden\" name=\"entrants.{index-1}.id\" id=\"entrants.{index-1}.id\" value=\"\" />\n</div>\n<div>\n<label for=\"entrants.{index-1}.name\">Name</label>\n<input type=\"text\" name=\"entrants.{index-1}.name\" id=\"entrants.{index-1}.name\" value=\"\" />\n</div>\n<div>\n<label for=\"entrants.{index-1}.memno\">CT membership number (if known)</label>\n<input type=\"text\" name=\"entrants.{index-1}.memno\" id=\"entrants.{index-1}.memno\" value=\"\" />\n</div>\n<div>\n<label for=\"entrants.{index-1}.user\">Website user name (if known)</label>\n<input type=\"text\" name=\"entrants.{index-1}.user\" id=\"entrants.{index-1}.user\" value=\"\" />\n</div>\n<div>\n<div class=\"rm_element btn\" data-rep-elem-id=\"entrants.{index-1}\" id=\"entrants.{index-1}.rm_element\">Remove</div>\n</div>\n</div>"};  var rep_level = {"entrants":"1"};
+  if ($('.rm_element').length <= [% entry.event.min_team - 1 %]) { $('.rm_element').hide() }
+  if ($('.rm_element').length >= [% entry.event.max_team - 1 %]) { $('.add_element').hide() }
+  
+  $('.add_element').click(function() {
+    // get the repeatable id
+    var data_rep_id = $(this).attr('data-rep-id');
+    // create a regex out of index placeholder
+    var level = rep_level[data_rep_id]
+    var re = new RegExp('{index-' + level + '}',"g");
+    // replace the placeholder in the html with the index
+    var index = rep_index[data_rep_id];
+    var html = rep_html[data_rep_id];
+    html = html.replace(re, index);
+    // escape dots in element id
+    var esc_rep_id = data_rep_id.replace(/[.]/g, '\\.');
+    // append new element in the 'controls' div of the repeatable
+    var rep_controls = $('#' + esc_rep_id + ' > .controls');
+    rep_controls.append(html);
+    // increment index of repeatable fields
+    index++;
+    rep_index[data_rep_id] = index;
+    if ($('.rm_element').length >= [% entry.event.max_team - 1 %]) { $('.add_element').hide() }
+    if ($('.rm_element').length > [% entry.event.min_team - 1 %]) { $('.rm_element').show() }
+  });
+
+  $(document).on('click', '.rm_element', function() {
+    cont = confirm('Remove Entrant?');
+    if (cont) {
+      var id = $(this).attr('data-rep-elem-id');
+      var esc_id = id.replace(/[.]/g, '\\.');
+      var rm_elem = $('#' + esc_id);
+      rm_elem.remove();
+      if ($('.rm_element').length < [% entry.event.max_team - 1 %]) { $('.add_element').show() }
+	  if ($('.rm_element').length <= [% entry.event.min_team - 1 %]) { $('.rm_element').hide() }
+    }
+    entry.event.preventDefault();
+  });
+
+});
+
+
+   $(".chosen-select").chosen()
+</script>
+
+
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+[% END %]

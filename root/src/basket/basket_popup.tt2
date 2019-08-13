@@ -1,0 +1,26 @@
+
+
+
+<table class = "datatable">
+<tr><th></th><th>description</th><th>quantity</th><th>subtotal</th></tr>
+[% total = 0 ; FOREACH purchase IN purchases %]
+<tr><td>[% IF purchase.item.image_exists(c) %]<img src = "[% url = 'image' _ purchase.item.id _ '.jpg' ; c.uri_for('/image','w-80',url) %]">[% END %]</td>
+<td>[% purchase.item.title %]<br>
+[% purchase.item_size %]</td>
+<td>[% purchase.quantity %]</td>
+<td>&pound;[% (purchase.item.price * purchase.quantity) | format('%1.2f') ; total = total + purchase.item.price * purchase.quantity %]</td>
+</tr>
+[% END %]
+<tr><td></td><th>total</th><td></td><td><strong>&pound;[% total | format('%1.2f') %]</strong></td></tr>
+<tr><td colspan = 5><a href = "[% c.uri_for('/menu',c.stash.menu_item.pid,'checkout') %]">Proceed to checkout</a></td></tr>
+</table>
+
+<script>
+$(document).ready(function() {
+$("#basket").mouseover(function() {
+    $("#basket_popup").show();
+}).mouseout(function() { 
+    $("#basket_popup").hide();
+});
+})
+</script>

@@ -1,0 +1,76 @@
+<nav id="mp-menu" class="mp-menu">
+<div class="mp-level">
+<a href = "[% c.uri_for('/') %]">
+<img align = 'left' src = "/static/images/ctlogo.gif"></a>
+<br clear =all>
+<h2 style = "color:white;">All Categories</h2>
+
+[% menudepth = 3 ; count = menudepth %]
+[% INCLUDE menublock menu_item=menu_object count=menudepth %]
+
+[% BLOCK menublock -%]
+[% IF count > 0 -%]
+	<ul>
+	[% IF count == menudepth ;
+		UNLESS c.user && c.user.club_member 
+				%]<li><a href = "[% c.uri_for('/join') %]">Join</a></li>[%
+			END 
+		%]<li>
+		<a href = "[% c.uri_for('/menu',1,'forum') %]">Forum</a></h2>
+		</li>
+	[% END %]
+	[% FOREACH child IN menu_item.children -%]
+		<li>
+		
+		<a href = "[% c.uri_for('/menu',child.pid,'view') %]">
+		[% child.title %]</a>
+		
+		[% IF child.children.size && (count > 1) && (child.pid >1) -%] 
+			<div class="mp-level">
+			<h2 class="icon icon-display"><a href = "[% c.uri_for('/menu',child.pid,'view') %]">[% child.title %]</a></h2>
+
+			[% IF (child.type  == 'profileroot') && (child.pid >1) -%] 
+			[% INCLUDE profilemenublock menu_item=child count=(count - 1) title=child.title -%]
+			[% ELSIF (child.type  == 'carsroot') && (child.pid >1) -%] 
+			[% INCLUDE carsmenublock menu_item=child count=(count - 1) title=child.title -%]
+			[% ELSE -%]
+			[% INCLUDE menublock menu_item=child count=(count - 1) -%]
+			[% END -%]
+			</div>
+		[% END %]
+		</li>
+	[% END -%]
+	</ul>
+[% END ; END -%]
+
+
+
+[% BLOCK profilemenublock %]
+
+
+<ul>
+[% FOREACH car IN mregister -%]
+<li>
+<a href = "[% c.uri_for('/register', car.id, 'view') %]">
+[% car.regno -%]</a>
+</li>
+[% END -%]
+</ul>
+[% END -%]
+
+[% BLOCK carsmenublock -%]
+
+<ul>
+[% FOREACH child IN menu_item.children -%]
+<li>
+
+<a href = "[% c.uri_for( child.url) %]">
+[% child.title %]</a>
+
+
+</li>
+[% END -%]
+</ul>
+[% END -%]
+</div>
+</nav>

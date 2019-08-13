@@ -1,0 +1,106 @@
+[%  meta.mapping =1 ; map = 'eventlocmap' ;
+IF form_stages ; PROCESS "form_nav_bar.tt2" ; END %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+
+<table><tr><TD VALIGN = top >
+<STRONG>Editing [% event.title %] - stage 3 - Select Location(s)</STRONG><BR>
+<div style = "max-width:400px;">
+<table>
+	[% count = 0 ; loccount = event.location_count ; FOREACH location IN event.event_locations %]
+<TR><TD>
+
+[% location.location.name_town %]
+</div>
+</TD><TD>
+<A HREF = "[% c.uri_for('/menu',event.menus.first.pid,'event','location',location.id,'remove') %]">Remove</A>
+</TD><TD>[% UNLESS count == 0 %]
+<A HREF = "[% c.uri_for('/menu',event.menus.first.pid,'event','location',location.id,'up') %]">up</A>
+[% END  ; count = count + 1 %]</TD><TD>[% IF count < loccount %]
+<A HREF = "[% c.uri_for('/menu',event.menus.first.pid,'event','location',location.id,'down') %]">down</A>[% END  %]
+</TD>
+</TR>
+
+[% END %]
+	
+</table>
+
+
+[% map = 'eventmap' %]
+
+
+
+
+</TD>
+<TD>
+
+[% PROCESS map/createmapdiv.tt2 width = 500 height = 600 %]
+
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/event_line.tt2 %]
+[% PROCESS map/event_markers.tt2 %]
+
+[% map %].autoCenterAndZoom();
+</script>
+</TD></TR>
+<TR>
+<TD VALIGN ='top'>
+<div style = "max-width:400px;">
+Select from existing locations from the drop-down below or map right>>
+    [% form.render %]
+ Or - if location doesn't exist in gazetteer - 
+   <FORM ACTION = "[% c.uri_for('/menu',event.menus.first.pid,'event','newlocation') %]">
+    <INPUT TYPE = SUBMIT VALUE = "Create New Location">
+    </FORM>
+
+
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+</div>
+</TD>
+<TD>
+[% map = 'eventlocmap' %]
+
+[% PROCESS map/createmapdiv.tt2 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/click_to_create.tt2 %]
+[% PROCESS map/select_location_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+if (document.forms[0].location.value) {showSelected()}
+
+function showSelected()
+{
+	var loc = document.getElementById('locationform').location.value;
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+</script>
+</TD>
+</TR>
+<TR><TD></TD><TD><FORM ACTION = "[% c.uri_for('/menu',event.menus.first.pid,'event','edit2') %]">
+    <INPUT TYPE = SUBMIT VALUE = "Previous">
+    </FORM>
+[% IF event.event_type == 'ct-man' %]
+    <FORM ACTION = "[% c.uri_for('/menu',event.menus.first.pid,'event','edit3') %]">
+    <INPUT TYPE = SUBMIT VALUE = "Next">
+    </FORM>
+[% ELSE %]
+    <FORM ACTION = "[% c.uri_for('/menu',event.menus.first.pid,'contentedit') %]">
+    <INPUT TYPE = SUBMIT VALUE = "Next - edit web page content">
+    </FORM>
+[% END %]
+</TD></TR>
+</TABLE>
+

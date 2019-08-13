@@ -1,0 +1,17 @@
+<div style = "float:left;"><img src = "/static/clubtorque/[% clubtorque.edition %].jpg" align = 'left'></div>
+<div style = "float: left; margin-left: 10px;">
+[% IF clubtorque.edition < 244 ;
+	articles = clubtorque.articles ;
+ELSE ;
+	articles = clubtorque.articles_rs.search({},{order_by = 'page'}) ;
+END ;
+category = '' ; FOREACH article IN articles ; 
+IF article.category != category ; category = article.category %]<div class ="ctcategory">[% category %]</div>[% END %]
+<div class = "ctarticle">
+[% IF article.page && article.viewable_by(c.user) %]
+<a href = "[% c.uri_for('/clubtorque','article',article.id) %]" >[% article.title %] </a> [% ELSE ; article.title ; END %] </div>
+[% END  %]
+[% IF c.user && c.user.club_member && clubtorque.size(c) %]
+<p><a href = "[% c.uri_for('/menu',menu_item.pid,'download') %]">Download entire magazine ([% clubtorque.size(c) / 1000000 | format "%4.1f" %]MB)</a></p>
+[% END%]
+</div>

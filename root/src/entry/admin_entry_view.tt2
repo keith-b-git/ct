@@ -1,0 +1,29 @@
+
+[% IF entry.previous_entry  %]<div style = "float:left"><a href = "[% c.uri_for('/menu',event.menus.first.pid,'event','entry',entry.previous_entry.id,'admin_entry_view') %]"><strong><<< previous</a></strong></div> [% END %]
+[% IF entry.next_entry  %]<div style = "float:right"><a href = "[% c.uri_for('/menu',entry.event.menus.first.pid,'event','entry',entry.next_entry.id,'admin_entry_view') %]"><strong>next >>></a></strong></div> [% END %]
+<br clear = all>
+<div class = "sb_link">
+
+event- <a href = "[% c.uri_for('/menu',entry.event.menus.first.pid,'view') %]">[% entry.event.title %]</a>
+entrant- <a href = "[% c.uri_for('/menu',entry.user.profile.pid,'view') %]">[% entry.user.fullname %]</a>
+status- [% entry.status %]
+</div>
+
+
+
+[% FOREACH member IN entry.entrants ; IF member.user ; PROCESS 'menu/thumb.tt2' pid = member.user.profile ;
+ ELSE %]<div class = "sb_link">[% member.name %]</div>
+[% END ; END %]
+
+[% IF entry.car ; PROCESS 'menu/thumb.tt2' pid = entry.car.menus.first ;
+ELSIF entry.other_car 
+%]<div class = "sb_link">[% entry.other_car %]</div>[%  END %]
+<br clear = all>
+<p>
+<center>
+<form>
+<input type = button value = "Edit entry" onclick = "document.location = '[% c.uri_for('/menu',entry.event.menus.first.pid,'event','entry',entry.id,'adminedit') %]';">
+</form>
+</center>
+</p>
+

@@ -1,0 +1,18 @@
+<DIV CLASS='welcome'>
+<div style = "float:left">   
+[% INCLUDE 'menu/active_users.tt2' users=users_rs -%]
+</div>
+<br>
+[% IF c.user %]<div style = "float:right"> <a href="[% c.uri_for('/logout') %]">Logout</a> </div>[% END %]
+<center>[% INCLUDE 'menu/mobile_override.tt2' %]</center>
+</DIV>
+<br clear = all>
+[% UNLESS mobile %]
+<p class = "smallprint">
+
+Club Triumph Ltd. Registered in England No. 4961210 Registered Office: Suite A,10th Floor, Maple House, High Street, Potters Bar, Herts, EN6 5BS.
+Club Triumph is run entirely by its members for its members and does not have paid employees. 
+</p>
+<p align = center><strong><a href="[% c.uri_for('/static','docs','reg_agreement.pdf') %]">Website Terms and Conditions</a> | 
+<a href="[% c.uri_for('/static','docs','Terms_and_Conditions.pdf') %]">Terms and Conditions of Sale</a> | <a href="[% c.uri_for('/static','docs','rules.pdf') %]">Club Rules</a></strong></p>
+[% END %]

@@ -1,0 +1,21 @@
+[% WRAPPER menu/admin.tt2  %]
+[% FOREACH incumbent IN club_role.members %]
+[% incumbent.fullname -%] 
+<form action = "[% c.uri_for( '/menu',c.stash.menu_item.pid,'club_role','remove') %]" >
+<input type = 'hidden' name = 'member' value = "[% incumbent.memno %]">
+<input type = submit value = 'remove incumbent'>
+</form>
+<br>
+[% END %]
+<br>
+<form action = "[% c.uri_for( '/menu',c.stash.menu_item.pid,'club_role','incumbents') %]" >
+<select name = 'member' class = 'chosen-select'>
+	[% FOREACH member IN clubmembers -%]
+	<option value = "[% member.memno %]">[% member.fullname %]</option>[% END %]
+</select>
+<input type = submit value = 'add incumbent'>
+</form>
+
+<script>  $(".chosen-select").chosen()</script>
+
+[% END %]

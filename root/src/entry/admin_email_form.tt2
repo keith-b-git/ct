@@ -1,0 +1,45 @@
+[%  meta.mceedit = 1 meta.mcewidth = 700 ; meta.mceheight = 620 %]
+[% IF c.flash.success.size %]
+<h3>Sent-</h3>
+<ul>
+[% FOREACH entrant IN c.flash.success %]
+<li>entry [% entrant.entry_no %]: [% entrant.member.fullname %]: [% entrant.member.email %]</li>
+[% END %]
+</ul>
+[% END %]
+[% IF c.flash.failed.size %]
+<h3>Failed-</h3>
+<ul>
+[% FOREACH entrant IN c.flash.failed %]
+<li>entry [% entrant.entry_no %]: [% entrant.member.fullname %]: [% entrant.member.email %]</li>
+[% END %]
+</ul>
+[% END %]
+<p>
+This form will generate an e-mail which can be sent to entrants grouped by status. Template variables can be incuded to personalise the message.<br>
+Use the 'to self' option to test.
+</p>
+<p>useful template variables-
+<ul>
+<li>
+[[%%]% entry.member.forename | lower | ucfirst %[%%]] e.g. 'John'
+</li>
+<li>[[%%]% entry.member.fullname %[%%]] e.g. 'John Smith'
+</li>
+<li>[[%%]% entry.member.formalname  %[%%]] e.g. 'Mr John Smith'
+</li>
+<li>[[%%]% entry.entry_no %[%%]] Entry number
+</li>
+<li>[[%%]% entry.title  %[%%]] Entry name
+</li>
+<li>[[%%]% entry.car.known_as  %[%%]] e.g. '1974 TR7 convertible'
+</li>
+</ul>
+</p>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+
+
+

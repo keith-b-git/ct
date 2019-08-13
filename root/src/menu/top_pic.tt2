@@ -1,0 +1,4 @@
+[% item = menu_item.top_or_random(c.user) ; id = item.id ; IF id ;url = 'image' _ id _ '.jpg' -%]
+<div class = 'toppic'>
+<img align = left src = "[% c.uri_for('/image','w-350',url) %]"><br>[% item.title %] [% item.content%]<br clear = all></div>
+[% END %]

@@ -1,0 +1,3 @@
+[% id = member.id ; UNLESS authorblk.$id ; authorblk.$id = BLOCK %]
+[% INCLUDE 'menu/thumb.tt2' pid = member.profile %]
+[% END ; END ; authorblk.$id %]

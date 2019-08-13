@@ -1,0 +1,8 @@
+[% meta.nowrap = 1 %]
+[% user.fullname %] ([% user.username %]) has reported the folllowing [% item.contenttype.displaytype %] to be looked over and reviewed-
+
+[% c.uri_for('/item',item.id) %]
+
+The user gave the following reason for sending reporting this [% item.contenttype.displaytype %]
+
+[% reason %]

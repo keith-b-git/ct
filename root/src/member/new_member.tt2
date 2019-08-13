@@ -1,0 +1,10 @@
+[% meta.nowrap = 1 %]
+<table>
+
+[% FOREACH member IN members %]
+	<tr><td>[% member.fullname %]</td>
+	<td>[% member.address4.lower.ucfirst %], [%member.address5.lower.ucfirst %]</td>
+	<td>[% FOREACH car IN member.registers ; car.triumph.shortname %] [% END %]</td>
+	</tr>
+[% END %]
+</table>

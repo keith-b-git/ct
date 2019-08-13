@@ -1,0 +1,51 @@
+[% viewable = pid.viewable_by(c.user) ;
+IF viewable ;
+	%]<a class="sb_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[%
+ELSE 
+	%]<div class="sb_link">[%
+END 
+%]<img src = "[% INCLUDE menu/newicon.tt2 context=pid.type %]" width = 30 align = right style = "padding-right: 0.5em;">[%
+ IF thumb_context ; thumb_context %]<br>[% END %]<strong>[% context ; pid.title %]</strong> [% IF thumb_home ; thumb_home ; END %]
+[% IF pid.event ; PROCESS 'event/date_range.tt2' start = pid.event.start end = pid.event.end ; END %]
+<br clear = all>
+[% IF pid.club_role ;
+	FOREACH member IN pid.club_role.members_rs.by_surname.current_members;
+		%]<br>[% member.fullname ;
+	END;
+END  %]
+[% IF pid.entry ;
+	FOREACH entrant IN pid.entry.entrants ;
+		entrant.name %]<br>[%
+	END;
+	pid.entry.car.known_as;
+END ;
+IF pid.type == 'entrylist' ;
+FILTER inflect %]<#n:[% pid.parent.event.live_count %]> <N:entry>[% END ;
+END ;
+IF pid && (pid.type != 'user_profile') ;
+	IF pid.viewable_by(c.user) %]<br clear = 'all'> <img src = "[% c.uri_for('/menu',pid.pid,'avatar','w-150') %]" WIDTH = "150">[% 
+	END ;
+END ;
+IF pid.type == 'user_profile' ;
+	%]<small>posts: [% pid.user.posts %]<br>[%
+	IF pid.user.club_member ;
+		IF pid.viewable_by(c.user) %]<br clear = 'all'> <img src = "[% c.uri_for('/menu',pid.pid,'avatar','w-150') %]" WIDTH = "150">[% 
+		END ;
+		FOREACH role IN pid.user.memno.club_roles ;
+			role.description %]<br>[%
+		END;
+		IF pid.user.memno.local_group ;
+			pid.user.memno.local_group.title %] group<br>[% 
+		ELSIF pid.user.memno && pid.user.memno.country && (pid.user.memno.country != 'GB') ; pid.user.memno.countryname _ '<br>' ; 
+		END ;
+		FOREACH item IN pid.user.memno.cars_owned  ;
+			IF item.menus.first.viewable_by(c.user) ; item.known_as %]<br>[% END ;
+		END 
+		%]joined on [% pid.user.memno.joindate | dateformat %]<br>[%
+	ELSE ;
+		'non member' ;
+	END  ;
+	%]</small>[%
+END;
+IF viewable %]</a>[%
+ELSE %]</div>[% END %]

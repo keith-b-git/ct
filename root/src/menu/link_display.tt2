@@ -1,0 +1,11 @@
+[%  global.carousel = 1 ; WRAPPER  menu/content.tt2 ; rowsize = 20 ;  %]
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = rowsize param = param currentpage = current_page || 1  -%]
+<br clear = all>
+
+
+[% FOREACH pid IN links ;
+PROCESS 'menu/thumb.tt2' pid = pid ;
+ END  %]
+<br clear = all>
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = rowsize param = param currentpage = current_page || 1  -%]
+[% END %]

@@ -1,0 +1,40 @@
+[% WRAPPER member/admin_wrapper.tt2 ; meta.mapping =1 ; map = 'eventlocmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+<table><tr><TD VALIGN = top>
+
+
+</TD>
+
+<TR>
+<TD VALIGN ='top'>
+
+</TD>
+<TD>
+[% map = 'membermap' %]
+
+[% PROCESS map/createmapdiv.tt2 width = 700 height = 600 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+
+
+[% PROCESS map/member_markers.tt2 %]
+[% FOREACH group IN localgroups %]
+[% PROCESS map/group_meeting_markers.tt2 localgroup = group %]
+[% END %]
+[% map %].autoCenterAndZoom();
+[% map %].declutterMarkers();
+if (document.getElementById('groupform').local_group.value) {showSelected()}
+[% PROCESS map/member_marker.tt2  %]
+
+</script>
+</TD>
+</TR>
+</TABLE>
+[% END %]
+

@@ -1,0 +1,1 @@
+<a href = "/mobile_override">[% IF mobile %]Switch to desktop view[% ELSE %]Switch to mobile view[% END %]</a>

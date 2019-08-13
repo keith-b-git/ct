@@ -1,0 +1,3 @@
+<STRONG><A HREF = "[% c.uri_for('/menu',meeting.local_group.menus.first.pid,'view') %]">[% meeting.local_group.title %]</A></STRONG><BR>\
+<small>meets [% meeting.meetingtext %]<br> at - </small>[% PROCESS 'map/location_bubble.tt2' location = meeting.location %]<small>\
+next meeting- </small>[% meeting.nextmeeting %]<br>\

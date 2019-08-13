@@ -1,0 +1,27 @@
+
+<p>
+Dear [% order.title %] [% order.surname %],
+</p>
+<p>
+Thank you for ordering from Club Triumph
+<br>Your order will be dispatched shortly.
+</p>
+<p>
+<strong>Order placed:</strong> [% order.time_date.strftime('%d/%m/%y') %]
+<br><strong>Order reference number:</strong> [% order.id %]
+</p>
+<br clear=all>[% PROCESS "orders/name_address.tt2" %]
+<br>
+[% purchases = order.baskets ;
+ INCLUDE 'orders/details.tt2' %]
+</p>
+<p>
+<strong>Payment Method:</strong>
+<br>
+<strong>Cardnet Secure</strong>
+<br>
+
+
+</p>
+
+Please note: Postage costs for items returned or exchanged are payable by the customer.

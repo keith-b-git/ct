@@ -1,0 +1,10 @@
+<A HREF="[% c.uri_for('/items/list') %]">LIST</A>
+<A HREF="[% c.uri_for('/items/item',object.id,'view') %]">VIEW</A>
+
+[% object.title %] [% object.html %]
+<A HREF="[% c.uri_for('/items/item', object.id, 'editcontent') %]">Content</A>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+

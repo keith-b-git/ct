@@ -1,0 +1,19 @@
+
+<div class = "sb_link">
+
+event- <a href = "[% c.uri_for('/menu',entry.event.menus.first.pid,'view') %]">[% entry.event.title %]</a>
+entrant- <a href = "[% c.uri_for('/menu',entry.user.profile.pid,'view') %]">[% entry.user.fullname %]</a>
+status- [% entry.status %]
+</div>
+
+
+
+[% FOREACH member IN entry.entrants ; IF member.user ; PROCESS 'menu/thumb.tt2' pid = member.user.profile ;
+ ELSE %]<div class = "sb_link">[% member.name %]</div>
+[% END ; END %]
+
+[% IF entry.car ; PROCESS 'menu/thumb.tt2' pid = entry.car.menus.first ; END %]
+
+<a href = "[% c.uri_for('/menu',entry.event.menus.first.pid,'event','entry',entry.id,'adminedit') %]">edit</a>
+
+

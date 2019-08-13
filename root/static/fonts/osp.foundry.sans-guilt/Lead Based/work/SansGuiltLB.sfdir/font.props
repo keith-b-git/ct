@@ -1,0 +1,73 @@
+SplineFontDB: 3.0
+FontName: SansGuiltLB
+FullName: Sans Guilt LB
+FamilyName: Sans Guilt LB
+Weight: Medium
+Copyright: Created by RCA Workshop "Read The Fucking Manual", with FontForge 2.0 (http://fontforge.sf.net) and Fonzie
+FontLog: "FONTLOG for Sans Guilt+AAoA--------------------+AAoA-This file provides detailed information on the Sans Guilt font software.+AAoA-This information should be distributed along with the Sans Guilt fonts+AAoA-and any derivative works.+AAoACgAA-Basic Font Information+AAoA---------------------------+AAoA-Copyright (c) 2011, OSP (http://ospublish.constantvzw.org)+AAoACgAA-The three Sans Guilt fonts have been produce during +ACIA-Read The Fucking Manual+ACIA, an OSP workshop at Deparment 21 (Royal College of Art), using Gimp, Fonzie and Fontforge. They are different versions of Gill Sans based on three different sources.+AAoACgAA_Sans Guilt MB: Based on a rasterized pdf made with the Monotype Gill Sans delivered with Mac OSX.+AAoA_Sans Guilt DB: Based on early sketches by Eric Gill+AAoA_Sans Guilt LB: Based on lead type from Royal College of Arts letterpress workshop.+AAoACgAA-See:+AAoA-http://ospublish.constantvzw.org/type/not-gillty+AAoACgAA-Information for Contributors+AAoA-------------------------------+AAoA-Copyright (C) 2011 OSP +AAoA-http://ospublish.constantvzw.org.+AAoACgAA-This Font Software is licensed under the SIL Open Font License, Version 1.1.+AAoACgAKAAoA-ChangeLog+AAoA-----------+AAoA(This should list both major and minor changes, most recent first.)+AAoACgAA-Acknowledgements+AAoA--------------------------+AAoA-If you make modifications be sure to add your name (N), email (E), web-address+AAoA(W) and description (D). This list is sorted by last name in alphabetical+AAoA-order.)+AAoACgAA-N: Antoine Begon+AAoA-E: ant.begon@gmail.com+AAoA-W: begon.antoine.free.fr +AAoACgAA-N: Sophie Demay+AAoA-E: sophie.demay@network.rca.ac.uk+AAoACgAA-N: Deniz Johns +AAoA-E: deniz.johns@network.rca.ac.uk+AAoACgAA-N: Alexandre Leray+AAoA-E: alexandre@stdin.fr +AAoACgAA-N: Pierre Marchand+AAoA-E: pierremarc07@gmail.com +AAoACgAA-N: Afonso Martins+AAoA-E: afonsomartins@gmail.com  +AAoACgAA-N: St+AOkA-hanie Vilayphiou+AAoA-E: stephanie@stdin.fr  +AAoACgAKAAoACgAA" 
+Version: 001.000
+ItalicAngle: 0
+UnderlinePosition: -100
+UnderlineWidth: 50
+Ascent: 800
+Descent: 200
+LayerCount: 2
+Layer: 0 0 "Arri+AOgA-re"  1
+Layer: 1 0 "Avant"  0
+XUID: [1021 102 386186274 14648909]
+FSType: 0
+OS2Version: 3
+OS2_WeightWidthSlopeOnly: 0
+OS2_UseTypoMetrics: 1
+CreationTime: 1299854079
+ModificationTime: 1301398644
+PfmFamily: 17
+TTFWeight: 500
+TTFWidth: 5
+LineGap: 90
+VLineGap: 0
+Panose: 4 1 6 3 0 0 0 0 0 0
+OS2TypoAscent: 0
+OS2TypoAOffset: 1
+OS2TypoDescent: 0
+OS2TypoDOffset: 1
+OS2TypoLinegap: 90
+OS2WinAscent: 0
+OS2WinAOffset: 1
+OS2WinDescent: 0
+OS2WinDOffset: 1
+HheadAscent: 0
+HheadAOffset: 1
+HheadDescent: 0
+HheadDOffset: 1
+OS2SubXSize: 650
+OS2SubYSize: 699
+OS2SubXOff: 0
+OS2SubYOff: 140
+OS2SupXSize: 650
+OS2SupYSize: 699
+OS2SupXOff: 0
+OS2SupYOff: 479
+OS2StrikeYSize: 49
+OS2StrikeYPos: 258
+OS2Vendor: 'PfEd'
+OS2CodePages: 00000001.00000000
+OS2UnicodeRanges: 00000001.00000000.00000020.00000000
+DEI: 91125
+LangName: 1033 "" "" "" "" "" "Version 001.000" "" "" "" "" "" "" "" "" "http://scripts.sil.org/OFL" 
+Encoding: UnicodeBmp
+UnicodeInterp: none
+NameList: Adobe Glyph List
+DisplaySize: -72
+AntiAlias: 1
+FitToEm: 1
+WinInfo: 57 19 8
+BeginPrivate: 5
+BlueValues 24 [-21 10 460 483 664 722]
+OtherBlues 11 [-267 -262]
+BlueScale 8 0.017069
+BlueShift 2 10
+ExpansionFactor 4 0.06
+EndPrivate
+TeXData: 1 0 0 198180 99090 66060 477102 1048576 66060 783286 444596 497025 792723 393216 433062 380633 303038 157286 324010 404750 52429 2506097 1059062 262144
+EndSplineFont

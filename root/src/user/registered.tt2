@@ -1,0 +1,13 @@
+<center><p>Thank you for registering, you should receive a verification e-mail shortly with a link which you will need to click on to access the site.
+</p>
+<p>
+[% UNLESS c.session.application || user.club_member %]
+If you are currently or have recently been a Club Triumph member please enter your details here in order to gain access to your membership details.
+</p><p>
+<input type = button value = "Member Details" onclick = "document.location = '[% c.uri_for('/memberdetails') %]';">
+</p><p>
+If you are not yet a member you can now join here-	<br>
+<input type = button value = "Join Club Triumph" onclick = "document.location = '[% c.uri_for('/join') %]';">
+</p>
+[% END %]
+</center>

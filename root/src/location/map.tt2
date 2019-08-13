@@ -1,0 +1,14 @@
+[% WRAPPER 'menu/content.tt2' ; meta.mapping =1 ; locations  = [menu_item.location] ; map = 'locationmap' ; PROCESS map/createmapdiv.tt2 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2  %]
+[%# PROCESS map/click_to_create.tt2 %]
+[% PROCESS map/select_location_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+function showSelected()
+{
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+</script>
+[% END %]
+

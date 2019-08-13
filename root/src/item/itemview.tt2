@@ -1,0 +1,219 @@
+[%# meta.hierachy = object.hierachy %]
+[%# meta.heading1 = object.heading1 || object.title %]
+[%# meta.heading2 = object.heading2 || object.author.username %]
+[% meta.title = 'Club Triumph - ' _ c.stash.menu_item.title _ ' - ' _ object.title %]
+[% meta.item = object ; authorblk = {'0' => ' '} %]
+
+[% WRAPPER 'menu/content.tt2' %] [% object = c.stash.item ; 
+UNLESS menu_item.pid == menu_start.pid %]
+<div class = "forum_head">[% 
+IF c.stash.menu_item.messages_addable_by(c.user) 
+%]<input type = button name = "new_thread" value = "Create new thread in [% menu_item.title %]" onClick="location.href='[% c.uri_for('/menu',menu_item.pid, 'new_thread') %]';" style ="float:right;">[% 
+END ;
+INCLUDE 'menu/hierarchy.tt2' type = object.contenttype.list_type page = menu_item self=1 %] [% 
+IF object.contenttype.id == 7 ; %] <a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','private_messages','inbox') %]">private messages</a> - <a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','private_messages',object.pm_info(c.user).folder) %]">[% object.pm_info(c.user).folder %]</a> - [% ; 
+END ; object.title %]</div>[% 
+END %]
+<table class = "threadstable">
+<tr><th colspan = 2>[% IF menu_item.next(c.user,object) %]<a class = "item_next" href = "[% c.uri_for('/menu',menu_item.pid,'item',menu_item.next(c.user,object).last_read(c.user).id,'view') %]">&lt; [% menu_item.next(c.user,object).title %]</a>[% END %]
+[% object.title %]
+
+[% IF menu_item.previous(c.user,object) %]<a  class = "item_prev" href = "[% c.uri_for('/menu',menu_item.pid,'item',menu_item.previous(c.user,object).last_read(c.user).id,'view') %]">[% menu_item.previous(c.user,object).title %] &gt;</a> [% END %] </th></tr>
+
+
+[% IF object.contenttype.type == 'Image' ; INCLUDE image_block object= object ; meta.insert_point = 'gallery' ; meta.gallery_title = "Viewing '$object.title'" ; END %]
+[% IF object.contenttype.type == 'Thread' ; INCLUDE message_block object= object ; meta.insert_point = 'messages' ; meta.thread_title = "Viewing '$object.title'" ;END %]
+[% IF object.contenttype.type == 'PM' ; INCLUDE message_block object= object ; meta.insert_point = 'pms' ; meta.pm_title = "Viewing '$object.title'" ;END %]
+[% IF object.contenttype.type == 'shop' ; INCLUDE shop_block object= object ; meta.insert_point = 'shop' ; meta.pm_title = "Viewing '$object.title'" ;END %]
+[% IF ( object.contenttype.type == 'carforsale' || object.contenttype.type == 'partsforsale' || object.contenttype.type == 'wanted' ) ; INCLUDE 'adverts/advert.tt2' object= object ; meta.insert_point = 'adverts' ; meta.advert_title = "Viewing '$object.title'" ;END %]
+
+
+</table>
+
+
+[% BLOCK image_block %]
+<tr>
+<td class = "item_author" valign = top>[% PROCESS "item/authorblock.tt2" member = object.author %]</td>
+<td class = "item_body"><p class = "item_date">uploaded [% object.created.strftime( '%a %d %b %Y %r' ) %]</p>[% object.thumbnail('w-600') %]<br clear = all >
+[% IF object.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'imageedit') %]';">
+[% END -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'report') %]';">
+</td>
+[% INCLUDE tags %]
+</tr>
+[% END %]
+
+
+[% BLOCK message_block %]
+[% IF c.session.messagepage && c.session.messagepage.id == c.stash.item.id ; messagepage = c.session.messagepage.page ; ELSE ; messagepage = 1 ; END %]
+<tr>
+[% reply_no = 0 %]
+[% count = object.no_replies %]
+<tr><th></th><th>
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = replies_per_page param = 'messagepage' currentpage = messagepage || 1  -%]
+</th></tr>
+[% IF messagepage == 1 ; INCLUDE message_body object = object ; END %]
+[% IF object.contenttype.id == 5 || 6 || 7 %]
+[% reply_no = reply_no + (messagepage - 1) * replies_per_page %]
+[% FOREACH item IN object.replies(replies_per_page,messagepage) %]
+[% reply_no = reply_no + 1 %]
+[% INCLUDE message_body object = item reply_no = reply_no count = count %]
+
+[% END %]
+[% IF newreply.thread == object %]
+[% INCLUDE message_body object = newreply %]
+[% END %]
+[% END %]
+[% IF ( ( object.contenttype.id == 5  ) && ( object.replyable_by(c.user) ) || ( object.contenttype.id == 7  ) ) %]
+[% meta.mceedit = 1 ; meta.mcewidth = '"100%"'; meta.mceheight = '"500px"'; meta.imagebank = c.user.imagebank %]
+
+<td colspan =2 >
+<center>
+<a id = "reply"></a>reply to <strong>[% object.title %]</strong></A>
+<form name = 'reply_form' method = post enctype="multipart/form-data">
+<div>
+[% IF object.contenttype.id == 7  && form.field('title').is_active ; form.field('title').render ; END ;
+IF object.contenttype.type == 'PM' %]
+<div style = "vertical-align:top">[% form.field('recipients').render %]</div>[% END %]
+<br clear = 'all'>
+[% form.field('content').render %]
+</div>
+<div>
+[% UNLESS object.contenttype.id == 7  ;  IF form.item.attachments_addable_by(c.user) ; form.field('attachments').render ; 
+form.field('add_element').render ; END ; END %]
+[%  form.field('submit').render %]
+[%  form.field('preview').render %]
+
+</div>
+</form>
+</center>
+</td>
+[%# IF object.contenttype.type == 'PM' ; PROCESS toform ; ELSE ; PROCESS tags ; END %]</tr>
+[% END %]
+<tr><th></th><th>
+[% INCLUDE 'item/pagemenu.tt2' count = count rowsize = replies_per_page param = 'messagepage' currentpage = messagepage || 1  -%]
+[% IF c.user_exists && c.user.club_member && !(menu_item.notified(c.user)) %]<br>[%
+	notification = object.notified(c.user) ;
+	IF notification ;
+	%]e-mail notification on <a href="[% c.uri_for('/menu',menu_item.pid,'item',object.id,'denotify') %]">switch off</a>[%
+	ELSE 
+	%]e-mail notification off <a href="[% c.uri_for('/menu',menu_item.pid,'item',object.id,'notify') %]" title = "receive e-mail notification of all new replies">switch on</a>[%
+	END ;
+END %]
+</th></tr>
+
+[% END %]
+
+[% BLOCK message_body %]
+<tr><td valign = top><A id = num[% reply_no %]></A>[% PROCESS "item/authorblock.tt2" member = object.author %]</td>
+<td class = "item_body"><span class = "item_date">
+[% IF object == newreply %]preview </span>[% ELSE %]posted [% object.created | dateformat(object.created) ; read = object.mark_read(c.user) %]</span>
+[% IF reply_no %]<span class = 'reply_no'>reply [% reply_no %] of [% count %]</span>[% END %]
+[% IF object.view < 256 && object.contenttype.id != 7 %]<br><span class = 'warning'>Viewing restricted to [% menu_item.user_level_desc(object.view) %]</span><br>[% END %]
+[% END %]<br><span id="content[% object.id %]">[% object.content | highlight(c.req.params.search)  %]</span>
+<span class = 'attachments'>[% 
+FOREACH attachment IN object.unembedded_attachments(c) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]
+<video controls="controls" height="260" width="520"><source src="[% attachment.download_uri(c) %]"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a>[%
+		IF attachment.licence %] Licence - [% attachment.licence | cc_expand ; END %]<br>[% 
+		END ; 
+	END ;
+	IF attachment.contenttype.id ==  3 ;
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% attachment.display_uri(c,'w-520') %]"></a> [% 
+	END ;
+END %]</span>
+<span class = "signature">[% object.author.sig  %]</span>
+[% IF  object != newreply  %]
+[% IF c.stash.item.replyable_by(c.user) || c.stash.item.contenttype.type == 'PM' %]<br>
+<input type = button name = "quote" value = "Quote" onClick="tinyMCE.activeEditor.setContent(tinyMCE.activeEditor.getContent()+
+'<blockquote><strong>Quoted from [%object.author.username %]-</strong><br>'
++document.getElementById('content[% object.id %]').innerHTML+'</blockquote><p></p>');location.hash='reply';">
+[% END -%]
+[% UNLESS c.stash.item.contenttype.type == 'PM' -%]
+[% IF object.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'edit') %]';">
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to delete this [%
+object.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'delete') %]'};"
+[% END -%]
+[% IF c.user -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'report') %]';">
+[% END -%]
+[% IF c.user && c.user.accessible_to_user(4) %]<div style="float:right;">moderator options-
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to delete this [%
+object.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'delete') %]'};">
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'edit') %]';">
+[% IF object.contenttype.id == 5 ; IF object.sticky %]
+<input type = button name = "unstick" value = "Unstick" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'stick') %]';">
+[% ELSE %]
+<input type = button name = "stick" value = "Stick" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'stick') %]';">
+[% END ;
+ IF object.reply > 0 %]
+<input type = button name = "lock" value = "Lock" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'lock') %]';">
+[% ELSE %]
+<input type = button name = "unlock" value = "Unlock" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'lock') %]';">
+[% END ; END %]
+[% IF object.contenttype.id == 6 %]
+<input type = button name = "split" value = "Split" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'split') %]';">
+[% END ; IF object.contenttype.id == 5 %]
+<input type = button name = "merge" value = "Merge [% IF c.session.mergewith %] with [% c.model('ClubTriumphDB::Item').find(c.session.mergewith).title ; END %]" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'merge') %]';"></div>
+[% END ; END %]
+[% END -%]
+[% END %]
+</td>
+[%# IF c.stash.item.contenttype.type == 'PM' ; PROCESS tolist ; ELSE ; PROCESS tags ; END %]</tr>
+<tr><td></td><th>[% IF c.stash.item.contenttype.type == 'PM' ; PROCESS recipients ; ELSE ; PROCESS newtags ; END %]</th></tr>
+[% END %]
+[% BLOCK tags %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TAGS</th></tr>
+
+[% FOREACH pid IN c.stash.item.tags(c.user) %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table></td>
+[% END %]
+
+[% BLOCK newtags %] Tags - [% FOREACH pid IN c.stash.item.tags(c.user)
+%]<a href="[% c.uri_for('/menu',pid.pid,'threads') %]">[% pid.title %]</a>
+[% END ; END %]
+
+[% BLOCK recipients %] Recipients - [% FOREACH pid IN c.stash.item.tags(c.user)
+%]<a href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+[% END ; END %]
+
+[% BLOCK tolist %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TO</th></tr>
+[% FOREACH recipient IN object.userpms %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',recipient.menus.first.pid,'view') %]">[% recipient.username %]</a>
+</td></tr>
+[% END %]
+</table></td>
+[% END %]
+
+[% BLOCK toform %]
+
+TO
+
+[% form.field('recipients').render %]
+</form>
+
+[% END %]
+
+[% END %]
+
+
+
+
+

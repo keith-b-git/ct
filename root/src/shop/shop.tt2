@@ -1,0 +1,66 @@
+[% WRAPPER 'menu/content.tt2' ; IF c.session.shoppage && c.session.shoppage.pid == menu_item.pid ; shoppage = c.session.shoppage.page ; ELSE ; shoppage = 1 ; END ; meta.magnific = 1 %]
+[% shopcount = menu_item.viewable_item_count(c.user,8) ; rowsize = shop_per_page || 12 %]
+<script>
+	function checkshopform (itemid) {
+		if (eval("document.clubshopform" + itemid + ".size.selectedIndex") == 0)
+		{	alert('You must select a size for this item');
+			return false }
+		else {return true}
+	}
+	
+</script>
+
+ [% IF c.stash.menu_item.shop_addable_by(c.user) -%]
+<p><A HREF="[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_shop_item') %]">Create New</A></p>[% END -%]
+
+[% INCLUDE 'item/pagemenu.tt2' count = shopcount rowsize = rowsize param = 'shoppage' currentpage = shoppage || 1  -%]
+<div class = 'image-link'>
+[% shop_no = 1 ; 
+shop_no = shop_no + (shoppage - 1) * shop_per_page ;
+FOREACH item IN menu_item.shop_items(c.user,rowsize,shoppage ) -%]
+
+<div class = "shop_item">
+
+[% IF item.editable_by(c.user) %]
+<div id ="shop_edit"><input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',item.id,'shop_edit') %]';">
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('Are you sure you wnat to delete [% item.title %]?')) location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',item.id,'delete') %]';"></div><br clear = all>
+[% END -%]
+<div class = "shop_item_content">
+[% IF item.image_exists(c) ; INCLUDE shop/thumbnail.tt2 image = item shop_no = shop_no ;
+ELSE %]<A id = num[% shop_no %] href = "[% c.uri_for('/static','images','blank.jpg') %]"><img src = "[% c.uri_for('/static','images','blank.jpg') %]"></A>[% 
+ END %]
+<br>
+[% item.title %]
+<p>
+[% item.content %]
+</p>
+</div>
+<p><strong>&pound;[% item.price %] [% item.price_text %]</strong></p>
+[% IF 1 %]
+<form name = "clubshopform[% item.id %]" action = "[% c.uri_for('/menu',c.stash.menu_item.pid,'add_to_basket',item.id) %]" [%
+IF item.sizes %] onSubmit="return checkshopform([% item.id %])" [% END %]>
+[% IF item.sizes %] 
+size -
+	<select name = size>
+	<option >select</option>
+	[% FOREACH size IN item.sizes.split("\n") %]
+	<option [% size %]>[% size %]</option>
+	[% END %]
+	</select><br>
+[%
+ELSE 
+	%]<br><br>[%
+END %]
+	<input name = 'quantity' value = '1' size = '2'>
+<input type= submit value = "add to basket"></form>
+[% shop_no = shop_no + 1 ; END %]
+
+</div>
+[% END %]
+</div>
+<br clear = all>
+[% INCLUDE 'item/pagemenu.tt2' count = shopcount rowsize = rowsize param = 'shoppage' currentpage = shoppage || 1  ; END -%]
+
+
+
+

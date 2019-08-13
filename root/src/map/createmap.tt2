@@ -1,0 +1,11 @@
+	var [% map %] = new mxn.Mapstraction('osm[% map %]', 'openlayers'); 
+	var latlon = new mxn.LatLonPoint(54.3714, -4.4546);
+	[% map %].setCenterAndZoom(latlon, 5);
+    [% map %].addControls({
+        pan: true,
+        zoom: 'small',
+        map_type: true
+    });
+	[% map %].enableScrollWheelZoom();
+
+[% INCLUDE 'map/home_marker.tt2' ; INCLUDE 'map/here_marker.tt2' %]

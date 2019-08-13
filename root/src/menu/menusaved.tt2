@@ -1,0 +1,54 @@
+<div class = "menu">
+<div class = "menuinner">
+[% menudepth = 2 ; count = menudepth ;
+ INCLUDE menublock menu_item=menu_start count=menudepth ;
+; BLOCK menublock ;
+; IF count > 0 ; IF count == menudepth -%]
+<ul class = 'sf-menu'>
+[% UNLESS c.stash.menu_item.pid == menu_start.pid 
+%]<li><li><a href = "[% c.uri_for('/') %]">Home</a></li>[% END ;
+UNLESS c.user && c.user.club_member %]
+<li><li><a href = "[% c.uri_for('/join') %]">Join</a></li>[% END ; ELSE -%]
+<ul>
+[% END ; 
+ FOREACH child IN menu_item.current_children(c.user) -%]
+<li><a href = "[% c.uri_for( child.url) %]">[% child.title(c.user) %]</a>[% 
+IF child.current_children(c.user) && (count > 0) && (child.pid >1) ;
+ IF (child.type  == 'profileroot') && (count > 0) && (child.pid >1) ;
+ INCLUDE profilemenublock menu_item=child count=(count - 1) title=child.title ;
+ELSIF (child.type  == 'carsroot') && (count > 0) && (child.pid >1) ;
+ INCLUDE carsmenublock menu_item=child count=(count - 1) title=child.title ;
+ ELSIF (child.type  == 'user_profile')   %] [%
+ ELSIF (child.type  == 'eventroot')  ; INCLUDE calendarblock ;
+ ELSE ;
+INCLUDE menublock menu_item=child count=(count - 1) ;
+ END ; END %]
+</li>[% END -%]
+</ul>[% END ; END -%]
+
+
+
+[% BLOCK profilemenublock %]
+
+[% IF count == menudepth -%]
+<ul class = 'sf-menu'>[% ELSE -%]
+<ul>[% END ;
+ FOREACH car IN mregister -%]
+<li><a href = "[% c.uri_for('/register', car.id, 'view') %]">[% car.regno -%]</a></li>[% END -%]
+</ul>[% END -%]
+
+[% BLOCK carsmenublock ;
+IF count == menudepth -%]
+<ul class = 'sf-menu'>[% ELSE %]<ul>[% END ;
+ FOREACH child IN menu_item.children -%]
+<li><a href = "[% c.uri_for( child.url) %]">[% child.title %]</a></li>
+[% END -%]
+</ul>[% END -%]
+</div>
+</div>
+
+
+[% BLOCK calendarblock %]<ul class = 'sf-menu'>[%
+FOREACH event IN c.model('ClubTriumphDB::Event').future_events 
+%]<li><a href = "[% c.uri_for('/menu',event.menus.first.pid,'view') %]">[% event.title %]</a>[% END %]</ul> [%
+END %]

@@ -1,0 +1,37 @@
+<table>
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context = 'event' %]" width = 30 align = left>[% context %] [%
+ event.title %]<br>[% INCLUDE 'event/date_range.tt2' start = c.stash.menu_item.event.start end = c.stash.menu_item.event.end ;
+ IF event.event_type == 'ct-man' -%]<br>entries open: [% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]<br>
+ [% event.entry_count %] entries
+[% END %]</a>
+</td></tr>
+[% IF event.entry_open   %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',menu_item.pid,'event','enter') %]">Enter!</a>
+</td></tr>
+[% END %]
+[% IF event.organiser && event.organiser.userid.menus ; pid = event.organiser.userid.menus.first ; context = 'Organiser' %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 pid = pid %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% IF event.predecessor && event.predecessor.menus ; pid = event.predecessor.menus.first ; context = 'Predecessor' %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context = 'event' %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% IF event.locations  ; pid = event.locations.first.menus.first ; IF event.location_count > 1 ; context = 'Starting from' ; ELSE ; context = 'Location' ; END %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context = 'location' %]" width = 30 align = left>[% context %] [% pid.title %]</a>
+</td></tr>
+[% END %]
+[% FOREACH pid IN menu_item.menus %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]"><img src = "[% INCLUDE menu/newicon.tt2 context=pid.type %]" width = 30 align = left>[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table>
+
+

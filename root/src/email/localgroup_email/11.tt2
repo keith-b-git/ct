@@ -1,0 +1,3 @@
+<p>Dear [% member.firstname %]</p>
+
+test stuff

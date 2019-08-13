@@ -1,0 +1,105 @@
+[% WRAPPER 'menu/content.tt2' ;
+car_count = menu_item.car_sale_count(c.user) ;
+part_count = menu_item.part_sale_count(c.user) ;
+wanted_count = menu_item.wanted_count(c.user) ;
+%]<div class = 'forum_head'>
+[% UNLESS menu_item.pid == menu_start.pid ; INCLUDE 'menu/hierarchy.tt2' type = 'market' page = menu_item ; END ;
+FILTER inflect ; '<#n:' _ car_count %]> <N:car> for sale, [% END ;
+FILTER inflect ; '<#n:' _ part_count %]> <N:part> for sale, [% END ;
+FILTER inflect ; '<#n:' _ wanted_count %]> wanted <N:item> [% END 
+%]</div>
+
+<div class = 'forum_head'><center>
+[% FILTER inflect ; '<#n:' _ car_count %]> <N:car> for sale [% END ; 
+IF c.stash.menu_item.advert_addable_by(c.user) -%]
+<input type = button name = "parts" value = "Create New Car for Sale Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','9') %]';">[% 
+END %]
+</div></center>
+<table class = 'threadstable'>[%
+ FOREACH item IN menu_item.adverts(c.user,9,10,advertpage ) -%]
+[% INCLUDE adblock advert = item %]
+[% END %]
+</table>
+<div class = 'forum_head'><center>
+[% FILTER inflect ; '<#n:' _ part_count %]> <N:part> for sale [% END ; 
+IF c.stash.menu_item.advert_addable_by(c.user) -%]
+<input type = button name = "parts" value = "Create New Parts for Sale Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','10') %]';">[% 
+END %]
+</div></center>
+<table class = 'threadstable'>
+[% FOREACH item IN menu_item.adverts(c.user,10,10,advertpage ) -%]
+[% INCLUDE adblock advert = item %]
+[% END %]
+</table>
+<div class = 'forum_head'><center>
+[% FILTER inflect ; '<#n:' _ wanted_count %]> wanted <N:items>  [% END ; 
+IF c.stash.menu_item.advert_addable_by(c.user) -%]
+<input type = button name = "wanted" value = "Create New Wanted Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','11') %]';">[% 
+END -%]
+</div></center>
+<table class = 'threadstable'>
+[% FOREACH item IN menu_item.adverts(c.user,11,10,advertpage ) -%]
+[% INCLUDE adblock advert = item %]
+[% END %]
+</table>
+
+<br clear = all>
+[% END ; # of wrapper %]
+
+[% BLOCK adblock %]
+
+
+<tr><th ><br>[% advert.contenttype.displaytype %]-  <span style = 'font-size:2.5em'>[% advert.title %]</span>[% IF advert.view == 1 %] (draft) [% END %]
+<br><span style = 'float:left'>[% FOREACH tag IN advert.tags(c.user) %]<a href = "[% c.uri_for('/menu',tag.id,'market') %]" >[% tag.title %]</a> [% END 
+%]</span><span style = 'float:right'>£[% advert.price %]</span></th></tr>
+<tr>
+<td valign = top><div style = 'float:left;'>[% INCLUDE 'item/authorblock.tt2' member = advert.author %]<br>[% INCLUDE 'user/contact.tt2' user = advert.author %]</div>
+<div >
+<span class = "item_date">
+Posted [% advert.created | dateformat  %]. Displayed until [% advert.end_date | dateformat  %]</span>
+[% advert.content %]
+<span class = 'attachments'>[% 
+FOREACH attachment IN advert.unembedded_attachments(c) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]
+<video controls="controls" height="260" width="520"><source src="[% attachment.download_uri(c) %]"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a>[%
+		IF attachment.licence %] Licence - [% attachment.licence | cc_expand ; END %]<br>[% 
+		END ; 
+	END ;
+	IF attachment.contenttype.id ==  3 ;
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% attachment.display_uri(c,'w-520') %]"></a> [% 
+	END ;
+END %]</span><br clear = all>
+[% IF advert.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'edit') %]';">
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to delete this [%
+advert.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'delete') %]'};">
+[% END -%]
+[% IF c.user -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'report') %]';">
+[% END -%]
+[% IF c.user && c.user.access_level <= 4 %]<div style="float:right;">moderator options-
+<input type = button name = "delete" value = "Delete" onClick="if (confirm('are you sure you want to delete this [%
+advert.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'delete') %]'};">
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'edit') %]';">
+[% IF advert.contenttype.id == 5 ; IF advert.sticky %]
+<input type = button name = "unstick" value = "Unstick" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'stick') %]';">
+[% ELSE %]
+<input type = button name = "stick" value = "Stick" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'stick') %]';">
+[% END ; END %]
+[% IF advert.contenttype.id == 6 %]
+<input type = button name = "split" value = "Split" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'split') %]';">
+[% END ; IF advert.contenttype.id == 5 %]
+<input type = button name = "merge" value = "Merge [% IF c.session.mergewith %] with [% c.model('ClubTriumphDB::Item').find(c.session.mergewith).title ; END %]" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',advert.id,'merge') %]';"></div>
+[% END ; END %]
+
+</div>
+
+<br clear = all>
+</td>
+</tr>
+
+
+[% END ; #of adblock %]

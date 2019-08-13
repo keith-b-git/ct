@@ -1,0 +1,11 @@
+[% WRAPPER  menu/admin.tt2 %]
+<TABLE>
+<TR><TD>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+</TD>
+<TD>
+
+</TD></TR></TABLE>
+[% END %]

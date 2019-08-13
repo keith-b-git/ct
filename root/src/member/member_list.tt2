@@ -1,0 +1,16 @@
+[% WRAPPER  member/admin_wrapper.tt2 %]
+<table>
+	<tr><th>Name</th><th>Mem no</th><th>Status</th><th>Address</th></tr>
+[% FOREACH member IN members %]
+	<tr><td><a href = "[% c.uri_for('/memadmin','member', member.memno,'view') %]">[% member.fullname | highlight(search) %]</a></td>
+	<td>[% member.memno | format('%05d') | highlight(search) %]</td>
+	<td>[% member.status %]</td>
+	<td>[% member.address1 | highlight(search) %] [% member.address2 | highlight(search)
+	 %] [% member.address3 | highlight(search) %] [% member.address4 | highlight(search) %] [% member.address5 | highlight(search)
+	  %] [% member.postcode | highlight(search) %] [% member.country | highlight(search) %]</td>
+	</tr>
+	[% IF member.comments %]<tr><td></td><td colspan = 3>[% member.comments | highlight(search) %]</td></tr>[% END %]
+[% END %]
+</table>
+<a href = "[% c.req.uri.replace('list$','map') %]">View on Map</a>
+[% END %]

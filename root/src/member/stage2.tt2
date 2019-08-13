@@ -1,0 +1,32 @@
+<table>
+	<tr><th></th><th>Name</th><th>DoB</th><th>Membership Fee</th></tr>
+	<tr><th style ="text-align:right;">Principle member</th><td>[% application.formalname %]</td>
+	<td>[% INCLUDE 'date.tt2' date = application.dob %]</td><td>£[% application.area.fee %]</td>
+	<td>[% IF (application.young_check) %]You are eligible fo a 50% reducton in your membership fee[% END %]</td></tr>
+	<tr><th style ="text-align:right;">Joining Fee</th><td></td><td></td><td>£[% application.join_fee %]</td></tr>
+	
+	
+[% FOREACH joint IN application.memforms %]
+	<tr><th style ="text-align:right;">Joint member</th><td>[% joint.formalname %]</td><td></td><td>£[% application.area.ass_fee %]</td></tr>
+[% END %]
+<tr><th style ="text-align:right;">Total</th><td><td></td><td>£[% application.total %]</td></tr>
+<tr><td></td></tr>
+<tr><th valign = top style ="text-align:right;">Address</th><td>
+[% IF application.address1 ; application.address1 %]<br>[% END %]
+[% IF application.address2 ; application.address2 %]<br>[% END %]
+[% IF application.address3 ; application.address3 %]<br>[% END %]
+[% IF application.address4 ; application.address4 %]<br>[% END %]
+[% IF application.address5 ; application.address5 %]<br>[% END %]
+[% application.postcode %]<br>
+[% PERL %]use Geography::Countries; print scalar(country('[% application.country %]'))[% END %] 
+</td></tr>
+<tr><th style ="text-align:right;">Phone</th><td>[% application.tel %]</td></tr>
+<tr><th style ="text-align:right;">Mobile</th><td>[% application.mobile %]</td></tr>
+<tr><th style ="text-align:right;">E-mail</th><td>[% application.email %]</td></tr>
+</table>
+Please check the above details are correct.
+<form>
+<input type = button value = " Edit Details" onclick = "document.location = '[% c.uri_for('/','application',application.id,'edit') %]';">
+<input type = button value = " Proceed to Payment" onclick = "alert('not yet!');">
+
+</form>

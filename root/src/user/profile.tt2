@@ -1,0 +1,56 @@
+[% IF member && !user ; user = member.userid ; END ; IF user && !member ; member = user.memno ; END ; WRAPPER 'menu/content.tt2'%]
+
+<div class = "sb_link">
+<table >
+<tr><th>name</th><td>[% user.fullname %]</td></tr>
+<!--<tr><th>access level</th><td>[% user.access_level %]</td></tr>-->
+<tr><th>username</th><td>[% user.username %]</td></tr>
+<tr><th>registered</th><td>[% INCLUDE date.tt2 date = user.date_registered %]</td></tr>
+<tr><th>posts</th><td>[% user.post_count %]</td></tr>
+<tr><th>images</th><td>[% user.image_count %]</td></tr>
+<tr><th>blog posts</th><td>[% user.blog_count %]</td></tr>
+<tr><th>data usage</th><td>[% INCLUDE data_format data = user.data_used %]</td></tr></table></div>
+[% mem_status = user.membership_status ; 
+IF (c.user.id == user.id) && (mem_status == 'non-member') %]
+<a class = 'sb_link' href = '/join'><table>
+<tr><th>membership status</th><td> [% user.membership_status %]</td></tr></table>
+<h3> JOIN  NOW!</h3></a>
+[% ELSIF  (c.user.id == user.id) && (user.membership_status == 'expired') %]
+<a class = 'sb_link' href = '/join'><table>
+<tr><th>membership status</th><td> [% user.membership_status %]</td></tr>
+[% IF user.memno %]<tr><th>member from</th><td>[% INCLUDE event/date_range.tt2 start = member.joindate end = member.expdate %]</td></tr>[% END %]</table>
+<h3> RE-JOIN  NOW!</h3></a>
+[% ELSIF  (c.user.id == user.id) && (user.membership_status == 'near expiry' || user.membership_status == 'grace period') %]
+<a class = 'sb_link' href = "[% c.uri_for('/memno',user.memno.memno,'renew') %]"><table>
+<tr><th>membership status</th><td> [% user.membership_status %]</td></tr>
+[% IF user.memno %]<tr><th>member from</th><td>[% INCLUDE event/date_range.tt2 start = member.joindate end = member.expdate %]</td></tr>[% END %]</table>
+<h3> RENEW  NOW!</h3></a>
+[% ELSE ;
+IF c.user.membership_admin && user.memno %]<a href = "[% c.uri_for('/memadmin','member',user .memno.memno,'view') %]" class = 'sb_link'>[%
+ELSE %]
+<div class = 'sb_link'>[% END %]
+<table>
+<tr><th>membership status</th><td> [% user.membership_status %]</td></tr>
+[% IF user.memno %]<tr><th>member from</th><td>[% INCLUDE event/date_range.tt2 start = member.joindate end = member.expdate %]</td></tr>[% END %]
+</table>
+[% IF c.user.membership_admin && user.memno %]</a>[% ELSE %]</div>[% END %]
+[% END %]
+[% IF user.club_member ; 
+FOREACH role IN user.memno.club_roles ; INCLUDE 'menu/thumb.tt2' pid = role.menus.first thumb_context = 'Club Role-' ; END ;
+FOREACH group IN user.memno.local_groups ; INCLUDE 'menu/thumb.tt2' pid = group.menus.first thumb_context = 'LG Organiser-' ; END ;
+IF user.memno.local_group ; INCLUDE 'menu/thumb.tt2' pid = user.memno.local_group.menus.first thumb_context = 'Local_Group-' ; END ;
+FOREACH item IN user.memno.cars_owned ; INCLUDE 'menu/thumb.tt2' pid = item.menus.first thumb_context = 'Car-' ; END ;
+FOREACH event IN user.memno.events_rs.ordered_events ; INCLUDE 'menu/thumb.tt2' pid = event.menus.first thumb_context = 'Event Organiser-' ; END ;
+FOREACH entrant IN user.memno.entrants ; 
+	IF entrant.team.menus.size ; 
+	INCLUDE 'menu/thumb.tt2' pid = entrant.team.menus.first thumb_context = 'Event Entry' ;
+END ;
+ END ;
+  END -%]
+
+[% BLOCK data_format ;
+IF data > 999999999 ; data = data / 1000000000 ; data | format "%4.3f" %]GB[%
+ELSIF data > 999999 ; data = data / 1000000 ; data | format "%4.3f" %]MB[%
+ELSIF data > 999 ; data = data / 1000 ; data | format "%4.3f" %]KB[%
+ELSE  ; data | format "%4.0f" %]B[% END ;
+END ; END %]

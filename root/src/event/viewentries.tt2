@@ -1,0 +1,53 @@
+[%# WRAPPER 'menu/content.tt2' %]
+<strong>Entries open</strong> - [% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]
+- [% FILTER inflect %]<#n:[% event.live_count %]> <N:entry>[% END ; %] -  [% FILTER inflect %]<#n:[% event.participant_count %]> <N:participant>[% END ; %]<br>
+<center><table><tr>
+[% FOREACH status IN event.entry_statuses %]
+<th class ='entry_[% status | lower %]'>[% status %]</th><td class ='entry_[% status | lower %]'>[% event.entries_by(status) %]</td>
+[% END %]
+</tr></table>
+</center>
+
+<center>
+[% IF event.my_entries(c.user).size ;
+FOREACH entry IN event.my_entries(c.user) ;
+	IF entry.menus ;
+		%]You are entered as <a href = "[% c.uri_for('/menu',entry.menus.first.pid,'view') %]">[% entry.menus.first.title %]</a><br>[%
+	END ;
+END ;
+ ELSIF event.entry_open(c.user) %]
+ <form>
+<input type = button value = "ENTER!" onclick = "document.location = '[% c.uri_for('/menu',menu_item.parent.pid,'event','enter') %]';">
+</form>
+[% END %]
+</center>
+<table >
+<tr><th>status</th><th>no.</th><th>teamname</th>[% IF event.car %]<th>car</th>[% END %][%
+FOREACH option IN event.event_merchandises_rs.search({visible =>1}) 
+%]<th>[% option.title %]</th>[%
+END 
+%]<th colspan = 4>crew</th></tr>
+[% FOREACH entry IN event.entries_rs.nondraft %]
+<tr class ='entry_[% entry.status | lower %]' onClick = 'location.href= "[% c.uri_for('/menu',entry.menus.first.pid,'view') %]"' onmouseover = ' style="cursor: pointer; text-decoration: underline"' onmouseout = ' style="text-decoration: none"'><td><a href = "[% c.uri_for('/menu',entry.menus.first.pid,'view') %]">
+[% entry.status ; 
+IF entry.status == 'reserve' && ! entry.on_reserve %] <br>(payment due) [% END %]</td><td>
+[% entry.team_number %]</td>
+<td valign = top>
+[%  entry.menus.first.title %]</td><td> [%  entry.car_desc %] </td>
+ [%
+FOREACH option IN event.event_merchandises_rs.search({visible =>1}) 
+%]<td>[%  entry.entry_merchandises_rs.findoption(option.id).moption %]</td>[%
+END %]
+[% FOREACH entrant IN entry.entrants %]
+<td>
+[% IF entrant.user && entrant.user.profile ;  entrant.user.profile.title ; ELSE ;
+ entrant.name ; END%]</a></td>
+[% END %]
+
+</tr>
+[% END %]
+</table>
+
+[% BLOCK link %]<a href = "[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title%]</a>[% END %]
+[%# END ; #of wrapper %]

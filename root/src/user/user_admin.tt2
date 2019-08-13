@@ -1,0 +1,41 @@
+
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'user','change_password') %]"
+title = "Change your password">Change Password</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'user','options') %]"
+title = "Change your website options">Control Panel</a>
+</td></tr>
+[% 
+IF (c.stash.menu_item.type == 'user_profile') && c.user.club_member && (c.user.id == c.stash.menu_item.user.id) %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'new_register') %]"
+title = "Add a new car to the Triumph Register">New register entry</a>
+</td></tr>
+<tr><td>
+[% 	IF c.user.memno.class != 'ASS' %]
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'member','address_edit') %]"
+title = "Change your home address and contact details">Change Address</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for_action('/member/group_edit',[menu_item.pid]) %]"
+title = "Choose your Local Group">Select Group</a>
+</td></tr>
+<tr><td>
+<a class="admin_link" href="[% c.uri_for_action('/member/blog_feed_edit',[menu_item.pid]) %]"
+title = "IF you have an external blog feed which you want to be imported to the site enter it here">Edit Blog Feed</a>
+</td></tr>[% 
+	END ;
+ELSE %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'user','edit_details') %]"
+title = "Change your contact details">Edit Details</a>
+</td></tr> [%
+IF c.user.member_validations.size <1 %]
+<tr><td>
+<a class="admin_link" href="[% c.uri_for_action('/user/memberdetails') %]"
+title = "If you are a Club Triumph member but your membership details are not shown on your profile click here">Member data</a>
+</td></tr>[%
+	END ;
+END %]

@@ -1,0 +1,44 @@
+
+[% 
+IF !( c.action == "menu/map") && event.locations.size
+%]<a class = "sb_link" href= "[% c.uri_for('/menu',menu_item.pid,'map') %]">
+<img src = "[% c.uri_for('/static','images','map.png') %]" width = 30 align = left>
+[% IF event.locations.unique.size > 1  %]
+<strong>Route-</strong><br>
+starting- [% event.locations.first.name %]<br>
+finishing- [% event.locations.last.name %]
+[% ELSE %]
+<strong>Location-</strong><br>
+[% event.locations.first.name %]
+[% END %]<h3>View map</h3>
+</a>[% END ;
+IF event.event_type == 'ct-man' -%]
+[% myentry = event.entry_for_user(c.user) ;
+IF event.entry_open(c.user) && !myentry %]
+<a class = "sb_link" href = "[% c.uri_for('/menu',event.menus.first.pid,'event','enter') %]">
+<img src = "[% c.uri_for('/static','images','team.gif') %]" width = 30 align = left>
+<strong>Entries open</strong> -<br>[% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]
+entries- [% event.live_count %]<br>
+<strong> ENTER!</strong>[%
+ELSIF menu_item.entrylist ; INCLUDE 'menu/thumb.tt2' pid = menu_item.entrylist ;
+ELSE ;
+ %] <div class = "sb_link" >
+<img src = "[% c.uri_for('/static','images','team.gif') %]" width = 30 align = left>
+<strong>Entries open</strong> -<br>[% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]
+entries- 
+ [% event.live_count %]<br>
+[% IF myentry %]You are entered as [% myentry.title ;
+ END ;
+ %]</div>[%
+ END;
+ END ; IF event.organiser ; PROCESS 'menu/thumb.tt2' pid = event.organiser.profile context = 'Organiser - ' ; END %]
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+<STRONG><A HREF = "[% c.uri_for('/menu',entry.menus.first.pid,'view') %]"> [% entry.menus.first.title  | escape_js %]</A></STRONG><BR>\[% 
+FOREACH entrant IN entry.entrants ; 
+	entrant.name %]<br>[%
+END ;
+entry.car.known_as -%]

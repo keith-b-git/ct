@@ -1,0 +1,50 @@
+[% WRAPPER 'member/admin_wrapper.tt2' %]
+<table>
+	<tr><th></th><th>Name</th><th>Mem. no.</th><th>Mobile</th><th>DoB</th><th>Username</th></tr>
+	<tr><th>Principle member</th><td>[% member.formalname %]</td><td>[% member.memno | format "%05s" %]
+	<td>[% member.mobile %]</td></td>
+	<td>[% IF member.dob ; member.dob.strftime( '%e' ) %]/[% member.dob.strftime( '%m' ) %]/[% member.dob.strftime( '%Y' ) ; END %]</td><td>[%
+	IF member.userid %]<a href = "[% c.uri_for('/menu',member.userid.profile.pid,'view') %]">[% member.userid.username %]</a>[% END %]</td>
+	</tr>
+[% FOREACH joint IN member.members %]
+	<tr><th>Joint member</th><td>[% joint.formalname %]</td><td>[% joint.memno | format "%05s" %]</td>
+	<td>[% member.mobile %]</td><td></td><td>[%
+	IF joint.userid ; joint.userid.username ; END %]</td></tr>
+[% END %]
+
+</table>
+<br>
+<table class = 'memberdata'><tr><th>Address</th><td>
+[% member.address1 %]<br>
+[% member.address2 %]<br>
+[% member.address3 %]<br>
+[% member.address4 %]<br>
+[% member.address5 %]<br>
+[% member.postcode %]<br>
+[% member.country | countryname %]
+</td></tr>
+<tr><th>Phone</th><td>[% member.tel %]</td></tr>
+<tr><th>E-mail</th><td>[% member.email %]</td></tr>
+<tr><th>Joined on</th><td>[% PROCESS 'date.tt2' date = member.joindate %]</td></tr>
+<tr><th>Expiry date</th><td>[% PROCESS 'date.tt2' date = member.expdate %]</td></tr>
+<tr><th>Date of birth</th><td>[% PROCESS 'date.tt2' date = member.dob %]</td></tr>
+<tr><th>Class</th></th><td>[% member.class %]</td></tr>
+<tr><th>Local Group</th><td>[% member.local_group.title ; IF member.lg_preference ; ' *' ; END %]</td></tr>
+<tr><th>Direct Debit</th><td>[% member.dd %]</td></tr>
+<tr><th>Magazine Reicpient</th><td>[% member.magazine %]</td></tr>
+<tr><th>Status</th><td>[% member.status %]</td></tr>
+<tr><th>Comments</th><td>[% member.comments %]</td></tr>
+</table>
+
+
+<form>
+<input type = button value = " Edit Details" onclick = "document.location = '[% c.uri_for('/memadmin','member',member.id,'member_edit') %]';">
+<input type = button value = " Change Local Group" onclick = "document.location = '[% c.uri_for('/memadmin','member',member.id,'group_edit') %]';">
+<input type = button value = " Delete Permanently" onclick = "if (confirm('Are you sure you want to permanently delete [% member.fullname %]?')) {document.location = '[% c.uri_for('/memadmin','member',member.id,'delete') %]'};">
+</form>
+<p><a href = "[% c.uri_for('/memadmin','members_by','all','memno',member.memno,'1st_reminder') %]">Print 1st Reminder</a><br>
+<a href = "[% c.uri_for('/memadmin','members_by','all','memno',member.memno,'2nd_reminder') %]">Print 2nd Reminder</a><br>
+<a href = "[% c.uri_for('/memadmin','members_by','all','memno',member.memno,'labels') %]">Print Label</a><br></p>
+
+
+[% END %]

@@ -1,0 +1,6 @@
+
+<br clear = all>
+[% IF c.user.club_member && c.user.memno.class != 'ASS' ; IF c.user.memno.local_group.id == c.stash.menu_item.local_group.id %]This is your Local Group[% ELSE %]
+<form action = "[% c.uri_for('/menu',c.stash.menu_item.pid,'localgroup','select_group') %]"> 
+<input type = submit value = "Make this your Local Group"></form>
+[% END ; END %]

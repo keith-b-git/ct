@@ -1,0 +1,44 @@
+<table WIDTH=100% class = "menu_page_container">
+	<tr><th COLSPAN =2>Checkout</th></tr>
+	<tr><td valign=top class ="left_menu">
+
+
+<table>
+
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view') %]">Back to [% c.stash.menu_item.title %]</a>
+</td></tr>
+</table>
+
+
+</td>
+<td valign = "top">
+<div id="tabs">
+<h3>Checkout</h3>
+<div>
+ 
+
+
+<form method=post>
+<table >
+<tr><th></th><th>description</th><th>size</th><th>quantity</th><th>item price</th><th>subtotal</th><th>remove</th></tr>
+[% shoppage = c.model('ClubTriumphDB::Menu').find(type => 'shop') ; FOREACH purchase IN c.model('ClubTriumphDB::basket').all_items(c) %]
+<tr><td>[% IF purchase.item.image_exists(c) %]<img src = "[% url = 'image' _ purchase.item.id _ '.jpg' ; c.uri_for('/image','w-80',url) %]">[% END %]</td>
+<td><a href= "[% c.uri_for('/menu',shoppage.pid,'item',purchase.item.id,'view') %]">[% purchase.item.title %]</a></td>
+<td>[% purchase.item_size %]</td>
+<td><input name = "quantity_[% purchase.id %]" size = 4 value = "[% purchase.quantity %]"></td>
+<td> &pound;[% purchase.item.price | format('%1.2f')%]</td>
+<td>&pound;[% purchase.item.price * purchase.quantity | format('%1.2f') ; total = total + purchase.item.price * purchase.quantity %]</td>
+<td><input type = checkbox name = "remove_[% purchase.id %]"></td></tr>
+[% END %]
+<tr><td></td><td></td><td><td></td></td><td></td><td>&pound;[% total | format('%1.2f') %]</td></tr>
+<tr><td colspan = 3>
+<input type = submit value = "update basket">
+</td></tr>
+</table>
+</form>
+</div>
+</div>
+</td></tr></table>
+<br clear=all>
+<form action="[% c.uri_for('/current_order') %]"> <input type = 'submit' value = 'Continue'></form>

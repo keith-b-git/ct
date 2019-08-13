@@ -1,0 +1,30 @@
+[% WRAPPER 'menu/content.tt2' ; rowsize = 20 %]
+[% IF c.session.carspage && c.session.carspage.pid == menu_item.pid ; carspage = c.session.carspage.page ; ELSE ; carspage = 1 ; END ; ppage = menu_item %]
+
+<span class = "hierachy"><small><small>you are here - </small></small></span><br><span class = "hierachy">[% INCLUDE registerparentblock ppage = ppage.parent %]
+[% BLOCK registerparentblock ;
+IF ppage.parent && ppage.type != 'carsroot'; INCLUDE registerparentblock ppage = ppage.parent ; END -%]
+ <a href = "[% c.uri_for('/menu',ppage.pid,'club_cars') %]">[% IF (ppage.type == 'carsroot')  %] Club Triumph triumph register [% 
+ELSE ; ppage.title ; ' ' ;
+END %]</a> - 
+[% END ;
+IF (ppage.type == 'carsroot')  %] Club Triumph triumph register [% 
+ELSE ; ppage.title ; 
+END %]</span>
+
+<h4>[%
+IF c.action == 'register/club_cars' 
+	%]view club cars | <a href = "[% c.uri_for('/menu',menu_item.pid,'all_cars') %]">view all cars</a>[%
+ELSE 
+	%]<a href = "[% c.uri_for('/menu',menu_item.pid,'club_cars') %]">view club cars</a> | view all cars[%
+END %]</h4>[%
+INCLUDE 'item/pagemenu.tt2' count = car_count rowsize = rowsize param = 'carspage' currentpage = carspage || 1  -%]
+
+[% FOREACH car IN cars %]
+<div class="car_thumb">
+<a href= "[% c.uri_for('/menu',car.menus.first.pid,'view') %]">[% car.known_as %]
+[% item = car.menus.first.top_or_random(c.user) ; id = item.id ; IF id ;url = 'image' _ id _ '.jpg' -%]
+<img align = left src = "[% c.uri_for('/image','h-100',url) %]"><br clear = all>
+[% END %]
+</a></div>
+[% END ; END %]

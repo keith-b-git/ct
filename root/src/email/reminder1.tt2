@@ -1,0 +1,40 @@
+
+<p>
+Dear [% member.forename | lower | ucfirst %],
+</p>
+<p>
+Your annual subscription becomes due at the end of the month.  The subscription is £28.00(UK), £42.00(Overseas­
+Europe), £55.00 (Overseas­ other) for a single member plus £2.00 for each additional member at the same address.  
+Overseas members please note that if paying by cheque we require a Sterling cheque or draft drawn on a UK 
+Bank. 
+</p><p>
+Please let us have your cheque/postal order for the appropriate amount (made payable to ‘Club Triumph Ltd’) or 
+Credit Card Authority. Alternatively you can renew on line at 
+club.triumph.org.uk using MasterCard/Visa/Delta credit cards. 
+</p><p>
+
+The subscription is £[% member.area.fee %] for a single member 
+</p><p>
+Overseas members please note that if paying by cheque we require a Sterling cheque or draft drawn on a UK Bank.
+It is now possible to renew on line MasterCard/Visa/Delta credit cards. 
+</p><p>
+Your membership details are currently as follows-
+</p><p>
+<table>
+<tr><td>[% member.formalname %]</td><td>£[% member.area.fee ; total = member.area.fee %]</td></tr>
+[% FOREACH assoc IN member.members %]
+<tr><td>[% assoc.formalname %]</td><td>£[% member.area.ass_fee ; total = total + member.area.ass_fee %]</td></tr>
+<tr><td>Total</td><td>£[% total %]</td></tr>
+[% END %]
+</table>
+</p><p>
+Your can renew easily online and pay by credit or debit card by using our secure payment page, click on the link below-
+ </p><p> 
+<a href = "[% c.uri_for('/renew',member.generate_renew_code) %]">[% c.uri_for('/renew',member.generate_renew_code) %]</a>
+ </p><p> 
+Yours Sincerely, 
+</p><p>
+Tony Pulis (Club Triumph Membership Secretary)<br>
+e-mail membership@club.triumph.org.uk
+
+</p>

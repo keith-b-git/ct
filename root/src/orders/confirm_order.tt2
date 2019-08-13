@@ -1,0 +1,18 @@
+[% PROCESS "orders/details.tt2" %]
+<div  class='orderform'>
+<br clear=all>
+<h3>Delivery Address</h3>
+[% PROCESS "orders/name_address.tt2" %]
+<form>
+<input type = button value = " Edit Details" onclick = "document.location = '[% c.uri_for('/menu',menu_item.pid,'edit_order') %]';">
+</form>
+</div>
+<div><center>
+	<IMG src ="[% c.uri_for('/static','images','mc-visa.png') %]">
+	<h3>Card payments are processed for us by <a href = "https://lloydsbankcardnet.com/"><img src = "[% c.uri_for('/static','images','logo-lloyds-bank-cardnet.png') %]" alt = "Lloyds Bank Cardnet" width = "200"></a> via a secure gateway.</h3>
+
+[% IF c.flash.fail_reason %]<div class = 'error'>Card payment declined- [% c.flash.fail_reason ;
+IF c.flash.fail_reason_details %]<br>Details- [% c.flash.fail_reason_details ; END 
+%]</div>
+[% END ; form.render %]
+</center></div>

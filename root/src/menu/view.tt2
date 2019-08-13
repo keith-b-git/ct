@@ -1,0 +1,1 @@
+[% WRAPPER menu/content.tt2 ; menu_item.content ; END %]

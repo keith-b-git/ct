@@ -1,0 +1,25 @@
+
+
+popular-
+<table>
+[% FOREACH item IN history.popular(c.user,10) %]
+[% pid = item %]
+
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table>
+
+[% IF c.user %]
+Recently viewed-
+<table>
+[% user = c.user %]
+[% FOREACH item IN history.recent(c.user,10) %]
+[% pid = item %]
+<tr><td>
+<a class="page_link"  href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table>
+[% END %]

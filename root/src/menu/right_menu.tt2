@@ -1,0 +1,16 @@
+[% repliesperpage = 10 %]
+Latest-
+<table>
+[% FOREACH item IN latest %]
+[% context = item.display_context(menu_item,c.user).pid %]
+<tr><td>
+[% IF item.thread ; replyno = item.replyno ; USE  Math ; pageno =  Math.int ( (replyno - 1) / repliesperpage ) + 1 -%]
+<a class="page_link" href="[% c.uri_for('/menu',context,'item',item.thread.id,'view',{messagepage => pageno} ) _ '#num' _ replyno %]">reply to -<br> [% item.thread.title %]
+<br>by [% item.author.username %]</a>
+[% ELSE -%]
+<a class="page_link" href="[% c.uri_for('/menu',context,'item',item.id,'view') %]">new [% item.contenttype.displaytype %] -<br>[% item.title %]<br>by [% item.author.username %]</a>
+[% END -%]
+</td></tr>
+[% END %]
+</table>
+

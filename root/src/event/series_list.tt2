@@ -1,0 +1,12 @@
+
+
+
+
+[% FOREACH a_series IN series %]
+<STRONG><A HREF="[% c.uri_for('series' a_series.id, 'edit') %]">[% a_series.title %]</A></STRONG><BR>
+
+[% END %]
+<BR><BR>
+<A HREF = "[% c.uri_for('createseries') %]">New series</A>
+
+

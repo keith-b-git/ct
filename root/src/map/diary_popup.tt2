@@ -1,0 +1,18 @@
+<p>[% FOREACH tag IN item.tags(c.user) ;  tag.title ; END %]</p><p><span class = "item_date">[%  
+item.created | dateformat('date_time') 
+%]</span><br>[% item.content | escape_js | lf_to_br %]</p>[% 
+FOREACH attachment IN item.unembedded_attachments(c) ;
+	IF attachment.contenttype.id == 4 ;
+		IF attachment.extension == "mp4" %]<video controls="controls" height="140" width="260"><source src="[% attachment.download_uri(c) %]"></video>[% 
+		ELSE
+%]<a href="[% attachment.download_uri(c) %]"><img src = "[% c.uri_for('/static','images','disk.png') %]">Attachment - [% attachment.title %]</a><br>[% 
+		END ; 
+	END ;
+	IF attachment.contenttype.id ==  3 ;
+%]<a href="[% attachment.download_uri(c) %]"><A HREF = "[% attachment.display_uri(c,'w-600') %]" \
+description = "[% attachment.title | html %] uploaded [% attachment.created.strftime( '%a %d %b %Y' ) ; IF attachment.author.username ; %] by <a href = \'/\'></a>[% attachment.author.username %]</a>[% 
+END %]<br>tags - [% 
+FOREACH tag IN attachment.tags(c.user) %]<a href = \'[% c.uri_for('/menu',tag.id,'gallery') %]\' >[% tag.title %]</a> [% END 
+%]title = "[% attachment.title | html %] uploaded [% attachment.created.strftime( '%a %d %b %Y' ) ; IF attachment.author.username ; %] by [% attachment.author.username ; END %]"><img src = "[% attachment.display_uri(c,'w-150') %]"></a>\ [% 
+	END ;
+END =%]

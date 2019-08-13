@@ -1,0 +1,29 @@
+[% meta.mapping =1 %]
+[% map = 'groupmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 800px;
+	width:800px;
+}
+</style>
+
+<table>
+<TR><TD>
+[% FOREACH localgroup IN localgroups %]
+<STRONG><A HREF="[% c.uri_for( localgroup.id, 'view') %]">[% localgroup.title %]</A></STRONG><BR>
+[% FOREACH meeting IN localgroup.group_meetings %]
+<A HREF="javascript:[% map %].setCenterAndZoom(loc[% meeting.location.id %], 13);marker[% meeting.location.id %].openBubble();">[% meeting.location.name %]</A><BR>
+[% END %]
+[% END %]
+</TD>
+<TD>
+[% PROCESS map/createmapdiv.tt2 width = 600 height = 700 %]
+</TD></TR></TABLE>
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% FOREACH localgroup IN localgroups %]
+[% PROCESS map/group_meeting_markers.tt2 %]
+[% END %]
+[% map %].autoCenterAndZoom();
+</script>

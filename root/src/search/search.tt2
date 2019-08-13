@@ -1,0 +1,70 @@
+[%  WRAPPER 'menu/content.tt2' ; repliesperpage = 10 ; blogs_per_page = 10 %]
+
+
+
+[%#	<div class= "head"><center>Search</center></div>%]
+
+
+<center>
+
+[% meta.magnific = 1 ; IF search ; FILTER inflect %]<#n:[% hits %]> <N:result> <V:were> found[% END %] ([% took %]ms)[% END %]
+[% FOREACH agg IN aggs -%] -
+<a href = "[% c.uri_for('/',c.req.path,{search => search,filter => agg.key}) %]">[% FILTER inflect %]<#n:[% agg.doc_count %]> <N:[% 
+SWITCH agg.key ;
+CASE 'register' %]Triumph[%
+CASE 'club_torque_article' %]Club Torque article[%
+CASE 'news' %]news item[%
+CASE 'html' %]document[% 
+CASE 'championshiproot' %]championship page[%
+CASE 'blog' %]blog entry[% 
+CASE ; agg.key ; END ;
+%]>[% END %]</a> [% END %]
+[% IF search && c.req.param('filter') %] - <a href = "[% c.uri_for('/',c.req.path,{search => search}) %]">All Categories</a> [% END %]
+</center>
+[% extraparam = '&search=' _ search | html_entity ; IF c.req.param('filter') ; extraparam = extraparam _ '&filter=' _ c.req.param('filter') ; END %]
+<br clear = all>
+[%  INCLUDE 'item/pagemenu.tt2' count = hits rowsize = 10 param = 'searchpage' extraparam = extraparam  currentpage = searchpage || 1  -%]
+<div class = "searchresults">
+<dl>
+
+<br clear = all>
+[% FOREACH result IN results ; IF result.type != 'Image' %]<a href = "[% INCLUDE uri_from_id sid = result.id %]">
+<dt>[%# result.type ; result.view ; result.tags %][% result.display_title | highlight(search) %] </dt>
+<dd>[% result.content | searchresult(search) 
+%]<br><span style="float:right;"><small>[% IF result.author %]by [% result.author ; END %] [% result.created.strftime( '%a %d %b %Y %r' ) %]</small></span></dd></a>
+[% END ; END %]
+
+ </dl></div>
+ <DIV CLASS = 'image-link'>
+[% FOREACH result IN results %]
+[% IF (result.type == 'Image') && (matches = result.id.match('^I(\d*?)$')) ; INCLUDE 'item/thumbnail.tt2' image = item_rs.find({id => matches.0})  ; END ; END %]<br clear = all>
+</DIV>
+[%  INCLUDE 'item/pagemenu.tt2' count = hits rowsize = 10 param = 'searchpage' extraparam = extraparam  currentpage = searchpage || 1  -%]
+
+
+[% BLOCK uri_from_id1 ;
+ IF (matches = sid.match('^C(\d*?)$')) ; c.uri_for('/clubtorque','article',matches.0,) ; END ;
+IF (matches = sid.match('^I(\d*?)$')) ; item = item_rs.find(id => matches.0) ; context = item.display_context(c.stash.menu_item,c.user).pid ;
+	IF item.thread ; replyno = item.replyno ; USE  Math ; pageno =  Math.int ( (replyno - 1) / replies_per_page ) + 1 ;
+		c.uri_for('/menu',context,'item',item.thread.id,'view',{messagepage => pageno,search => c.req.params.search} ) _ '#num' _ replyno ;
+	ELSIF item.contenttype.id == 2 ; blogno = menu_item.viewable_item_position(c.user,item) ; USE  Math ; pageno =  Math.int ( (blogno - 1) / blogs_per_page ) + 1 ;
+	num = blogno - ( ( pageno - 1 ) * blogs_per_page) ;
+		c.uri_for('/menu',context,'blog',{blogpage => pageno,search => c.req.params.search} ) _ '#num' _ num ;
+	ELSIF item.contenttype.id == 4 ; 
+		item.download_uri(c)  ;
+	ELSIF item.contenttype.id == 14 ; diaryno = menu_item.viewable_item_position(c.user,item) ; USE  Math ; pageno =  Math.int ( (diaryno - 1) / diary_per_page ) + 1 ;
+		num = item.id ;
+		c.uri_for('/menu',context,'diary',{diarypage => pageno,search => c.req.params.search} ) _ '#num' _ num ;
+	ELSE  ; c.uri_for('/menu',context,'item',item.id,'view',{search => c.req.params.search}) ; END ; END ;
+ IF (matches = sid.match('^M(\d*?)$')) ; c.uri_for('/menu',matches.0,'view',{search => c.req.params.search}) ; END ;
+ END ;
+BLOCK uri_from_id ;
+	IF (matches = sid.match('^C(\d*?)$')) ; c.uri_for('/clubtorque','article',matches.0,) ; END ;
+	IF (matches = sid.match('^I(\d*?)$')) ; item = item_rs.find(id => matches.0) ; context = item.display_context(c.stash.menu_item,c.user).pid ;
+		c.uri_for('/menu',context,'item',matches.0,'view',{search => c.req.params.search}) ; 
+	END ;
+	IF (matches = sid.match('^M(\d*?)$')) ; c.uri_for('/menu',matches.0,'view',{search => c.req.params.search}) ; END ;
+END ;
+ 
+  END %]
+

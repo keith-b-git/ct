@@ -1,0 +1,9 @@
+[% WRAPPER member/admin_wrapper.tt2 ;  %]
+<table style = "text-align:right;">
+<tr><th>username</th><th>Membership no</th></tr>
+[% FOREACH request IN requests %]
+<tr><td><a href = "[% c.uri_for('/memadmin','val_request',request.id) %]" >[% request.user.username %]</a></td>
+<td><a href = "[% c.uri_for('/memadmin','val_request',request.id) %]" >[% request.membership_no %]</a></td></tr>
+[% END %]
+</table>
+[% END %]

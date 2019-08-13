@@ -1,0 +1,16 @@
+[% IF self ; ppage = page ; ELSE ; ppage = page.parent || 1 ; END ; 
+SWITCH type ;
+CASE 'view' ; disptype = '' ;
+CASE 'messages' ; disptype = 'forum' ;
+CASE 'market' ; disptype = 'marketplace' ;
+CASE  ; disptype = type ;
+END ;
+
+type = type || 'view' -%]
+<span class = "hierachy"><small><small>you are here - </small></small></span><br><span class = "hierachy">[% INCLUDE parentblock ppage = ppage %]
+[% BLOCK parentblock ;
+IF ppage.parent ; INCLUDE parentblock ppage = ppage.parent ; END -%]
+ <a href = "[% c.uri_for('/menu',ppage.pid,type) %]">[% ppage.title ; ' ' ; IF (ppage.pid == menu_start.pid)  ; disptype ; END %]</a> - 
+[% END ; UNLESS self ; page.title ; END %]</span>
+
+	

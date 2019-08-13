@@ -1,0 +1,14 @@
+<p>[% i = 1 ; 
+FOREACH stage IN form_stages ; 
+	IF stage.url ;
+		IF stage.url == c.req.uri ;
+			%]<strong>Stage [% i %], [% stage.stage %]</strong> > [%
+		ELSE 
+			%]<a href="[% stage.url %]"> Stage [% i %],[% stage.stage %]</a> > [%
+		END ;
+	ELSE 
+		%]Stage [% i %], [% stage.stage %] > [%
+	END;
+	i = i + 1;
+END %]
+</p>

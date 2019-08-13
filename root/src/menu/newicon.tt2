@@ -1,0 +1,13 @@
+
+[% SWITCH context ;
+CASE ['club_role','role'] ; IF pid.club_role.members.max ; c.uri_for('/static','images','CT_Persons.png') ; ELSE ; c.uri_for('/static','images','CT_Person.png') ; END ;
+CASE ['incumbent','Organiser'] ; c.uri_for('/static','images','CT_Person.png') ;
+CASE ['car','cars','mark','model','triumph','register'] ; c.uri_for('/static','images','car.gif') ;
+CASE ['member','Owner','team member','person','user_profile'] ; IF pid.user.club_member ; c.uri_for('/static','images','Person.png') ; ELSE ; c.uri_for('/static','images','NM_Person.png') ; END ;
+CASE ['Local Group','Local Group Meeting','people','localgroup'] ; c.uri_for('/static','images','LocalGroups.png') ;
+CASE ['Event Entry','entrylist','entry'] ; c.uri_for('/static','images','team.gif') ;
+CASE ['location','meeting'] ; c.uri_for('/static','images','LocalGroups.png') ;
+CASE ['event'] ; c.uri_for('/static','images','Comps.png') ;
+CASE ['item'] ; c.uri_for('/static','images','Links.png') ;
+CASE ; c.uri_for('/static','images','Links.png') ;
+END %]

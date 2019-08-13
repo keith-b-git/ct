@@ -1,0 +1,4 @@
+<A HREF = "[% url = 'image' _ image.id _ '.jpg' ; c.uri_for('/menu',menu_item.pid,'item',image.id,'image','h-600') %]" 
+id = num[% shop_no %]
+description = "[% image.title | html %] £[% image.price %] [% image.price_text %]"
+title = "[% image.title | html %] £[% image.price %] [% image.price_text %]"><img src ="[% url = 'image' _ image.id _ '.jpg' ; c.uri_for('/image','w-190',url) %]"></A>

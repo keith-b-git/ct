@@ -1,0 +1,66 @@
+[% USE Math ;
+labelsacross=2;
+labelsdown=7;
+xinset=50;
+yinset=20;
+topmargin=30;
+bottommargin=25;
+leftmargin=5;
+rightmargin=5;
+
+xstep = Math.int((595-leftmargin-rightmargin) / labelsacross);
+
+ystep = Math.int((842-topmargin-bottommargin) / labelsdown);
+xmemnopos = xstep - 50;
+ymemnopos = ystep - 15;
+ybase=842 - topmargin;
+xbase = leftmargin;
+
+
+pdf.prFontSize(10);
+
+FOREACH member IN members ;
+	IF member.class != 'ASS' ;
+		pdf.prFont('Times-Roman');
+		pdf.prFontSize(10);
+		xpos = xbase + xinset;
+		ypos = ybase - yinset;  
+		pdf.prText(xpos, ypos,member.inits_surname.upper);
+			IF  (member.address1) ;
+				ypos = ypos - 10;
+				pdf.prText(xpos, ypos,member.address1.upper) ;
+			END;
+			IF  (member.address2) ;
+				ypos = ypos - 10;
+				pdf.prText(xpos, ypos,member.address2.upper) ;
+			END;
+			IF  (member.address3) ;
+				ypos = ypos - 10;
+				pdf.prText(xpos, ypos,member.address3.upper) ;
+			END;
+			IF  (member.address4) ;
+				ypos = ypos - 10;
+				pdf.prText(xpos, ypos,member.address4.upper) ;
+			END;
+			IF  (member.address5) ;
+				ypos = ypos - 10;
+				pdf.prText(xpos, ypos,member.address5.upper) ;
+			END;
+			ypos = ypos - 10;
+			pdf.prText(xpos, ypos,member.postcode.upper);
+				ypos = ypos - 10; 
+			IF member.country && (member.country != 'GB') ; pdf.prText(xpos, ypos, member.countryname.upper); END;
+			xpos = xbase + xmemnopos;
+			ypos = ybase - ymemnopos;
+			pdf.prFontSize(6);
+			pdf.prText(xpos,ypos,member.pmemno);
+			xbase = xbase + xstep;
+			IF (xbase >= ( 594 - rightmargin ) )  ; xbase = leftmargin; ybase = ybase - ystep ; END ;
+			IF (ybase <= ( bottommargin + 10 ) ) ; ybase = 842 - topmargin ; pdf.prPage() ; END ;
+		END;
+
+
+END ;
+   pdf.prPage();
+   pdf.prEnd();                           
+%]

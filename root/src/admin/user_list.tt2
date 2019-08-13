@@ -1,0 +1,31 @@
+[% WRAPPER 'admin/admin_wrapper.tt2' %]
+<table>
+	<tr><th>username</th>
+	<th>status</th>
+	<th>full name</th>
+	<th>e-mail</th>
+	<th>registered on</th>
+	<th>club member</th>
+	<th>mem no</th>
+	<th>exp date</th>
+	<th>last login</th>
+	<th>ip address</th>
+	<th>login outcome</th>
+</tr>
+[% FOREACH user IN users %]
+<tr><th><a href = "[% c.uri_for('/admin','user',user.id,'view') %]">[% user.username %]</a></th>
+<td>[% user.status %]</td>
+<td>[% user.fullname %]</td>
+<td>[% user.email %]</td>
+<td>[% user.date_registered.strftime( '%a %d %b %Y' ) %]</td>
+<td>[% user.club_member %]</td>
+<td>[% user.memno.memno %]</td>
+<td>[% user.memno.expdate.strftime( '%a %d %b %Y' ) %]</td>
+<td>[% user.loginouts.last.time.strftime( '%a %d %b %Y' ) %]</td>
+<td>[% user.loginouts.last.ipaddress %]</td>
+<td>[% user.loginouts.last.outcome %]</td>
+
+</tr>
+[% END %]
+</table>
+[% END %]

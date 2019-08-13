@@ -1,0 +1,22 @@
+
+[% item = object.item ;
+notification = object.notification ;
+IF item.contenttype.id == 6 %]There has been a new reply to the thread [% item.thread.title ;
+ELSE 
+%]There has been a new [% item.contenttype.displaytype %] in [% notification.menu.title %] entitled [% item.title %]
+[% END %]
+by [% item.author.username %]
+<p>
+[% IF item.contenttype.id ==3 
+	%]<img src = "[% item.display_uri(c,'w-500') %]"> [%
+ELSE ; 
+	item.content ;
+ END
+ %]
+</p>
+<p>tags [% FOREACH tag IN item.tags %]<a href = "[% c.uri_for('/menu',tag.id,'view') %]" >[% tag.title %]</a> [% END %]</p>
+<p><a href = "[% item.view_uri(c,item.display_context(undef,notification.user)) %]">view online [% 
+IF item.contenttype.replyable || item.thread.contenttype.replyable %]or reply[% 
+END %]</a></p>
+To cancel this notification <a href="[% c.uri_for('/denotify',notification.denotify_code) %]">
+click here</a>

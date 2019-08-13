@@ -1,0 +1,11 @@
+
+<TABLE>
+<TR><TD>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+</TD>
+<TD>
+[% SET editable = true %]
+[% PROCESS map/map.tt2 %]
+</TD></TR></TABLE>

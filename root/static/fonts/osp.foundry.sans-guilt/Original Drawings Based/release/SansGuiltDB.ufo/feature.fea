@@ -1,0 +1,18 @@
+#Mark attachment classes (defined in GDEF, used in lookupflags)
+
+@GDEF_Simple = [\space \quotesingle \comma \period \uni0041 \uni0042 \uni0043 
+	\uni0044 \uni0045 \uni0046 \uni0047 \uni0048 \uni0049 \uni004A \uni004B \uni004C 
+	\uni004D \uni004E \O \P \uni0051 \uni0052 \uni0053 \uni0054 \uni0055 \V \uni0057 
+	\uni0058 \uni0059 \uni005A \bracketleft \backslash \uni0061 \uni0062 \uni0063 
+	\uni0064 \uni0065 \uni0066 \uni0067 \uni0068 \uni0069 \uni006A \uni006B \uni006C 
+	\uni006D \uni006E \uni006F \uni0070 \uni0071 \uni0072 \uni0073 \uni0074 \uni0075 
+	\uni0076 \uni0077 \uni0078 \uni0079 \uni007A \uniFFFD ];
+@GDEF_Ligature = [];
+@GDEF_Mark = [];
+@GDEF_Component = [];
+
+table GDEF {
+  GlyphClassDef @GDEF_Simple @GDEF_Ligature @GDEF_Mark @GDEF_Component;
+
+} GDEF;
+

@@ -1,0 +1,16 @@
+<table>
+[% role = menu_item %]
+<tr><td valign = 'top'><a href = "[% c.uri_for('/menu',role.pid,'view') %]">[% role.club_role.description ; IF role.club_role.members.max ; 's' ; END %]</a></td>
+<td valign = 'top'>[% FOREACH incumbent IN role.club_role.members_rs.by_surname.current_members  %]<a href = "[% c.uri_for('/menu',incumbent.profile.pid,'view') %]">[% incumbent.fullname _ '</a><br>' ; END %]</td>
+<td valign = 'top'>[% IF (c.user && c.user.club_member && role.club_role.club_email) ;
+%]e-mail: <a href = " mailto:[% role.club_role.club_email %]">[% role.club_role.club_email %]</a>[% END ;
+IF (!(c.user && c.user.club_member) && role.club_role.public_email) 
+%]e-mail: <a href = " mailto:[% role.club_role.public_email %]">[% role.club_role.public_email %]</a>[% END %]</td>
+<td valign = 'top'>[% IF (c.user && c.user.club_member && role.club_role.club_tel) ;
+%]phone: [% role.club_role.club_tel ; END ;
+IF (!(c.user && c.user.club_member) && role.club_role.public_tel) 
+%]phone: [% role.club_role.public_tel ; END %]</td></tr>
+
+</table>
+[% FOREACH member IN role.club_role.members_rs.by_surname.current_members  ; INCLUDE 'menu/thumb.tt2' pid = member.profile ; END %]
+[% FOREACH pid IN role.club_role.menu_linked_roles ; INCLUDE 'menu/thumb.tt2' pid = pid ; END %]

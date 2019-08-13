@@ -1,0 +1,42 @@
+[% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = threads_per_page %]
+[% IF c.session.threadpage && c.session.threadpage.pid == menu_item.pid ; threadpage = c.session.threadpage.page ; ELSE ; threadpage = 1 ;
+ END ;
+IF local ; threads = object.local_threads(c.user,rowsize,threadpage ) ;
+ELSE ;
+threads = object.items_bytype_viewable_by(c.user,5,50,1,0)
+ ;
+END 
+%]
+<div class = 'forum_head'>
+
+<center> Latest unread posts </center>
+</div>
+<table cellspacing = 1 cellpadding =5 class = "threadstable">
+
+
+<tr><th>Subject</th><th>Replies</th><th>Author</th><th>Views</th><th>Last Action</th><th>tags</th></tr>
+[% dicplayed = 0  ; FOREACH item IN threads ;
+UNLESS item.read(c.user)
+%]
+
+<tr >
+	<td >
+<a href = "[% item.first_unread(c.user).view_uri(c,menu_item) %]" [% UNLESS item.read(c.user) %]class = "unread_item"[% END %]>[% item.title %]</a>
+[% IF item.sticky %]<div style = "float:right;">sticky</div>[% END %]
+<div style = "float: right">[% INCLUDE 'item/pagemenu.tt2' count = item.count_replies rowsize =  replies_per_page param = 'messagepage' currentpage = 0 
+request = '/menu/' _ c.stash.menu_item.pid _ '/item/' _ item.id _ '/view' %]</div>
+</td><td>[% IF item.contenttype.id == 5 ; item.count_replies ; END %]</td><td>[% INCLUDE "item/userlink.tt2" user = item.author %]</td><td>[% item.views %]</td>
+<td>[% IF item.count_replies > 0 %]Reply[% ELSE %]Post[% END %] by [% INCLUDE "item/userlink.tt2" user = item.last_post.author %]<br>
+[% item.modified | dateformat(item.modified) %]</td>
+<td>[% FOREACH tag IN item.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td>
+
+</tr>
+[% displayed = displayed + 1 ;  END ;
+LAST IF displayed == 10 ;
+END %]
+
+
+</table>
+[% END %]
+
+

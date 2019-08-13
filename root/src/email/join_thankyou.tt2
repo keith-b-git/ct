@@ -1,0 +1,71 @@
+<p>
+Dear [% member.forename | lower | ucfirst %],
+</p>
+<table>
+<tr><td>[% member.fullname %]</td><td> - membership number: [% member.memno | format "%05s" %]</td></tr>
+
+[% FOREACH assoc IN member.members
+%]<tr><td>[% assoc.fullname %]</td><td> - membership number: [% assoc.memno | format "%05s" %]</td></tr>[% END %]
+</table>
+
+<p>
+Welcome to Club Triumph <br>
+You will receive a New members pack in the post.
+</p>
+<p>
+[% IF member.local_group %]
+Details of your local group: <a href="[% c.uri_for('/menu',member.local_group.menus.first.pid,'view') %]">[% member.local_group.title %]</a><br>
+[% FOREACH meeting IN member.local_group.group_meetings 
+%]Location Details: [% meeting.location.name %]<br>         
+Day and Time of Monthly Meeting: [% meeting.meetingtext %]<br>[% END %]
+Contact Name: [% member.local_group.organiser.fullname %]<br>
+Phone Number: [% member.local_group.organiser.tel %]<br>
+Email Address: [% member.local_group.organiser.email
+ %]<br>
+Note: You are entitled to attend any Local Group of your choice however this is the nearest one to you. 
+If you wish to nominate a different Group as your local please click <a href="[% c.uri_for('/menu',member.userid.profile.pid,'member','group_edit') %]">here</a>  (only allowed to be changed by lead member not associate)
+[% END %]
+</p>
+<p>
+Events and Shows:<br>
+Below are some of the events coming up in the next few months which you might enjoy.<br>
+[% FOREACH event IN c.model('ClubTriumphDB::Event').future_events_rs.member_viewable %]
+<a href = "[% c.uri_for('/menu',event.menus.first.pid,'view') %]">[% event.title %]</a>[% 
+INCLUDE 'event/date_range.tt2' start = event.start end = event.end %]<br>[% END %]
+
+</p>
+[% IF member.profile 
+%]<p>If you have not yet registered your Triumph and would like to do so click <a href = "[% c.uri_for('/menu',member.profile.pid,'new_register') %]">here</a> </p>[%
+END %]
+<p>
+Don't forget our <a href="[% c.uri_for('/menu',7747,'shop') %]">Club Shop</a> where you can purchase a copy of the 50th Anniversary of the RBRR, T-Shirts, Hats, bags, car badges and many more Club items.  
+</p>
+<p>
+Check out the latest news or need to ask a technical question why not visit our <a href="[% c.uri_for('/menu',1,'forum') %]">forum</a>
+</p>
+<p>
+Keep in touch and follow us on <a href = "http://facebook.com/clubtriumph">Face book</a> <a href="https://twitter.com/clubtriumph">Twitter</a> <a href = "https://www.instagram.com/club.triumph/">Instagram</a>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p>
+Not received you magazine, changed your address, phone number or email address? Please contact me with your new details. See below.
+<br><br>
+Kind Regards<br>
+Tony Pulis<br>
+ <br>
+Membership Secretary <br>
+Club Triumph<br>
+membership@club.triumph.org.uk<br>
+0208 351 9544 (Evenings 07:00pm – 09:00pm<br>
+</p>

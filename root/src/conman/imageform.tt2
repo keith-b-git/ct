@@ -1,0 +1,11 @@
+[% content  %]<br>
+<A HREF="[% c.uri_for('/conman/list') %]">LIST</A>
+<A HREF="[% c.uri_for('/content',pid,'content') %]">VIEW</A>
+<A HREF="[% c.uri_for('/conman/pid',pid,'edit') %]">EDIT</A>
+<FORM  method="post" enctype="multipart/form-data">
+<input type="file" name="photo" accept="image/jpg,image/gif">
+<BR>
+<INPUT TYPE=SUBMIT>
+</FORM>
+    
+

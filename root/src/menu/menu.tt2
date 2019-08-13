@@ -1,0 +1,31 @@
+<div class = "menu">
+<div class = "menuinner">
+[% menudepth = 3 ; count = menudepth ;
+INCLUDE menublock menu_object=menu_object count=menudepth ;
+
+BLOCK menublock ;
+	IF count > 0 && menu_object.children.size ;
+		IF count == menudepth 
+			-%]<ul class = 'sf-menu'>[% 
+			UNLESS c.stash.menu_item.pid == menu_start.pid || 1
+				%]<li><a href = "[% c.uri_for('/') %]">Home</a></li>[% 
+			END ;
+			IF c.user && c.user.club_member 
+				%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/menu',menu_start.pid,'forum') %]">Forum</a></li>[% 
+			ELSE ;
+				%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/join') %]">Join</a></li>[%
+			END ;
+		ELSE 
+			%]<ul>[% 
+		END ; 
+		FOREACH child IN menu_object.children 
+			%]<li [% IF count == 3 %]style = 'padding-right:20px;'[% END %]><a href = "[% c.uri_for('/menu',child.pid,'view') %]">[% child.title %]</a>[% 
+			INCLUDE menublock menu_object = child count=(count - 1) ;
+			%]</li>[%
+		END 
+	%]</ul>[% 
+	END ;
+END -%]
+</div></div>
+
+

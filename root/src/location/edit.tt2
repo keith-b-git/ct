@@ -1,0 +1,78 @@
+[% meta.mapping =1 %]
+[% map = 'editmap' %]
+
+<h3>[% formtitle %]</h3>
+<div>
+		
+<TABLE><TR><TD>
+    [% form.render %]
+</TD><TD>
+[% PROCESS map/createmapdiv.tt2 width = 500 height = 600 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+var geocoder = new mxn.Geocoder('openlayers',geocode_return,geocode_error);
+
+var mylatlon = new mxn.LatLonPoint(54.3714, -4.4546);
+[% map %].setCenterAndZoom(mylatlon, 5);
+
+
+if (document.getElementById('locationform').latitude.value && document.getElementById('locationform').longitude.value)
+{
+
+	show_coords();
+}
+	[% map %].click.addHandler(function(eventName, eventSource, eventArgs) {
+		var coords = eventArgs.location;	// coords are an mxn.LatLonPoint object
+		document.getElementById('locationform').latitude.value = coords.lat;
+		document.getElementById('locationform').longitude.value = coords.lon;
+		onConvertDecimal();
+		[% map %].removeAllMarkers();
+		var marker = new mxn.Marker(coords);
+		marker[% location.location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+		marker.setDraggable(true);
+		[% map %].addMarker(marker)
+		marker.show;
+		});
+
+
+function show_coords() {
+	var coords = new mxn.LatLonPoint(document.getElementById('locationform').latitude.value,document.getElementById('locationform').longitude.value)
+	onConvertDecimal();
+	[% map %].setCenterAndZoom(coords, 13)
+	[% map %].removeAllMarkers();
+	var marker = new mxn.Marker(coords);
+	marker[% location.location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+	marker.setDraggable(true);
+	[% map %].addMarker(marker)
+	marker.show;
+}
+	
+	function geocode_return (location) {
+	showLocation (location.point);
+	[% map %].setCenterAndZoom(location.point, 13)
+	[%# alert (location.street + location.locality + location.region + location.country + location.postcode); %]
+	}
+	function geocode_error (message) {
+		alert (message)
+	}
+
+function showLocation(coords)
+{	
+	document.getElementById('locationform').latitude.value = coords.lat;
+	document.getElementById('locationform').longitude.value = coords.lon;
+	onConvertDecimal();
+	[% map %].removeAllMarkers();
+	var marker = new mxn.Marker(coords);
+	marker[% location.location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+	marker.setDraggable(true);
+	[% map %].addMarker(marker)
+	marker.show;
+	[% map %].setCenterAndZoom(coords, 13)
+}
+
+</script>
+</TD>
+</TR>
+</TABLE>
+</div>
+

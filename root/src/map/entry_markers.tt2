@@ -1,0 +1,26 @@
+var entryloc = [];
+var entrymarker = []; 
+function showentries() {
+	if (entrymarker.length) {
+		[% FOREACH entry IN event.entries_rs.locatable ;
+			location = entry.location; 
+		IF ((location.latitude != undef) && (location.longitude != undef)) -%]
+			entrymarker[[% entry.id %]].closeBubble()
+			[% map %].removeMarker(entrymarker[[% entry.id %]]);
+
+		[% END ; END -%]
+		entrymarker = [];
+	}
+	else {
+		[% FOREACH entry IN event.entries_rs.locatable ;
+			location = entry.location;
+		IF ((location.latitude != undef) && (location.longitude != undef)) -%]
+		entryloc[[% entry.id %]] = new mxn.LatLonPoint([% location.latitude %],[% location.longitude %]);
+		entrymarker[[% entry.id %]] = new mxn.Marker(entryloc[[% entry.id %]]);
+		entrymarker[[% entry.id %]].setIcon('/static/images/team.gif', [28,33],[1,32]);
+		entrymarker[[% entry.id %]].setInfoBubble('[% PROCESS map/entry_popup.tt2  %]');
+		[% map %].addMarker(entrymarker[[% entry.id %]]);
+		[% END ; END -%]
+		[% map %].autoCenterAndZoom();
+	}
+}

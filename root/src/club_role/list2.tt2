@@ -1,0 +1,26 @@
+<table>
+[% FOREACH role IN menu_item.viewable_children(c.user) %]
+<tr><td valign = 'top'><a href = "[% c.uri_for('/menu',role.pid,'view') %]">[% role.club_role.description ; IF role.club_role.members.max ; 's' ; END %]</a></td>
+<td valign = 'top'>[% FOREACH incumbent IN role.club_role.members.by_surname %]<a href = "[% c.uri_for('/menu',incumbent.profile.pid,'view') %]">[% incumbent.fullname _ '</a><br>' ; END %]</td>
+<td valign = 'top'>[% IF (c.user && c.user.club_member && role.club_role.club_email) ;
+%]e-mail: <a href = " mailto:[% role.club_role.club_email %]">[% role.club_role.club_email %]</a>[% END ;
+IF (!(c.user && c.user.club_member) && role.club_role.public_email) 
+%]e-mail: <a href = " mailto:[% role.club_role.public_email %]">[% role.club_role.public_email %]</a>[% END %]</td>
+<td valign = 'top'>[% IF (c.user && c.user.club_member && role.club_role.club_tel) ;
+%]phone: [% role.club_role.club_tel ; END ;
+IF (!(c.user && c.user.club_member) && role.club_role.public_tel) 
+%]phone: [% role.club_role.public_tel ; END %]</td></tr>
+[% END %]
+<tr><td> </td></tr>
+[% FOREACH group IN c.model('ClubTriumphDB::LocalGroup').all.sorted  %]
+<tr><td valign = 'top'><a href = "[% c.uri_for('/menu',group.menus.first.pid,'view') %]">[% group.title %] LG Organiser</a></td>
+<td valign = 'top'>[% IF group.organiser && group.organiser.club_member ; 
+	IF group.organiser.profile.viewable_by(c.user) 
+	%]<a href = "[% c.uri_for('/menu',group.organiser.profile.pid,'view') %]">[% group.organiser.fullname _ '</a><br>' ;
+	ELSE ; group.organiser.fullname _ '</a>' ;
+	END ;
+END %]</td>
+</td></tr>
+[% END %]
+
+</table>

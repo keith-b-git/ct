@@ -1,0 +1,12 @@
+<STRONG><A HREF = "[% c.uri_for('/menu',location.menus.first.pid,'view') %]"> [% location.name  | escape_js %]</A></STRONG><BR>\
+[% IF location.address1 ; location.address1 | escape_js %]<br>[% END -%]
+[% IF location.address2 ; location.address2 | escape_js  %]<br>[% END -%]
+[% IF location.town ; location.town | escape_js  %]<br>[% END -%]
+[% IF location.county ; location.county | escape_js  %]<br>[% END -%]
+[% IF location.postcode ; location.postcode | escape_js  %]<br>[% END -%]
+[% IF location.country ; location.country | escape_js | countryname %]<br>[% END -%]
+[% IF location.grid_ref %]Grid Ref- [% location.grid_ref %]<br>[% END -%]
+[% IF location.longitude %]Longitude- [% location.longitude %]<br>[% END -%]
+[% IF location.latitude %]Latitude- [% location.latitude %]<br>\[% END -%]
+[% IF measure_location.lat &&  measure_location.lon %]Distance- [% location.distance(measure_location).value('miles') | format('%.1f') %] miles<br>\[% END -%]
+

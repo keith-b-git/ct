@@ -1,0 +1,19 @@
+[% IF start && end; startyear = start.strftime( '%Y' ) ;
+startmonth = start.strftime( '%B' ) ;
+startday = start.strftime( '%e' ) ;
+startwday = start.strftime( '%A' ) ;
+endyear = end.strftime( '%Y' ) ;
+endmonth = end.strftime( '%B' ) ;
+endday = end.strftime( '%e' ) ;
+endwday = end.strftime( '%A' ) ;
+%]
+[% IF start.strftime( '%F' ) != end.strftime( '%F' ) -%]
+[% startwday %] [% startday ; INCLUDE endings day = startday %] [% IF startmonth != endmonth ; startmonth ; END %] [% IF startyear != endyear ; startyear ; END %] - [% END %]
+[% endwday %] [% endday ; INCLUDE endings day = endday %] [% endmonth %] [% endyear %]
+
+[% BLOCK endings ;
+SWITCH day ;
+CASE [ ' 1' , '21' , '31' ] %]st [%
+CASE [ ' 2' , '22' ] %]nd [%
+CASE [ ' 3' , '23' ] %]rd [% 
+CASE %]th [% END ; END ; END %]

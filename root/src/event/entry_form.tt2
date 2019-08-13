@@ -1,0 +1,49 @@
+[% meta.heading1 =  entry.event.title %]
+[% meta.heading2 =  'Entry Form' %]
+[% meta.entryformjs = 1 %]
+[% WRAPPER menu/admin.tt2 %]
+<h3>[% c.stash.menu_item.title %] - Entry Form</h3>
+[% INCLUDE 'entry/draft_countdown.tt2' %]
+[% IF entry.on_reserve %]<p>Entry for [% entry.event.title %] is now full but you can still apply to join the reserve list</p>[% END %]
+<div>
+<script>
+[% IF form.item.status == 'draft' || form.item.status == 'reserve' %]
+	function add_remove_buttons() {
+	if ($('.rm_element').length <= [% entry.event.min_team %]) { $('.rm_element').hide() }
+	if ($('.rm_element').length >= [% entry.event.max_team %]) { $('.add_element').hide() }
+	if ($('.rm_element').length > [% entry.event.min_team %]) { $('.rm_element').show() }
+	if ($('.rm_element').length < [% entry.event.max_team %]) { $('.add_element').show() }
+}
+[% ELSE %]
+	function add_remove_buttons() {
+		$('.rm_element').hide() ;
+		$('.add_element').hide() 
+}
+[% END %]
+
+   
+</script>
+
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+<script>
+
+$(".chosen-select1").chosen();
+$(".chosen-select").chosen();
+
+function update_entrant(elem) { 
+	var i = 0;
+	var found = 0;
+	while ((i < 10) && !found) {
+		if (document.getElementById('entrants.' + i + '.name')) {found = 0}
+		i++;
+	} i--; 
+	var memno = document.getElementById('member').value.toString();
+	while (memno.length < 5) {memno = '0' + memno}
+	document.getElementById('entrants.' + i + '.memno').value = memno;
+	document.getElementById('entrants.' + i + '.name').value = document.getElementById('member').options[document.getElementById('member').selectedIndex].text;
+	document.getElementById('entrants.' + i + '.user').value = '';
+}
+</script>
+ </div>  
+[% END %]

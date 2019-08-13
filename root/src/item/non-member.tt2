@@ -1,0 +1,14 @@
+[%  global.carousel = 1  %]
+<div class="carousel1" style = 'max-width: 800px;'>
+<div><a href = "/join"><img src="/static/images/banner1.jpg" WIDTH = 100%></a></div>
+<div><a href = "/join"><img src="/static/images/banner2.jpg" WIDTH = 100%></a></div>
+<div><a href = "/join"><img src="/static/images/banner3.jpg" WIDTH = 100%></a></div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.carousel1').slick({
+  autoplay: true,
+  autoplaySpeed: 20000,
+	});
+})
+</script>

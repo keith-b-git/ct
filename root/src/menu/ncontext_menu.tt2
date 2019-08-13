@@ -1,0 +1,35 @@
+
+
+
+<table >
+
+
+
+
+
+[% FOREACH pid IN c.stash.menu_item.context_related(c.user,30) %]
+<tr><td valign=top>
+<a class="page_link" href="[% c.uri_for('/menu',pid.page.pid,'view') %]">[% pid.context %] <br> [% pid.page.title %]</a>
+</td></tr>
+[% END %]
+[% IF c.stash.menu_item.event && c.stash.menu_item.event.entry_open %]
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'event','enter') %]">Enter Event</a>
+</td></tr>
+[% END %]
+
+
+[% IF c.stash.menu_item.admin_by(c.user) %]
+[% IF c.stash.template == 'menu/content.tt2' %]
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'admin') %]">[% c.stash.menu_item.title %] Admin Functions</a>
+</td></tr>
+[% ELSE %]
+[%# IF c.stash.template == 'menu/admin.tt2' #%]
+<tr><td>
+<a class="page_link" href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view') %]">[% c.stash.menu_item.title %]</a>
+</td></tr>
+[% END %]
+[% END %]
+
+</table>

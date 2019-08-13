@@ -1,0 +1,72 @@
+<div class = "menu_page_container">
+	<div class = "head"><center>[% INCLUDE 'menu/hierachy.tt2' page = menu_item %][% c.stash.menu_item.title ;
+	IF c.stash.menu_item.event ; INCLUDE 'event/date_range.tt2' start = c.stash.menu_item.event.start end = c.stash.menu_item.event.end ; END %]</center></div>
+	<div class ="left_menu">
+[% INCLUDE 'menu/context_menu.tt2' %]
+</div>
+
+
+<div class = "tabblock">
+<div id="tabs">
+<ul>
+
+
+<li><a href="#maincontent">[% c.stash.menu_item.title %]<br>Details</a></li>
+[% IF (menu_item.type == 'user_profile') && (menu_item.user.id == c.user.id)  %]
+<li><a href="#PMtab">Private Messages<br>[% IF meta.pm_title ; meta.pm_title ; ELSE %]
+Inbox - [% c.user.pm_count %] messages - [% c.user.new_pm_count %] new - Sent - [% c.user.sent_pm_count %][%  END %]</a></li>
+[% END ; IF c.stash.menu_item.messages_viewable_by(c.user) %]
+<li><a href="#threads">Discussion<br>[% thread_count = c.stash.menu_item.viewable_item_count(c.user,5) %]
+ [% IF meta.thread_title ; meta.thread_title ; ELSE ;  thread_count %] thread[% UNLESS thread_Count == 1 %]s[% END ; IF c.user %], 
+ [% thread_count - c.stash.menu_item.read_item_count(c.user,'5') %] unread.[% END ; END %]</a></li>
+[% END %]
+[% IF c.stash.menu_item.images_viewable_by(c.user) %]
+<li><a href="#gallery">Gallery<br>[% imagecount = c.stash.menu_item.viewable_item_count(c.user,3) %]
+ [% IF meta.gallery_title ; meta.gallery_title ; ELSE ; imagecount %] image[% UNLESS image_Count == 1 %]s[% END ; IF c.user %],
+ [% imagecount - c.stash.menu_item.read_item_count(c.user,'3') %] unviewed.[% END ; END %]</a></li>
+[% END %]
+[% IF c.stash.menu_item.blogs_viewable_by(c.user) %]
+<li><a href="#blogs">Blog<br>[% c.stash.menu_item.viewable_blog_count(c.user) %] Entries. [% IF meta.blog_title ; meta.blog_title ; END %]</a></li>
+[% END %]
+[% IF c.stash.menu_item.adverts_viewable_by(c.user) %]
+<li><a href="#market">Marketplace<br>[% c.stash.menu_item.shop_count(c.user) %] Club Shop, [% c.stash.menu_item.car_sale_count(c.user) %] Cars for Sale, [% c.stash.menu_item.part_sale_count(c.user) %] Parts for Sale,
+[% c.stash.menu_item.wanted_count(c.user) %] Wanted
+[% IF meta.advert_title ; meta.advert_title ; END %]</a></li>
+[% END %]
+</ul>
+
+<div id = "maincontent">
+[% PROCESS menu/details.tt2 %]
+</div>
+[% IF (menu_item.type == 'user_profile') && (menu_item.user.id == c.user.id)  %]
+<div id = "PMtab">
+[% INCLUDE 'item/pms.tt2' object = c.stash.menu_item item = c.stash.item %]
+</div>
+[% END %]
+[% IF c.stash.menu_item.messages_viewable_by(c.user) %]
+<div id = "threads">
+[% INCLUDE 'item/threads.tt2' object = c.stash.menu_item item = c.stash.item %]
+</div>
+[% END %]
+[% IF c.stash.menu_item.images_viewable_by(c.user) %]
+<div id = "gallery">
+[% INCLUDE 'item/gallery.tt2' object = c.stash.menu_item %]
+</div>
+[% END %]
+
+[% IF c.stash.menu_item.blogs_viewable_by(c.user) %]
+<div id = "blogs">
+[% INCLUDE 'item/blogs.tt2' object = c.stash.menu_item %]
+</div>
+[% END %]
+[% IF c.stash.menu_item.adverts_viewable_by(c.user) %]
+<div id = "market">
+[% INCLUDE 'adverts/adverts.tt2' object = c.stash.menu_item %]
+</div>
+[% END %]
+
+
+</div>
+</div>
+
+</div>

@@ -1,0 +1,24 @@
+[%# WRAPPER 'menu/content.tt2' %]
+<strong>Entries open</strong> - [% 
+ INCLUDE 'event/date_range.tt2' start = event.entry_opens end = event.entry_closes %]
+entries-  [% FILTER inflect %]<#n:[% event.live_count %]> <N:entry>[% END ; %] participants-  [% FILTER inflect %]<#n:[% event.participant_count %]> <N:participant>[% END ; %]<br>
+
+<table class="datatable">
+[% FOREACH entry IN event.entries %]
+<tr class = "entry_list">
+<td>[% entry.status ; 
+IF entry.status == 'reserve' && ! entry.on_reserve %] <br>(allocated)[% END %]%]</td>
+<td>[% entry.entry_no %]</td>
+<td valign = top>
+[% INCLUDE 'link' pid = entry.menus.first %]</td><td> [% INCLUDE 'link' pid = entry.car.menus.first %] </td>
+[% FOREACH entrant IN entry.entrants %]
+<td>
+[% IF entrant.user && entrant.user.profile ; INCLUDE 'link' pid = entrant.user.profile ; ELSE ;
+ entrant.name ; END%]</td>
+[% END %]
+</tr>
+[% END %]
+</table>
+
+[% BLOCK link %]<a href = "[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title%]</a>[% END %]
+[%# END ; #of wrapper %]

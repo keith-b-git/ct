@@ -1,0 +1,17 @@
+[% count = 0 ; notcoded = 0 ;FOREACH member IN members   -%]
+	[% IF member.longitude && member.location_postcode ; count = count + 1-%]
+		var location[% member.memno %] = new mxn.LatLonPoint([% member.latitude %],[% member.longitude %]);
+		var marker[% member.memno %] = new mxn.Marker(location[% member.memno %]);
+		marker[% member.memno %].setIcon('/static/images/person[% member.local_group.colr %].gif', [30,30],[15,25]); 
+		marker[% member.memno %].setInfoBubble("<a href = '[% c.uri_for('/memadmin','member',member.memno,'view') %]'>[% member.fullname %][%
+		FOREACH assoc IN member.members %]<br>[% assoc.fullname ; END %]</a><br>[% member.local_group.title %]");
+		[% map %].addMarker(marker[% member.memno %] );
+	[% ELSE ;
+		notcoded = notcoded + 1 ;
+		END ;
+ END %]
+</script>
+displayed = [% count %]<br>
+not displayed = [% notcoded %]
+<p><a href = "[% c.uri_for('/memadmin','auto_member_groups') %]">Auto allocate members to groups (takes a while!)</a></p>
+<script>

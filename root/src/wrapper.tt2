@@ -1,0 +1,47 @@
+[% IF meta.nowrap ; content ; RETURN ; END -%]
+[% IF mobile ; WRAPPER 'wrapperpushmenu.tt2' ; content ; END ; RETURN ; END -%]
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" [%#
+    %]"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<HEAD>
+<title>[% 'Club Triumph ' _ title1 _ title2 _ title3 _ pageno  %]</title>
+
+[% PROCESS 'header_js.tt2' %]
+
+</HEAD>
+<!--BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#808080" ALINK="#FF0000"-->
+<body class="mainbody">
+
+<div id = "topwrap">
+[% INCLUDE adverts/banner.tt2 type = 'top' %]
+
+<div class="mainheader">
+<a href="/"><img align = 'left' style = "padding-right:15px" src = "/static/images/ctlogob.gif"></a>
+<a href="/menu/17312/view"><img align = 'right' src = "/static/images/rbrlink[% USE Math ; ( Math.int(Math.rand(3)) + 1 ) %].jpg" style = "margin-right:1em"></a>
+<h1>Club Triumph</h1>
+<h2>... the club for all Triumphs</h2>
+<br clear = all>
+</div>
+    <span class="message">[% status_msg %]</span>
+    <span class="error">[% error_msg %]</span>
+
+<div id = 'searchformdiv'>
+<form name = 'searchform' method = 'post' action ="[% c.uri_for('/menu',1,'search') %]">
+<input name = 'search' size = '30' value = "[% IF c.req.params.search ; c.req.params.search | html ; ELSE %]Search all of Club Triumph[% END %]" onclick="if(this.value=='Search all of Club Triumph')this.value='';" onblur="if(this.value=='')this.value='Search all of Club Triumph';" type="text"><input class='search_button' type = submit value = "Search">
+</form></div><br clear=all></div>
+[% UNLESS 0 ; INCLUDE menu/menu.tt2 ; END %]
+<div id = "wrap">
+[% INCLUDE menu/user_panel.tt2 %]<br clear = all>
+<BR CLEAR=ALL>
+
+
+    [% content %]
+
+<br clear =all>
+[% INCLUDE menu/footer.tt2 %]
+[% INCLUDE adverts/banner.tt2 type = 'bottom' %]
+</div>
+</body>
+</html>

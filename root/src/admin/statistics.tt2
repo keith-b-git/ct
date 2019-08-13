@@ -1,0 +1,7 @@
+[% WRAPPER 'admin/admin_wrapper.tt2' %]
+<table>
+<tr><th>active</th><td><a href = "[% c.uri_for('/admin','users_by_status','0') %]">[% active %]</a></td></tr>
+<tr><th>e-mail</th><td><a href = "[% c.uri_for('/admin','users_by_status','EMAIL') %]">[% email %]</a></td></tr>
+<tr><th>reval</th><td><a href = "[% c.uri_for('/admin','users_by_status','REVAL') %]">[% reval %]</a></td></tr>
+</table>
+[% END %]

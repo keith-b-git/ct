@@ -1,0 +1,41 @@
+[% UNLESS menu_item.pid == menu_start.pid ; INCLUDE 'menu/hierarchy.tt2' page = menu_item %]<span class = "hierachy">[% 
+IF c.stash.menu_item.event ; INCLUDE 'event/date_range.tt2' start = c.stash.menu_item.event.start end = c.stash.menu_item.event.end ; END %]</span>[% 
+END ;
+IF c.stash.menu_item.admin_by(c.user) 
+ %]<div id = 'admin' style = 'float:right;'>
+<img align = left width = 30 src = "[% c.uri_for('/static','images','Blogs.png') %]"> Settings
+<div id = "admin_popup">[% INCLUDE 'menu/admin_popup.tt2' %]</div>
+</div>
+<br clear = all>[% 
+END ;
+UNLESS menu_item.pid == menu_start.pid -%]
+<div class= "sub_head" [% INCLUDE "menu/view_info.tt2" %]>
+[% menu_item.title %]
+<div id = 'subsearchformdiv'>
+<form name = 'searchform' method = 'post' action ="[% c.uri_for('/menu',menu_item.pid,'search') %]">
+<input name = 'search' size = '30' value = "[% IF c.req.params.search ; c.req.params.search | html; ELSE %]Search [% 
+menu_item.title | html ; END %]" onclick="if(this.value=='Search [% menu_item.title | html %]')this.value='';" onblur="if(this.value=='')this.value='Search [% menu_item.title | escape_js %]';" type="text"><input type = submit class = 'search_button' value = "Search">
+</form></div>
+</div>
+[% END %]
+<br clear= all>
+[%# INCLUDE menu/details.tt2 %]
+[% IF menu_item.event && menu_item.event.in_future ; event = menu_item.event %]
+<center><div id="countbox1" > until the [% menu_item.title%]</div></center>
+<script>
+window.onload=function(){
+	var cdown = new CDown();
+	cdown.add(new Date([% event.start.year %],[% event.start.mon - 1 %],[% event.start.day %],[% event.start.hour %],[% event.start.min %],0), "countbox1",'[% menu_item.title %]');
+};
+</script>
+[% END ;
+UNLESS mobile ; INCLUDE 'menu/sidebar.tt2' ; END %]
+<div class = "menu_page_container" id= "menu_page_container">
+[% UNLESS c.user.club_member ; PROCESS "item/non-member.tt2" ; END %]
+[% content %]
+</div><br clear = all>
+[% IF mobile ; INCLUDE 'menu/sidebar.tt2' ; END %]
+
+
+
+

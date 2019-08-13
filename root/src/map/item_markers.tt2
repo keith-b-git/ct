@@ -1,0 +1,49 @@
+var imageloc = [];
+var imagemarker = [];
+function showpics() {
+	if (imagemarker.length) {
+		[% FOREACH item IN menu_item.items_locatable_bytype_viewable_by(c.user,3,3000,1) -%]
+		[% IF ((item.latitude != undef) && (item.longitude != undef) && ((item.latitude > 0) || (item.longitude > 0))) -%]
+		imagemarker[[% item.id %]].closeBubble()
+		[% map %].removeMarker(imagemarker[[% item.id %]]);
+
+		[% END ; END -%]
+		imagemarker= [];
+	}
+	else {
+		[% FOREACH item IN menu_item.items_locatable_bytype_viewable_by(c.user,3,3000,1)  -%]
+		[% IF ((item.latitude != undef) && (item.longitude != undef) && ((item.latitude > 0) || (item.longitude > 0))) -%]
+		imageloc[[% item.id %]] = new mxn.LatLonPoint([% item.latitude %],[% item.longitude %]);
+		imagemarker[[% item.id %]] = new mxn.Marker(imageloc[[% item.id %]]);
+		imagemarker[[% item.id %]].setIcon('/static/images/camera.gif', [28,33],[1,32]); 
+		imagemarker[[% item.id %]].setInfoBubble('[% PROCESS map/image_popup.tt2 image = item  %]');
+		[% map %].addMarker(imagemarker[[% item.id %]]);
+		[% END ; END -%]
+		[% map %].autoCenterAndZoom();
+	}
+}
+var mmsloc = [];
+var mmsmarker = [];
+function showmms() {
+	if (mmsmarker.length) {
+		[% FOREACH item IN menu_item.items_locatable_bytype_viewable_by(c.user,14,3000,1) -%]
+		[% IF ((item.latitude != undef) && (item.longitude != undef) && ((item.latitude > 0) || (item.longitude > 0))) -%]
+		mmsmarker[[% item.id %]].closeBubble()
+		[% map %].removeMarker(mmsmarker[[% item.id %]]);
+
+		[% END ; END -%]
+		mmsmarker= [];
+	}
+	else {
+		[% FOREACH item IN menu_item.items_locatable_bytype_viewable_by(c.user,14,3000,1)  -%]
+		[% IF ((item.latitude != undef) && (item.longitude != undef) && ((item.latitude > 0) || (item.longitude > 0))) -%]
+		mmsloc[[% item.id %]] = new mxn.LatLonPoint([% item.latitude %],[% item.longitude %]);
+		mmsmarker[[% item.id %]] = new mxn.Marker(mmsloc[[% item.id %]]);
+		mmsmarker[[% item.id %]].setIcon('/static/images/mms.gif', [28,33],[1,32]);
+		mmsmarker[[% item.id %]].setInfoBubble('[% PROCESS map/diary_popup.tt2 item = item  %]');
+		[% map %].addMarker(mmsmarker[[% item.id %]]);
+		[% END ; END -%]
+		[% map %].autoCenterAndZoom();
+	}
+}
+

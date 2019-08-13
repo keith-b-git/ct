@@ -1,0 +1,69 @@
+[% WRAPPER 'member/admin_wrapper.tt2' %]
+<center>
+<table style="background: #E0E0E0;">
+	<tr><th colspan =3> Reminders </th></tr>
+<tr><td colspan = 3><form id = "reminderform">ref date <input name = 'date' class = "datepicker"></form></td></tr>
+<tr><td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','near_expiry','nondd','ORD','1st_reminder') %]?date='+document.getElementById('reminderform').date.value;">1st Reminders</a></td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','near_expiry','nondd','ORD','labels') %]?date='+document.getElementById('reminderform').date.value;">Labels</a></td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','near_expiry','nondd','ORD','report') %]?date='+document.getElementById('reminderform').date.value;">Report</a></td>
+<tr><td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','grace_period','nondd','ORD','2nd_reminder') %]?date='+document.getElementById('reminderform').date.value;">2nd Reminders</a></td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','grace_period','nondd','ORD','labels') %]?date='+document.getElementById('reminderform').date.value;">Labels</a></td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','grace_period','nondd','ORD','report') %]?date='+document.getElementById('reminderform').date.value;">Report</a></td>
+</tr>
+<tr><td>Direct Debit</td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','near_expiry','dd','1','labels') %]?date='+document.getElementById('reminderform').date.value;">Labels</a></td>
+<td><a href = "javascript:document.location = '[% c.uri_for('/memadmin','members_by','near_expiry','dd','1','report') %]?date='+document.getElementById('reminderform').date.value;">Report</a></td>
+</tr>
+</table>
+<p></p>
+<table style="background: #E0E0E0;">
+	<tr><th colspan =4>Address CSVs</th></tr>
+<tr><th>Magazine</th>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','magazine',1,'address_csv') %]">UK</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','magazine',2,'address_csv') %]">UK Young</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','magazine',12,'address_csv') %]">UK & UKY</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','magazine',3,'address_csv') %]">Europe</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','magazine',4,'address_csv') %]">Worldwide</a></td>
+</tr>
+<tr><th>Sec Notes</th><td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',1,'address_csv') %]">UK</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',2,'address_csv') %]">UK Young</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',12,'address_csv') %]">UK & UKY</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',3,'address_csv') %]">Europe</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',4,'address_csv') %]">Worldwide</a></td>
+</tr>
+<tr><th>Sec Notes Labels</th><td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',1,'labels') %]">UK</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',2,'labels') %]">UK Young</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',12,'labels') %]">UK & UKY</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',3,'labels') %]">Europe</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','secnotes',4,'labels') %]">Worldwide</a></td>
+</tr>
+</table>
+<p></p>
+<table style="background: #E0E0E0;"><tr><th>New Members</th></tr>
+<tr><td><form id = 'newmemberform' action = "[% c.uri_for('/memadmin','members_by','all','newmember',1,'newmembers') %]">
+	<input type = submit value = "View new members since-">
+	<input name = 'date' class = 'datepicker'></td></form></tr>
+</table>
+<p></p>
+<table style="background: #E0E0E0;">
+	<tr><th colspan =4>Misc</th></tr>
+<tr><th>All Current Members</th><td><a href="[% c.uri_for('/memadmin','members_by','current','all','all','list') %]">List</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','all','all','report') %]">Report</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','all','all','address_csv') %]">Address CSV</a></td></tr>
+<tr><th>Direct Debit</th><td><a href="[% c.uri_for('/memadmin','members_by','current','dd',1,'list') %]">List</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','dd',1,'report') %]">Report</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','current','dd',1,'address_csv') %]">Address CSV</a></td></tr>
+<tr><th>Direct Debit Near Expiry</th><td><a href="[% c.uri_for('/memadmin','members_by','near_expiry','dd',1,'list') %]">List</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','near_expiry','dd',1,'report') %]">Report</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','near_expiry','dd',1,'address_csv') %]">Address CSV</a></td>
+<td><a href="[% c.uri_for('/memadmin','members_by','near_expiry','dd',1,'labels') %]">Labels</a></td></tr>
+</table>
+</center>
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+[% END %]

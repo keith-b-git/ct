@@ -1,0 +1,34 @@
+<div class = "menu_page_container">
+	<div class= "head"><center>Search</center></div>
+
+<div id="tabs">
+<center>
+<form name = 'searchform'>
+<input name = 'search' size = '100' value = '[% c.req.params.search %]'><input type = submit value = "Search">
+</form>
+</center>
+[% IF count ; count %] results [% END %] 
+[% FOREACH contentcount IN contentcounts ; contentcount.name %] - [% contentcount.count %]     [% END %]
+<dl class = "searchresults">
+[% FOREACH result IN search_results %]
+[% IF result.item.contenttype.type == 'Image' ; INCLUDE 'item/thumbnail.tt2' image = result.item  ; END ; END %]
+<br clear = all>
+[% FOREACH result IN search_results %]
+<dt><a href = "[% result.link_url(c,1,user) %]">[% result.title | highlight(search) %]</a></dt>
+<dd>[% result.content | searchresult(search) %]</dd>
+[% END %]
+[% FOREACH result IN results ; IF result.item.contenttype.type != 'Image' %]
+[% item = result.item ; context = item.display_context(menu_item,c.user).pid ; repliesperpage = 10 %]
+<dt>
+[% IF item.thread ; USE  Math ; replyno = ( item.replyno + 1 ) ; pageno =  Math.int ( (replyno - 1) / repliesperpage ) + 1 -%]
+<a href="[% c.uri_for('/menu',context,'item',item.thread.id,'view',{search => c.req.params.search,messagepage => pageno} ) _ '#num' _ replyno %]">reply to [% result.title | highlight(search) %]</a>
+by [% item.author.username %] [% IF item.created ; item.created.strftime( '%a %d %b %Y %r' ) ; END %]
+[% ELSE -%]
+<a href="[% c.uri_for('/menu',context,'item',item.id,'view',{search => c.req.params.search}) %]"> [% result.title | highlight(search) %]</a> by [% item.author.username %] 
+[% item.created.strftime( '%a %d %b %Y %r' ) %]
+[% END  -%]
+ - [% result.count %]</dt><dd>
+[% IF result.item.contenttype.type == 'Image' ; INCLUDE 'item/thumbnail.tt2' image = result.item ; ELSE ; result.content | searchresult(search) ; END %]<br clear = all></dd>
+ [% END ; END%]
+ </dl>
+</div></div>

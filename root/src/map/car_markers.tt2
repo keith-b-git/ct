@@ -1,0 +1,15 @@
+[% count = 0 ; notcoded = 0 ;FOREACH car IN cars;
+member = car.memno;
+IF member.longitude && member.location_postcode ; count = count + 1-%]
+		var location[% car.id %] = new mxn.LatLonPoint([% member.nplocation.lat %],[% member.nplocation.lon %]);
+		var marker[% car.id %] = new mxn.Marker(location[% car.id %]);
+		marker[% car.id %].setIcon('/static/images/carsm.gif', [30,30],[15,15]); 
+		marker[% car.id %].setInfoBubble("<a href = '[% c.uri_for('/menu',car.menus.first.pid,'view') %]'>[% car.known_as %] [% 
+		item = car.menus.first.top_or_random(c.user) ; id = item.id ; IF id ;url = 'image' _ id _ '.jpg' -%]
+<br><img align = left src = '[% c.uri_for('/image','h-100',url) %]'>[% END %]</a>");
+		[% map %].addMarker(marker[% car.id %] );
+	[% ELSE ;
+		notcoded = notcoded + 1 ;
+		END ;
+ END %]
+

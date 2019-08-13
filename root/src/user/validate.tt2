@@ -1,0 +1,9 @@
+<p>Thank you for registering, you can now access the site
+</p>
+<p>
+[% UNLESS user.memno || user.applications.count({}) %]
+You can now join the Club-	
+<input type = button value = "Join Club Triumph" onclick = "document.location = '[% c.uri_for('/join') %]';">
+[% END %]
+</p>
+<p>You may now want to configure your <a href = "[% c.uri_for('/menu',c.user.profile.pid,'user','options') %]">User Options</a></p>

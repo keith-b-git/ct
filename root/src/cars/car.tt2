@@ -1,0 +1,6 @@
+<div class = 'sb_link'>
+	[% meta.heading1 = car.triumph.model.model _ car.triumph.mark.mark _ ' ' _ car.body.body %]
+[% INCLUDE 'cars/stats.tt2' car = car %]
+
+</div>
+

@@ -1,0 +1,9 @@
+[% meta.nowrap = 1 %]
+<p>
+Dear [% user.first_name | lower | ucfirst %],<br>
+Thank you for registering to use the Club Triumph website.
+To complete the verification process please click on the link below or paste it into your web browser.
+</p><p>
+<a href = "[% c.uri_for ('/verify',user.validation) %]">[% c.uri_for ('/verify',user.validation) %]</a>
+
+</p>

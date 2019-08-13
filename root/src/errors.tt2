@@ -1,0 +1,15 @@
+The following errors have occured:-<br>
+[% FOREACH error IN errors %]
+[% error %]<br>
+[% END ; IF c.user %]
+<p>If you wish to report this as a bug you can do so here-</p>
+<form action = '/report_error'>
+<textarea rows=20 cols=100 name = 'reason' > </textarea>
+<br>
+<input type = submit value = 'Report Error'>
+<input type = hidden name ='errors' value = "[% FOREACH error IN errors ; error | uri ; END %]">
+<input type = hidden name = 'request' value = '[% c.req.uri.as_string %]'>
+</form>
+[% dump %]
+
+[% END %]

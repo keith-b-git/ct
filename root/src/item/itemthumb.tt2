@@ -1,0 +1,14 @@
+<TABLE>
+[% FOREACH item IN content -%]
+  <TR><TD ALIGN=RIGHT>
+    [% item.id %]</TD><TD> [% item.title %]</TD><TD> [% item.heading1 %]</TD><TD> [% item.heading2 %] </TD>
+        <TD> [% item.thumbnail %] </TD>
+<TD>
+<A HREF="[% c.uri_for('/item' item.id 'view') %]">View</A><BR>
+<A HREF="[% c.uri_for('/item' item.id 'edit') %]">Edit</A><BR>
+<A HREF="[% c.uri_for('/item' item.id 'contentedit') %]">Content</A><BR>
+<A HREF="[% c.uri_for('/item' item.id 'delete') %]">Delete</A><BR>
+</TD>
+</TR>
+[% END -%]
+</TABLE>

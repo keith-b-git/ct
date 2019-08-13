@@ -1,0 +1,15 @@
+[% validation = user.member_validations.first %]
+<p>
+	[% user.username %] has requested to be associated with member [% member.fullname %]<br>
+	membership no [% validation.membership_no %]<br>	
+	name [% validation.forename %] [% validation.surname %]
+	address 1[% validation.address %]<br>	
+	town [% validation.town %]<br>	
+	country [% validation.country %]<br>	
+	postcode [% validation.postcode %]<br>	
+	e-mail: [% validation.email %]<br>	
+
+
+
+</p>
+<p> To manage this request click <a href="[% c.uri_for('/memadmin','val_request',validation.id) %]">here</a></p>

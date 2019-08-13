@@ -1,0 +1,7 @@
+[% SWITCH user.access_level ;
+CASE 128 ; userstyle = "guestuserlink" ;
+
+CASE 64 ; userstyle = "memberuserlink"  ;
+CASE [32,16,8,4,2] ; userstyle = "officeruserlink" ;
+END -%]
+<span class = "[% userstyle %]"><a  href = "[% c.uri_for('/menu',user.profile.pid,'view') %]">[% user.username %]</a></span>

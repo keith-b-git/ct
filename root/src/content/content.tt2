@@ -1,0 +1,6 @@
+[% meta.hierachy = hierachy %]
+[% meta.heading1 = object.heading1 %]
+[% meta.heading2 = object.heading2 %]
+[% meta.pid = pid %]
+
+[% content %]

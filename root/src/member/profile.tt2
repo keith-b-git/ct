@@ -1,0 +1,53 @@
+[% IF member && !user ; user = member.userid ; END ; IF user && !member ; member = user.memno ; END ; WRAPPER 'menu/content.tt2'%]
+<table width = 100%><tr><td valign = top> 
+<div class = "data">
+<table class = "data">
+<tr><th>name</th><td>[% user.fullname %]</td></tr>
+<!--<tr><th>access level</th><td>[% user.access_level %]</td></tr>-->
+<tr><th>username</th><td>[% user.username %]</td></tr>
+<tr><th>registered</th><td>[% INCLUDE date.tt2 date = user.date_registered %]</td></tr>
+<tr><th>posts</th><td>[% user.post_count %]</td></tr>
+<tr><th>images</th><td>[% user.image_count %]</td></tr>
+<tr><th>blog posts</th><td>[% user.blog_count %]</td></tr>
+<tr><th>data usage</th><td>[% INCLUDE data_format data = user.data_used %]</td></tr></table></div></td><td valign = 'top'>
+	<div class = "data">
+<table class = "data">
+[% FOREACH item IN member.cars_owned -%]
+<tr><th>car</th><td><a href = "[% c.uri_for('/menu',item.menus.first.pid,'view') %]" >[% item.known_as %]</a></td></tr>
+[% END %]
+
+</table></div></td>
+<td valign = 'top'><div class = "data"><table class = "data">
+[% IF member %]
+<tr><th>membership status</th><td> [% member.status %]</td></tr>
+<tr><th>member from</th><td>[% INCLUDE event/date_range.tt2 start = member.joindate end = member.expdate %]</td></tr>
+
+<tr><th>local group</th><td><A HREF="[% c.uri_for('/menu', member.local_group.menus.first.pid, 'view') %]">[% member.local_group.title %]</A></td></tr>
+[% FOREACH championship IN member.championships ; points = championship.sum(member) ; IF points-%]
+<tr><th>[% championship.title _ ' ' _  championship.year %]</th><td><a href = "[% c.uri_for('/menu',championship.menus.first.pid,'view') %]" >[% points %]  points [% championship.position(member) %]</a></td></tr>
+[% END ; END ; 
+ FOREACH role IN member.club_roles -%]
+<tr><th>club role</th><td><a href = "[% c.uri_for('/menu',role.menus.first.pid,'view') %]" >[% role.description %]</a></td></tr>
+[% END ; END -%]
+</table></div></td>
+<td valign = 'top'><div class = "data"><table class = "data">
+[% FOREACH entrant IN  member.entrants %]
+<tr><th>event entry</th><td><a href = "[% c.uri_for('/menu',entrant.team.menus.first.pid,'view') %]">[% entrant.team.event.title _ ' ' _ entrant.team.title %]</a></td></tr>
+[% END %]
+</table></div></td>
+</tr></table>
+
+
+
+[%# 
+</td><td valign = top>
+[%# INCLUDE 'menu/top_pic.tt2'  menu_item = c.stash.menu_item %]
+[%#</td></tr></table>
+%]
+
+[% BLOCK data_format ;
+IF data > 999999999 ; data = data / 1000000000 ; data | format "%4.3f" %]GB[%
+ELSIF data > 999999 ; data = data / 1000000 ; data | format "%4.3f" %]MB[%
+ELSIF data > 999 ; data = data / 1000 ; data | format "%4.3f" %]KB[%
+ELSE  ; data | format "%4.0f" %]B[% END ;
+END ; END %]

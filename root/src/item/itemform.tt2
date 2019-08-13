@@ -1,0 +1,143 @@
+[% WRAPPER 'menu/content.tt2' %]
+<p align = 'right'><a href = "[% newaction %]">switch to [% IF advanced %]basic[% ELSE %]advanced[% END %] mode</a></p>
+<h2>[% IF form.item.in_storage %]Editing [% form.item.title ;
+ELSE %]Creating new [% form.item.contenttype.displaytype %] in [% menu_item.title ; END %]</h2>[% FOREACH attach IN form.item.imagebank(c) ; attach.title ; END %]
+[% IF form.item.contenttype.id == 5 || form.item.contenttype.id == 6 || form.item.contenttype.id == 7 || form.item.contenttype.id == 12; 
+	IF mobile ;
+		meta.mcewidth = '"550"' ;
+	ELSE ;
+	meta.mcewidth = '"100%"' ;
+	END ;
+END ;
+IF form.item.contenttype.id == 2 || ( form.item.contenttype.id >=  8 && form.item.contenttype.id <=  11 ) ;
+	IF mobile ;
+		meta.mcewidth = '"750"' ;
+	ELSE ;
+		meta.mcewidth = '"100%"' ; 
+	END ;
+	meta.mceheight = '500' ; 
+END %]
+<form id="item_form" method="post" enctype="multipart/form-data">
+<table border =0 WIDTH = 100%>
+<tr><td VALIGN='top' class = "item_form">
+
+[% UNLESS form.item.contenttype.id == 6 || form.field('title').is_inactive ; form.field('title').render ; END ; 
+IF form.item.contenttype.id == 8 ; form.field('price').render ; form.field('price_text').render ; form.field('sizes').render ; END %]<br clear = all>[%
+IF form.item.contenttype.id == 9 || form.item.contenttype.id == 10  ; form.field('price').render ; END %]<br clear = all>[%
+IF form.item.contenttype.id == 12 ; form.field('start_date').render ; form.field('end_date').render ; END ;
+
+ IF form.item.contenttype.id == 3 || form.item.contenttype.id == 8;
+ IF form.item.image_exists(c) %]<img src = "[% form.item.display_uri(c,'w-600') %]">[% END ;
+ form.field('photo').render ; meta.mceedit = 0 ;
+ ELSE ; meta.mceedit = 1 ; meta.imagebank = c.user.items ; END ;
+UNLESS form.item.contenttype.id == 3 ; form.field('content').render ; END ;
+ IF form.item.contenttype.id == 3 ; form.field('licence_info').render ; form.field('licence').render ; END ;
+IF form.item.attachments_addable_by(c.user) && form.field('attachments').is_active %]<div class = 'attachments_form'>[% form.field('attachments').render ; form.field('add_element').render ; form.field('upload').render ; END 
+%]</div><br>[% 
+UNLESS (form.item.contenttype.id == 7) || (form.item.contenttype.id == 6) || form.field('view').is_inactive %]<p>[% form.field('view').render %]</p>[% END ;
+ IF form.item.contenttype.id == 5 &&  form.field('reply').is_active %]<p>[% form.field('reply').render %]</p>[% END ;
+ IF form.item.contenttype.id == 3 ;
+form.field('latitude').render ; form.field('longitude').render ; END %]
+
+[% IF form.item.contenttype.id == 7 ; form.field('recipients').render ; ELSIF form.item.contenttype.id != 6 %]
+
+[% IF form.field('menu_items').is_active %][%  form.field('menu_items').render ; END %]
+[% IF form.field('more_tags').is_active ; form.field('more_tags').render ; form.field('add_tag').render ; END %]
+[% END %]
+<center>[%
+ form.field('submit').render  %]</center></td></tr></table>
+</form>
+
+[% IF c.user && c.user.location_tag > 0 %]
+<script>
+	var geo_options = {
+		enableHighAccuracy: true,
+		maximumAge : 30000,
+		timeout : 27000
+	};
+	if (navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(success, error, geo_options);
+	}
+	function success(position) {
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		var altitude = position.coords.altitude;
+		var accuracy = position.coords.accuracy;
+		document.getElementById('item_form').longitude.value=longitude;
+		document.getElementById('item_form').latitude.value=latitude;
+	};
+
+ 
+	function error(error) {
+		alert("Unable to retrieve your location due to "+error.code + " : " + error.message);
+	};
+	
+	
+	
+
+</script>
+[% END %]
+<script language = 'javascript'>
+
+   $(".chosen-select").chosen()
+   
+   function addTag()
+{
+	var form = document.getElementById('item_form'); 
+	var count = 0;
+	var i = 0;
+	while (form.elements[i]) {
+		if (form.elements[i].id.match(/^menu/) && form.elements[i].checked) { count ++ }
+		i++;
+	}
+	if (count >= [% c.user.maxtags %]) {
+		alert ('you cannot select more than [% c.user.maxtags %] tags for this item'); 
+		return 0;
+	}
+	var tag = document.getElementById('item_form').more_tags.value;
+	var label = document.getElementById('item_form').more_tags.options[document.getElementById('item_form').more_tags.selectedIndex].label;
+	var table = document.getElementById('tag_table');
+	var rowCount = table.rows.length;
+	var row = table.insertRow(rowCount);
+	var cell1 = row.insertCell(0);
+	var element1 = document.createElement("input");
+	element1.type = "checkbox";
+	element1.name="menu_"+tag;
+	element1.id="menu_"+tag;
+	element1.checked = '1';
+	element1.onclick =  new function() {countTags(this)};
+	cell1.appendChild(element1);
+	var cell2 = row.insertCell(1);
+	var element2 = document.createElement("label");
+	element2.setAttribute("for","menu_"+tag);
+	element2.innerHTML = label;
+	cell2.appendChild(element2);
+	$( "input[type='checkbox']" ).checkboxradio();
+}
+
+function countTags(tag) {
+	var form = document.getElementById('item_form');
+	var count = 0;
+	var i = 0;
+	while (form.elements[i]) {
+		if (form.elements[i].id.match(/^menu/) && form.elements[i].checked) { count ++ }
+		i++;
+	}
+	if (count > [% c.user.maxtags %]) {
+		alert ('you cannot select more than [% c.user.maxtags %] tags for this item'); 
+		tag.checked = false;
+	}
+}
+
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+ 
+
+$( "input[type='radio']" ).checkboxradio();
+$( "input[type='checkbox']" ).checkboxradio();
+
+</script>
+
+[% END %]

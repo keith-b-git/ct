@@ -1,0 +1,15 @@
+[% meta.news_acc = 1 ; meta.carousel = 1  %]
+<div id = "news-header"><img src = "/static/images/news.png" style="vertical-align:middle;"><span style="vertical-align:middle;"> LATEST NEWS</span></div>
+<div  style = 'max-width: 800px;'>
+[% FOREACH item IN object.news(c.user,rowsize,newspage) ;
+INCLUDE 'item/news_item.tt2' news = item ; END %]
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.carousel').slick({
+  autoplay: true,
+  autoplaySpeed: 6000,
+	});
+})
+</script>
+

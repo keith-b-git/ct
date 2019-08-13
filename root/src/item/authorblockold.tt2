@@ -1,0 +1,17 @@
+[% id = member.id ; UNLESS authorblk.$id ; authorblk.$id = BLOCK %]
+<div class = "item_author">[% INCLUDE "item/userlink.tt2" user = member %]
+[% INCLUDE "item/avatar.tt2" user = member %]
+<br>
+[% FOREACH role IN member.club_roles_abbr -%]
+[% IF role.menus %]<a href = "[% c.uri_for('/menu',role.menus.first.pid,'view') %]" >[% role.description %]</a>[% ELSE ; role.description ; END %]<br>
+[% END  -%]
+[% IF member.club_member %]posts: [% member.posts %]<br>[% IF member.local_group %]
+<A HREF="[% c.uri_for('/menu', member.memno.local_group.menus.first.pid, 'view') %]">[% member.memno.local_group.title %]</A> group<br>[% END %]
+[% FOREACH item IN member.memno.registers -%]
+<a href = "[% c.uri_for('/menu',item.menus.first.pid,'view') %]" >[% item.known_as %]</a><br>
+[% END ;
+FOREACH championship IN member.memno.championships ; points = championship.sum(member.memno) ; IF points-%]
+<a href = "[% c.uri_for('/menu',championship.menus.first.pid,'view') %]" >[% championship.title _ ' ' _  championship.year %]: [% points %]  points [% championship.position(member.memno) %]</a><br>
+[% END ; END %]joined on [% member.memno.joindate | dateformat %]<br>[% END  %]
+</div>
+[% END ; END ; authorblk.$id %]

@@ -1,0 +1,48 @@
+<table width = 100%><tr><td valign = top> 
+<div class = "top_data">
+<table class = "data">
+<tr><th>name</th><td>[% member.fullname %]</td></tr>
+<!--<tr><th>access level</th><td>[% member.access_level %]</td></tr>-->
+<tr><th>username</th><td>[% member.username %]</td></tr>
+<tr><th>registered</th><td>[% INCLUDE date.tt2 date = member.date_registered %]</td></tr>
+<tr><th>posts</th><td>[% member.post_count %]</td></tr>
+<tr><th>images</th><td>[% member.image_count %]</td></tr>
+<tr><th>blog posts</th><td>[% member.blog_count %]</td></tr>
+<tr><th>data usage</th><td>[% INCLUDE data_format data = member.data_used %]</td></tr></table></div></td><td valign = 'top'>
+	<div class = "top_data">
+<table class = "data">
+<tr><th>car[% IF member.memno.registers.unique.size > 1 %]s[% END %]</th></tr>
+[% FOREACH item IN member.memno.registers -%]
+<tr><td><a href = "[% c.uri_for('/menu',item.menus.first.pid,'view') %]" >[% item.known_as %]</a></td></tr>
+[% END %]
+
+</table></div></td>
+<td valign = 'top'><div class = "top_data"><table class = "data">
+[% IF member.memno %]
+<tr><th>membership status</th><td> [% member.memno.status %]</td></tr>
+<tr><th>member from</th><td>[% INCLUDE event/date_range.tt2 start = member.memno.joindate end = member.memno.expdate %]</td></tr>
+
+<tr><th>local group</th><td><A HREF="[% c.uri_for('/menu', member.memno.local_group.menus.first.pid, 'view') %]">[% member.memno.local_group.title %]</A></td></tr>
+[% FOREACH championship IN member.memno.championships ; points = championship.sum(member.memno) ; IF points-%]
+<tr><th>[% championship.title _ ' ' _  championship.year %]</th><td><a href = "[% c.uri_for('/menu',championship.menus.first.pid,'view') %]" >[% points %]  points [% championship.position(member.memno) %]</a></td></tr>
+[% END ; END ; 
+ FOREACH role IN member.club_roles -%]
+<tr><th>club role</th><td><a href = "[% c.uri_for('/menu',role.menus.first.pid,'view') %]" >[% role.description %]</a></td></tr>
+[% END ; END -%]
+</table></div></td>
+</tr></table>
+
+
+
+[%# 
+</td><td valign = top>
+[%# INCLUDE 'menu/top_pic.tt2'  menu_item = c.stash.menu_item %]
+[%#</td></tr></table>
+%]
+
+[% BLOCK data_format ;
+IF data > 999999999 ; data = data / 1000000000 ; data | format "%4.3f" %]GB[%
+ELSIF data > 999999 ; data = data / 1000000 ; data | format "%4.3f" %]MB[%
+ELSIF data > 999 ; data = data / 1000 ; data | format "%4.3f" %]KB[%
+ELSE  ; data | format "%4.0f" %]B[% END ;
+END %]

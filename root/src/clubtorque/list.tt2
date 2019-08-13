@@ -1,0 +1,9 @@
+[% IF c.session.clubtorquepage && c.session.clubtorquepage.pid == menu_item.pid ; clubtorquepage = c.session.clubtorquepage.page ; ELSE ; clubtorquepage = 1 ; END %]
+[% INCLUDE 'item/pagemenu.tt2' count = c.model('ClubTriumphDB::ClubTorque').count_all rowsize = 20 param = 'clubtorquepage' currentpage = clubtorquepage || 1  -%]
+<br clear = all>
+[% FOREACH clubtorque IN c.model('ClubTriumphDB::ClubTorque').display_order(20,clubtorquepage) %]
+<div class = "ctthumb">
+<a href = "[%c.uri_for('/menu',clubtorque.menus.first.pid,'view') %]"><img src = "/static/clubtorque/[% clubtorque.edition %].jpg" width = 150 align = 'left'> 
+<br clear = left>[% clubtorque.title %]</a></div>
+[% END %]<br clear = all>
+[% INCLUDE 'item/pagemenu.tt2' count = c.model('ClubTriumphDB::ClubTorque').count_all rowsize = 20 param = 'clubtorquepage' currentpage = clubtorquepage || 1  -%]

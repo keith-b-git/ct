@@ -1,0 +1,3 @@
+<center><p>Your chosen Local Group is now <a href= "[% c.uri_for('/menu',member.local_group.menus.first.pid,'view') %]">[% member.local_group.title %]</a>.</p>
+
+</center>

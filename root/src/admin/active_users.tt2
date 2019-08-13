@@ -1,0 +1,9 @@
+<table>
+[% FOREACH user IN users %]
+<tr>
+<td>
+<a href = "[% c.uri_for('/admin','history','user',user.id) %]">[% user.username %]</a></td><td>[% user.histories.size %]</td>
+</tr>[%
+END
+%]
+</table>

@@ -1,0 +1,13 @@
+Please log in to view this page
+
+<form method="post" action="[% c.uri_for('/login') %]">
+Please log in to use the full features of this site.
+<br>
+Username:
+   <input type="text" name="username" size="40" />
+
+Password:
+ <input type="password" name="password" size="40" />
+ <input type="submit" name="submit" value="Log in" />
+
+</form>

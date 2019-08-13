@@ -1,0 +1,25 @@
+<div  class = 'forum_latest'>
+<img src="[% c.uri_for('/static','images','Forum.png') %]" align = 'left' WIDTH = 30px>
+<h3>FORUM LATEST</h3>
+<ul>
+[% FOREACH item IN c.model('ClubtriumphDB::Item').latest_forum(c.user,8 ) -%]
+<a href = "[% c.uri_for('/menu',item.display_context(0,c.user).pid,'item',item.id,'view') %]"><li><strong>
+[% 
+IF item.contenttype.id == 5 ;
+	item.title ;
+ELSE ;
+	're ' _ item.thread.title ;
+END 
+%]</strong>
+
+	by [% item.author.profile.title %]<br>
+	[% item.created | dateformat %]<br>
+	[% item.summary %]
+</li></a>
+[% END %]
+
+
+</ul>
+
+
+</div>

@@ -1,0 +1,59 @@
+[%  meta.mapping =1 ; map = 'eventlocmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+<table><tr><TD VALIGN = top>
+<STRONG>Editing [% groupmeeting.local_group.title %]</STRONG><BR>
+
+
+
+
+
+
+
+
+</TD>
+
+<TR>
+<TD VALIGN ='top'>
+<div style="max-width: 400px">
+Select from existing locations from the drop-down below or map right>>
+    [% form.render %]
+
+
+
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+   $(function() {
+     $(".datepicker").datepicker({dateFormat: "dd/mm/yy" });
+   });
+   $(".chosen-select").chosen()
+</script>
+</div>
+</TD>
+<TD>
+[% map = 'eventlocmap' %]
+
+[% PROCESS map/createmapdiv.tt2 width = 500 height = 600 %]
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/click_to_create.tt2 %]
+[% PROCESS map/select_location_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+if (document.getElementById('locationform').location.value) {showSelected()}
+
+function showSelected()
+{
+	var loc = document.getElementById('locationform').location.value;
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+</script>
+</TD>
+</TR>
+</TABLE>
+

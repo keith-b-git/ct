@@ -1,0 +1,4 @@
+<div class='sb_link'>
+[% meta.heading1 = 'Triumph Cars' %]
+[% INCLUDE 'cars/stats.tt2' car = car %]
+</div>

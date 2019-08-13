@@ -1,0 +1,74 @@
+[% WRAPPER 'menu/content.tt2' ; meta.mceedit = 1 ; meta.mcewidth = '"100%"' ; meta.mceheight = '500' %]
+<h3>User Control Panel</h3>
+<form id = 'user_options_form' method = post>
+<div class = "orderform">
+<h3>Profile Visibility</h3>
+<p>Allow your profile to be seen by others.<br>
+If you choose -
+<dl>
+<dt><strong>All</strong></dt>
+<dd>Anyone with internet access can see your profile</dd>
+<dt><strong>Registered Users</strong></dt>
+<dd>Only users who have registered on the site and are logged in can see your profile</dd>
+<dt><strong>Club Members</strong></dt>
+<dd>Only Club Triumph members who are logged into the site can see your profile</dd>
+<dt><strong>None</strong></dt>
+<dd>Only you can see your profile</dd>
+</dl>
+</p>
+[% form.field('profile_view').render %]
+</div>
+<div class = "orderform">
+<h3>Contact Visibility</h3>
+<p>Allow your e-mail address to be seen by others.<br>
+If you choose -
+<dl>
+<dt><strong>All</strong></dt>
+<dd>Anyone with internet access can see your e-mail address (not recomended)</dd>
+<dt><strong>Registered Users</strong></dt>
+<dd>Only users who have registered on the site and are logged in can see your e-mail address</dd>
+<dt><strong>Club Members</strong></dt>
+<dd>Only Club Triumph members who are logged into the site can see your e-mail address</dd>
+<dt><strong>None</strong></dt>
+<dd>Only you can see your e-mail address</dd>
+</dl>
+</p>
+[% form.field('contact_view').render %]
+</div>
+<div class = 'orderform'>
+<h3>Licencing</h3>
+<p>You can choose a default licence to choose you share your content with others. If you choose a default here you can override this for individual uploads.<br>
+See the <a href ="https://creativecommons.org/share-your-work/">Creative Commons</a> website for more details</p>
+[% form.field('licence').render %]
+</div>
+<div class = "orderform">
+<h3>Location tagging</h3>
+<p>Allow the website access your location and link it to content that you upload. Can be useful if you are uploading while on an event</p>
+[% form.field('location_tag').render %]
+</div>
+[% IF c.user.club_member %]
+<div class = "orderform">
+<h3>Email options</h3>
+<p>Do you want to receive emails from the Club?</p>
+[% form.field('email_optout').render %]
+</div>
+[% END %]
+<div class = "orderform">
+<h3>Display options</h3>
+<p>
+Choose how content is displayed by the site.
+</p>
+[% form.field('threads_per_page').render %]
+[% form.field('replies_per_page').render %]
+[% form.field('images_per_page').render %]
+[% form.field('blogs_per_page').render %]
+</div>
+<div class = "orderform">
+	[% form.field('sig').render %]
+</div>
+<center>
+[% form.field('submit').render %]
+</center>
+</form>
+[% END %]
+

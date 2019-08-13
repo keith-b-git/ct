@@ -1,0 +1,52 @@
+
+	<style type="text/css">
+	#map {
+		height: 400px;
+		width:400px;
+	}
+	</style>
+
+	<div id="map"></div>
+<script type="text/javascript" src="http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=EC3F5370220738B1E0430B6CA40A079C"></script> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script language = "javascript">
+	var map = new mxn.Mapstraction('map', 'googlev3'); 
+	var latlon = new mxn.LatLonPoint(54.3714, -4.4546);
+	map.setCenterAndZoom(latlon, 5);
+    map.addControls({
+        pan: true,
+        zoom: 'small',
+        map_type: true
+    });
+    map.enableScrollWheelZoom();
+    var geocoder = new mxn.Geocoder('openlayers',geocode_return);
+   [% IF location.longitude && location.latitude %]
+    {
+		var loc = new mxn.LatLonPoint([% location.latitude %],[% location.longitude %]);
+		showLocation(loc);
+	}
+[% END %]
+	
+	if (document.forms[0].latitude)
+	{
+		map.click.addHandler(function(eventName, eventSource, eventArgs) {
+		var coords = eventArgs.location;	// coords are an mxn.LatLonPoint object
+		document.forms[0].latitude.value = coords.lat;
+		document.forms[0].longitude.value = coords.lon;
+		onConvertDecimal();
+		map.removeAllMarkers();
+		var marker = new mxn.Marker(coords);
+		marker.setDraggable(true);
+		map.addMarker(marker)
+		marker.show;
+		});
+	}
+	
+	function geocode_return (location) {
+	showLocation (location.point);
+	map.setCenterAndZoom(location.point, 13)
+	}
+
+
+
+</script>

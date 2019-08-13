@@ -1,0 +1,8 @@
+[% meta.acc_count = meta.acc_count + 1 ; meta.search_acc = meta.acc_count %]
+<h3> Search [% menu_item.title %]</h3>
+<center>
+<form name = 'searchform' action ="[% c.uri_for('/menu',c.stash.menu_item.pid,'search') %]">
+<input name = 'search' size = '100' value = '[% c.req.params.search %]'><input type = submit value = "Search [% menu_item.title %]">
+</form>
+</center>
+[% IF meta.insert_point == 'search' ; content ; END %]

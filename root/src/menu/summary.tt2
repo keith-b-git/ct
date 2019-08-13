@@ -1,0 +1,12 @@
+[% IF menu_item.type == 'home' ;   %]
+[% ELSIF menu_item.type == 'event' ; INCLUDE 'event/summary.tt2' event = menu_item.event  %]
+[% ELSIF menu_item.type == 'location' ; INCLUDE 'location/summary.tt2' location = menu_item.location  %]
+[% ELSIF menu_item.type == 'localgroup' ; INCLUDE 'localgroups/summary.tt2' localgroup = menu_item.local_group  %]
+[% ELSIF menu_item.type == 'car' ; INCLUDE 'cars/stats.tt2' car = menu_item.car  %]
+[% ELSIF menu_item.type == 'register' ; INCLUDE 'register/summary.tt2' register = menu_item.register  %]
+[% ELSIF menu_item.type == 'mark' ; INCLUDE 'cars/stats.tt2' car =  menu_item.menus.first.car.triumph   %]
+[% ELSIF menu_item.type == 'model' ; INCLUDE 'cars/stats.tt2' car = menu_item.menus.first.menus.first.car.triumph.model || menu_item.menus.first.car.triumph.model  %]
+[% ELSIF menu_item.type == 'carsroot' ; INCLUDE 'cars/stats.tt2' car = allcars  %]
+[%# ELSIF menu_item.type == 'user_profile' ; INCLUDE 'member/summary.tt2' member = menu_item.user ; ELSE  %]
+
+[% END %]

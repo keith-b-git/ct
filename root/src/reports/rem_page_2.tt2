@@ -1,0 +1,54 @@
+[%  pdf.prFont('NimbusSanL-Bold') ; pdf.prFontSize(10) ;
+pdf.prForm(c.path_to('data','pdfs','page2.pdf'));
+pdf.prFont('NimbusSanL-Regu') ; pdf.prFontSize(25) ;
+xpos=66 ; ypos= 770 ;
+pdf.prText(xpos,ypos, 'Calendar of Events');
+eventcount = 13 ;
+FOREACH event IN  c.model('ClubTriumphDB::Event').future_events_rs.member_viewable;
+	IF eventcount ;
+		ypos = ypos - 20;
+		pdf.prFont('NimbusSanL-Bold') ; pdf.prFontSize(10) ;
+		pdf.prText(xpos,ypos, event.title);
+		ypos = ypos - 10;
+		dates = PROCESS 'event/date_range.tt2' start = event.start end = event.end;
+		pdf.prFont('NimbusSanL') ; pdf.prFontSize(10) ;
+		pdf.prText(xpos,ypos, dates);
+		ypos = ypos - 10;
+		IF member.location && member.location.lon && member.location.lat;
+			distance = event.locations.first.distance(member.location) | format('%.0f');
+		END;
+		IF event.locations.unique.size > 1;
+			loctext = 'Route-' _ ' starting- ' _ event.locations.first.name _ ', ' _ event.locations.first.full_address(member.country) _ ' (' _ distance  _ ' miles away)' _  ' finishing- ' _ event.locations.last.name ;
+			pdf.prText(xpos,ypos, loctext);
+		ELSIF  event.locations.unique.size > 0;
+			loctext = 'Location- ' _ event.locations.first.name _ ', ' _ event.locations.first.full_address(member.country) _ ' (' _ distance  _ ' miles away)';
+			pdf.prText(xpos,ypos, loctext);
+		END;
+
+		eventcount = eventcount - 1 ;
+	END ;
+
+END;
+
+IF member.local_group;
+	pdf.prFont('NimbusSanL-Regu') ; pdf.prFontSize(25) ;
+	xpos=66 ; ypos= 170 ;
+	pdf.prText(xpos,ypos, 'Local Group');
+	pdf.prFont('NimbusSanL') ; pdf.prFontSize(10) ;
+	ypos = ypos - 20;
+	pdf.prText(xpos,ypos, 'Your Local Group is ' _ member.local_group.title _ ' which meets at- ');
+	FOREACH groupmeeting IN member.local_group.group_meetings;
+		ypos = ypos - 10;
+		distance = groupmeeting.location.distance(member.location) | format('%.0f');
+		pdf.prText(xpos,ypos, groupmeeting.location.name _ ', ' _ groupmeeting.location.full_address(member.country) _ ' (' _ distance  _ ' miles away)');
+		ypos = ypos - 10;
+		pdf.prText(xpos,ypos,'on the ' _ groupmeeting.meetingtext _ ' (next meeting ' _ groupmeeting.nextmeeting _ ')');
+	END;
+	ypos = ypos - 10;
+	IF member.local_group.organiser && member.local_group.organiser.club_member ;
+		pdf.prText(xpos,ypos,'Organiser ' _ member.local_group.organiser.fullname);
+	END;
+END ;
+pdf.prPage;
+
+%]

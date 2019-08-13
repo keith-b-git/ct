@@ -1,0 +1,15 @@
+[%  global.carousel = 1 ; WRAPPER  menu/content.tt2 ; rowsize = 20 ;  %]
+[% INCLUDE 'item/pagemenu.tt2' count = membercount rowsize = rowsize param = 'memberpage' currentpage = memberpage || 1  -%]
+<br clear = all>
+[% FOREACH member IN members ;
+IF member.profile ;
+	PROCESS 'menu/thumb.tt2' pid = member.profile ;
+ELSE %]
+<div class = 'sb_link'>
+[%  member.fullname | highlight(search) ; IF member.userid ; INCLUDE 'item/authorblock.tt2' member = member.userid ;
+; END %]</div>
+[% END ;
+END %]
+<br clear = all>
+[% INCLUDE 'item/pagemenu.tt2' count = membercount rowsize = rowsize param = 'memberpage' currentpage = memberpage || 1  -%]
+[% END %]

@@ -1,0 +1,25 @@
+[% content  %]<br>
+<A HREF="[% c.uri_for('/item/list') %]">LIST</A>
+<A HREF="[% c.uri_for('/item',id,'view') %]">VIEW</A>
+<A HREF="[% c.uri_for('/item',id,'edit') %]">EDIT</A>
+<FORM  method="post" enctype="multipart/form-data">
+Title <INPUT NAME="title" VALUE = "[% object.title %]"><BR>
+<input type="file" name="photo" accept="image/jpg,image/gif">
+<BR>
+[% FOREACH blog IN object.registers -%]
+[%IF blog.register.id == item.id %] "CHECKED"[% END -%]  blog- [%blog.register.id %]
+[% END %] 
+
+[% FOREACH item IN cars -%]
+<INPUT TYPE=CHECKBOX NAME="register-[% item.id %]"
+[% FOREACH blog IN object.registers -%]
+[%IF blog.id == item.id %] CHECKED[% END -%] 
+[% END %] >
+
+ [% item.triumph.triumph.model.model %][% item.triumph.triumph.mark.mark %] [% item.regno %]<BR>
+[% END %]
+<INPUT TYPE=SUBMIT>
+</FORM>
+    
+
+[% object.thumbnail %]

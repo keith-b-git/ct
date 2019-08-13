@@ -1,0 +1,14 @@
+[% WRAPPER 'menu/content.tt2' %]
+<h3>[% formtitle %]</h3>
+[% IF c.stash.menu_item.event  ; PROCESS 'event/view.tt2' event = c.stash.menu_item.event ; END %]
+<div>
+[% meta.mceedit = 1 ; meta.mcewidth = '"100%"' ; meta.mceheight = '1000' ; meta.imagebank = c.user.imagebank %]
+[% formstuff = BLOCK ; form.render ; END %]
+[% formstuff | eval %]
+</div>
+[% END %]
+<script>
+	$( "input[type='radio']" ).checkboxradio();
+	$( "input[type='checkbox']" ).checkboxradio();
+</script>
+

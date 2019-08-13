@@ -1,0 +1,10 @@
+[% IF menu_item.view < 256 
+%] title = "[% 
+SWITCH menu_item.view ;
+CASE 1 ; %]This page is a draft and can only be viewed by [% c.user.fullname ;
+CASE 2 ; %]This page can only be viewed by an Administrator [%
+CASE 4 ; %]This page can only be viewed by Moderators or Administrators [%
+CASE 16 ; %]This page can only be viewed by Club Officials [%
+CASE 64 ; %]This page can only be viewed by Club Members [%
+CASE 128 ; %]This page can only be viewed by registered users who are logged in [%
+END %]"[% END %]

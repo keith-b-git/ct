@@ -1,0 +1,5 @@
+[% META title = 'Create/Update Content' %]
+    
+    [% widget_result.as_xml %]
+    
+    <p><a href="[% Catalyst.uri_for('list') %]">Return to book list</a></p>

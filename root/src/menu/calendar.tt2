@@ -1,0 +1,6 @@
+[% WRAPPER 'menu/content.tt2' ; global.fullcalendar = 2 %]
+[% UNLESS menu_item.pid == menu_start.pid %]
+<div >[% INCLUDE 'menu/hierarchy.tt2' type = 'calendar' page = menu_item self=1 %]</div>[% END %]
+<div id='calendar'></div>
+
+[% END ; # of wrapper %]

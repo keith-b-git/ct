@@ -1,0 +1,67 @@
+
+# GSUB 
+
+
+lookup rtlaFormesalternativesdroitegau {
+  lookupflag 0;
+    sub \uni0028 by \uni0029 ;
+    sub \uni0029 by \uni0028 ;
+    sub \uni003C by \uni003E ;
+    sub \uni003E by \uni003C ;
+    sub \uni005B by \uni005D ;
+    sub \uni005D by \uni005B ;
+    sub \uni007B by \uni007D ;
+    sub \uni007D by \uni007B ;
+} rtlaFormesalternativesdroitegau;
+
+feature rtla {
+
+  script DFLT;
+     language dflt ;
+      lookup rtlaFormesalternativesdroitegau;
+} rtla;
+
+@GDEF_Simple = [\space \uni0021 \uni0022 \uni0023 \uni0024 \uni0025 \uni0026 
+	\uni0027 \uni0028 \uni0029 \uni002A \uni002B \uni002C \uni002D \uni002E \uni002F 
+	\uni0030 \uni0031 \uni0032 \uni0033 \uni0034 \uni0035 \uni0036 \uni0037 \uni0038 
+	\uni0039 \uni003A \uni003B \uni003C \uni003D \uni003E \uni003F \uni0040 \uni0041 
+	\uni0042 \uni0043 \uni0044 \uni0045 \uni0046 \uni0047 \uni0048 \uni0049 \uni004A 
+	\uni004B \uni004C \uni004D \uni004E \uni004F \uni0050 \uni0051 \uni0052 \uni0053 
+	\uni0054 \uni0055 \uni0056 \uni0057 \uni0058 \uni0059 \uni005A \uni005B \uni005C 
+	\uni005D \uni005E \uni005F \uni0060 \uni0061 \uni0062 \uni0063 \uni0064 \uni0065 
+	\uni0066 \uni0067 \uni0068 \uni0069 \uni006A \uni006B \uni006C \uni006D \uni006E 
+	\uni006F \uni0070 \uni0071 \uni0072 \uni0073 \uni0074 \uni0075 \uni0076 \uni0077 
+	\uni0078 \uni0079 \uni007A \uni007B \uni007C \uni007D \uni007E \uni007F \uni00A2 
+	\uni00A3 \uni00A4 \uni00A5 \uni00A6 \uni00A7 \uni00A8 \uni00A9 \uni00AA \uni00AB 
+	\uni00AD \uni00AE \uni00AF \uni00B0 \uni00B1 \uni00B2 \uni00B3 \uni00B4 \uni00B5 
+	\uni00B6 \uni00B7 \uni00B8 \uni00B9 \uni00BA \uni00BB \uni00BC \uni00BD \uni00BE 
+	\uni00BF \uni00C0 \uni00C1 \uni00C2 \uni00C3 \uni00C4 \uni00C5 \uni00C6 \uni00C7 
+	\uni00C8 \uni00C9 \uni00CA \uni00CB \uni00CC \uni00CD \uni00CE \uni00CF \uni00D0 
+	\uni00D1 \uni00D2 \uni00D3 \uni00D4 \uni00D5 \uni00D6 \uni00D7 \uni00D8 \uni00D9 
+	\uni00DA \uni00DB \uni00DC \uni00DD \uni00DE \uni00DF \uni00E0 \uni00E1 \uni00E2 
+	\uni00E3 \uni00E4 \uni00E5 \uni00E6 \uni00E7 \uni00E8 \uni00E9 \uni00EA \uni00EB 
+	\uni00EC \uni00ED \uni00EE \uni00EF \uni00F0 \uni00F1 \uni00F2 \uni00F3 \uni00F4 
+	\uni00F5 \uni00F6 \uni00F7 \uni00F8 \uni00F9 \uni00FA \uni02C6 \uni02C7 \uni02C9 
+	\uni02D8 \uni02D9 \uni02DA \uni02DB \uni02DC \uni02DD \uni0300 \uni0301 \uni0302 
+	\uni0303 \uni0304 \uni0306 \uni0307 \uni0308 \uni030A \uni030B \uni030C \uniFFFF 
+	\ucircumflex \ccircumflex \yacute \thorn \ydieresis \Amacron \amacron \Abreve 
+	\abreve \Aogonek \aogonek \Cacute \cacute \Ccircumflex \Cdotaccent \cdotaccent 
+	\Ccaron \ccaron \Dcaron \dcaron \Dcroat \dcroat \Emacron \emacron \Ebreve \ebreve 
+	\Edotaccent \edotaccent \Eogonek \eogonek \Ecaron \ecaron \Gcircumflex 
+	\gcircumflex \Gbreve \gbreve \Gdotaccent \gdotaccent \Gcommaaccent 
+	\gcommaaccent \Hcircumflex \hcircumflex \Hbar \hbar \Itilde \itilde \Imacron 
+	\imacron \Ibreve \ibreve \Iogonek \iogonek \Idotaccent \dotlessi \IJ \ij 
+	\Jcircumflex \jcircumflex \Kcommaaccent \kcommaaccent \kgreenlandic \Lacute 
+	\lacute \Lcommaaccent \lcommaaccent \Lcaron \lcaron \Ldot \ldot \Lslash \lslash 
+	\Nacute \nacute \Ncommaaccent \ncommaaccent \Ncaron \ncaron \napostrophe \Eng 
+	\eng \Omacron \omacron \Obreve \obreve \Ohungarumlaut \ohungarumlaut \OE \oe 
+	\Racute \racute \Rcommaaccent \rcommaaccent \udieresis ];
+@GDEF_Ligature = [];
+@GDEF_Mark = [];
+@GDEF_Component = [];
+
+table GDEF {
+  GlyphClassDef @GDEF_Simple @GDEF_Ligature @GDEF_Mark @GDEF_Component;
+
+} GDEF;
+

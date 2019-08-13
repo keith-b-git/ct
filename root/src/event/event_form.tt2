@@ -1,0 +1,34 @@
+[% WRAPPER 'menu/content.tt2' ;
+IF form_stages ; PROCESS "form_nav_bar.tt2" ; END %]
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+    
+<script language = 'javascript'>
+Date.format = 'dd/mm/yyyy';
+
+   $(".chosen-select").chosen()
+   
+ 
+$(function () {
+    $("#start_date").datepicker({
+		dateFormat: "dd/mm/yy" ,
+        numberOfMonths: 2,
+        onSelect: function (selected) {
+            var dt = new Date($("#start_date").datepicker("getDate"));
+            $("#end_date").datepicker("option", "minDate", dt);
+        }
+    });
+    $("#end_date").datepicker({
+		dateFormat: "dd/mm/yy",
+        numberOfMonths: 2,
+        onSelect: function (selected) {
+            var dt = new Date($("#end_date").datepicker("getDate"));
+            $("#start_date").datepicker("option", "maxDate", dt);
+        }
+    });
+});
+
+   
+</script>
+[% END ; #of wrapper %]
+

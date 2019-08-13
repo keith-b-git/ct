@@ -1,0 +1,16 @@
+[% WRAPPER 'member/admin_wrapper.tt2' %]
+<table>
+	<tr><th>Name</th><th>Date</th><th>Payment Method</th><th>Amount Due</th><th>Amount Paid</th></tr>
+[% FOREACH application IN applications %]
+	<tr><td><a href = "[% c.uri_for('/memadmin','application', application.id,'admin') %]">[% application.title %] [% application.forename %] [% application.surname %]</a></td>
+	<td>[% PROCESS 'date.tt2' date = application.created %]</td>
+	<td>[% application.payment_method %]</td>
+	<td>£[% application.amount_due %]</td>
+	<td>£[% application.amount_paid %]</td>
+	</tr>
+[% END %]
+</table>
+<p>
+<a href = "[% c.uri_for('/memadmin','new_applic') %]">New application</a>
+</p>
+[% END %]

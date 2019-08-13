@@ -1,0 +1,29 @@
+
+<center><h3>Please wait while you are transferred to Lloyds Cardnet for secure payment processing</h3></center>
+
+<form method="post" action=" [% interface_url %] " id= "payment_form">
+<input type="hidden" name="txntype" value="sale">
+<input type="hidden" name="timezone" value="Europe/London"/>
+<input type="hidden" name="txndatetime" value="[% order.formatteddate %]"/>
+<input type="hidden" name="hash_algorithm" value="SHA256"/>
+<input type="hidden" name="hash" value="[% order.sha256_string(c) %]"/>
+<input type="hidden" name="storename" value="[% storename %]" />
+<input type="hidden" name="mode" value="payonly"/>
+<input type="hidden" name="paymentMethod" value="M"/>
+<input type="hidden" name="chargetotal" value="[% order.total %]" />
+<input type="hidden" name="currency" value="826"/>
+<input type="hidden" name="ctorder" value="[% order.id %]"/>
+<input type="hidden" name="invoicenumber" value="[% order.id %]"/>
+<input type="hidden" name="responseSuccessURL" value ="[% c.uri_for('/response_success') %]">;
+<input type="hidden" name="responseFailURL" value ="[% c.uri_for('/response_fail') %]">
+<input type="hidden" name="cardnumber" value ="[% c.flash.cardnumber %]">
+<input type="hidden" name="expmonth" value ="[% c.flash.expmonth %]">
+<input type="hidden" name="expyear" value ="[% c.flash.expyear %]">
+<input type="hidden" name="cvm" value ="[% c.flash.cvm %]">
+<input type="hidden" name="full_bypass" value ="true">
+[% IF mobile %]<input type="hidden" name="mobileMode" value="true"/>[% END %]
+<input type="Submit" value="Click here if you are not automatically redirected">
+</form>
+<script >
+document.getElementById("payment_form").submit();
+</script>

@@ -1,0 +1,45 @@
+[% object = menu_item ; meta.magnific = 1 ; WRAPPER 'menu/content.tt2' ; rowsize = 20 %]
+
+[% IF c.stash.menu_item.images_viewable_by(c.user) %]
+[% meta.acc_count = meta.acc_count + 1 ; meta.gallery_acc = meta.acc_count %]
+[% imagecount = object.items_bytype_viewable_count(c.user,3) %]
+
+[% IF c.session.gallerypage && c.session.gallerypage.pid == menu_item.pid ; gallerypage = c.session.gallerypage.page ; ELSE ; gallerypage = 1 ; END %]
+
+[% INCLUDE 'menu/hierarchy.tt2' type = 'gallery' page = menu_item %] - [% imagecount %] image[% UNLESS image_Count == 1 %]s[% END ; IF c.user %],
+ [% imagecount - object.read_item_count(c.user,'3') %] unviewed.
+ [% END ; IF meta.gallery_title ; meta.gallery_title ; END %]<br clear = all>
+[% IF meta.insert_point == 'gallery' %]
+<a href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view',gallerypage = gallerypage ) %]">Back to Gallery</a>
+[% content ; ELSE %]
+[% IF c.stash.menu_item.images_addable_by(c.user) %]
+<center>
+<input type = button name = "Upload New" value = "Upload New" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_image') %]';">
+</center><BR>
+[% END %]
+<div >
+[% INCLUDE 'item/pagemenu.tt2' count = imagecount rowsize = rowsize param = 'gallerypage' currentpage = gallerypage || 1  -%]
+<BR>
+[% count = 0 %]
+<div class = 'image-link'>
+[% FOREACH image IN object.images(c.user,rowsize,gallerypage) ; PROCESS 'item/thumbnail.tt2' -%]
+[% count=count+1 %]
+[% IF count == 10 %]
+[% count = 0 %]
+
+[% END %]
+[% END %]
+<br clear = all>
+</div>
+[% INCLUDE 'item/pagemenu.tt2' count = imagecount rowsize = rowsize param = 'gallerypage' currentpage = gallerypage || 1  -%]
+<BR>
+[% IF c.stash.menu_item.images_addable_by(c.user) %]
+<center>
+<input type = button name = "Upload New" value = "Upload New" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_image') %]';">
+</center>
+<BR>
+[% END %]
+
+[% END %]
+
+[% END %]</div>[% END %]

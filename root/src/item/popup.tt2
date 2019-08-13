@@ -1,0 +1,36 @@
+[% meta.no_wrap=1 %]
+<table></table>
+<tr>
+<td class = "item_author" valign = top>[% PROCESS "item/authorblock.tt2" member = object.author %]</td>
+<td class = "item_body"><p class = "item_date">uploaded [% object.created.strftime( '%a %d %b %Y %r' ) %]</p>[% object.html %]<br clear = all >
+[% IF object.editable_by(c.user) %]
+<input type = button name = "edit" value = "Edit" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'imageedit') %]';">
+[% END -%]
+<input type = button name = "report" value = "Report" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid,'item',object.id,'report') %]';">
+</td>
+[% INCLUDE tags %]
+</tr>
+</table>
+
+
+[% BLOCK tags %]
+<td VALIGN='top' class = "item_tags">
+
+<table  style = "width:160px">
+<tr><th>TAGS</th></tr>
+
+[% FOREACH pid IN c.stash.item.menu_items %]
+<tr><td>
+<a class = "page_link" href="[% c.uri_for('/menu',pid.pid,'view') %]">[% pid.title %]</a>
+</td></tr>
+[% END %]
+</table></td>
+[% END %]
+
+
+[% END %]
+
+
+
+
+

@@ -1,0 +1,10 @@
+
+[% FOREACH location IN event.event_locations %]
+	[% IF location.location.latitude && location.location.longitude %]
+	var marker[% location.location.id %] = new mxn.Marker(loc[% location.location.id %]);
+	marker[% location.location.id %].setIcon('/static/images/marker.png', [20,50],[1,49]); 
+	marker[% location.location.id %].setInfoBubble('[% INCLUDE 'map/location_bubble.tt2' location = location.location %]');
+	[% map %].addMarker(marker[% location.location.id %]);
+	[% END %]
+[% END %]
+

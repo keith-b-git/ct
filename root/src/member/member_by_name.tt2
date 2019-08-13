@@ -1,0 +1,12 @@
+[% WRAPPER member/admin_wrapper.tt2 %]
+<form method = get>
+<select name = "name" class = "chosen-select">
+[% FOREACH member IN members -%]
+<option value = "[% member.memno %]">[% member.memno_fullname %]</option>[% END %]
+</select>
+<input type = submit value = "View Member">
+</form>
+<script language = 'javascript'>
+   $(".chosen-select").chosen()
+</script>
+[% END %]

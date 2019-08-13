@@ -1,0 +1,35 @@
+[% meta.mapping =1 %]
+[% map = 'groupmap' %]
+
+<style type="text/css">
+#[% map %] {
+	height: 400px;
+	width:400px;
+}
+</style>
+
+[% localgroup.title %]
+<table><tr><TD>
+    [%# Render the HTML::FormHandler Form %]
+    [% form.render %]
+
+</TD>
+<TD>
+<A HREF="javascript:[% map %].autoCenterAndZoom();">Return to Overview</A><BR>
+<div id="[% map %]"></div>
+<script language = 'javascript'>
+[% PROCESS map/createmap.tt2 %]
+[% PROCESS map/select_location_markers.tt2 %]
+[% map %].autoCenterAndZoom();
+if (document.forms[0].location.value) {showSelected()}
+
+function showSelected()
+{
+	var loc = document.forms[0].location.value;
+	[% map %].setCenterAndZoom(eval('loc'+loc), 13);
+	eval('marker'+loc).openBubble();
+}
+</script>
+</TD>
+</TR>
+</TABLE>

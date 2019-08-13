@@ -1,0 +1,13 @@
+<A HREF="[% c.uri_for('/item/list') %]">LIST</A>
+<A HREF="[% c.uri_for('/item',id,'view') %]">VIEW</A>
+<A HREF="[% c.uri_for('/items/item',id,'edit') %]">EDIT</A>
+[% meta.imagebank = c.user.items %]
+<FORM METHOD=POST>
+Title <INPUT NAME="title" VALUE = "[% object.title %]"><BR>
+
+<TEXTAREA ID = "elm1" NAME = 'content' ROWS=50 COLS=100>[% object.content %]</TEXTAREA>
+<BR>
+<INPUT TYPE=SUBMIT>
+</FORM>
+    
+

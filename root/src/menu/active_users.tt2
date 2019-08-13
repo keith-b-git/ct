@@ -1,0 +1,14 @@
+users online - [% FOREACH active_user IN c.model('ClubTriumphDB::Active').current ;
+UNLESS active_user.name == 'Keith' ;
+name = active_user.name ;
+IF active_user.count > 1 ; name = name _ ' (' _ active_user.count _ ')' ; END ;
+ IF notfirst %], [% ELSE ; notfirst = 1 ; END ;
+IF c.user_exists && active_user.user ;
+activeuser = c.model('ClubTriumphDB::User').find(active_user.user) %]<a href = "[% c.uri_for('/menu', activeuser.profile.pid, 'view') %]">[% name %]</a>[% 
+ELSIF active_user.user %]<strong>[% name %]</strong>[%
+ELSIF active_user.name == 'guest' %]<strong><em>[% name %]</em></strong>[%
+ELSE ; name ;
+END ;
+END ;
+END
+-%]

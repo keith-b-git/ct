@@ -1,11 +1,9 @@
 [% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = threads_per_page %]
 [% IF c.session.threadpage && c.session.threadpage.pid == menu_item.pid ; threadpage = c.session.threadpage.page ; ELSE ; threadpage = 1 ;
  END ;
-IF local ; threads = object.local_threads(c.user,rowsize,threadpage ) ;
-ELSE ;
-threads = object.items_bytype_viewable_by(c.user,5,50,1,0)
- ;
-END 
+numtodisp =20;
+trialpage = 1;
+
 %]
 <div class = 'forum_head'>
 
@@ -15,7 +13,11 @@ END
 
 
 <tr><th>Subject</th><th>Replies</th><th>Author</th><th>Views</th><th>Last Action</th><th>tags</th></tr>
-[% dicplayed = 0  ; FOREACH item IN threads ;
+[% dicplayed = 0  ;
+WHILE displayed < numtodisp;
+threads = object.items_bytype_viewable_by(c.user,5,100,trialpage,0) ;
+trialpage = trialpage + 1 ;
+ FOREACH item IN threads ;
 UNLESS item.read(c.user)
 %]
 
@@ -32,8 +34,10 @@ request = '/menu/' _ c.stash.menu_item.pid _ '/item/' _ item.id _ '/view' %]</di
 
 </tr>
 [% displayed = displayed + 1 ;  END ;
-LAST IF displayed == 10 ;
-END %]
+LAST IF displayed == numtodisp ;
+END ;
+END
+%]
 
 
 </table>

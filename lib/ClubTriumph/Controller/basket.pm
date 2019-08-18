@@ -55,7 +55,7 @@ sub add_to_basket :Chained('/menu/base') :PathPart('add_to_basket') :Args(1) {
 sub view :Chained('/menu/base') :PathPart('checkout') :Args(0) {
     my ( $self, $c ) = @_;
 	my $user = $c->user;
-	foreach my $param (keys $c->req->params) {
+	foreach my $param (keys %{$c->req->params}) {
 		if ($param =~ /^quantity_(\d*)/) {
 			my $id = $1;
 			$c->model('ClubTriumphDB::basket')->update_quantity($c,$id,$c->req->params->{$param});

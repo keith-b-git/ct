@@ -1,11 +1,10 @@
 [% WRAPPER 'menu/content.tt2' ; object = menu_item ; meta.acc_count = meta.acc_count + 1 ; meta.thread_acc = meta.acc_count ; rowsize = threads_per_page %]
 [% IF c.session.threadpage && c.session.threadpage.pid == menu_item.pid ; threadpage = c.session.threadpage.page ; ELSE ; threadpage = 1 ;
  END ;
-IF local ; threads = object.local_threads(c.user,rowsize,threadpage ) ;
-ELSE ;
-threads = object.threads(c.user,rowsize,threadpage ) ;
-END ;
-thread_count = menu_item.viewable_item_count(c.user||0,5)
+
+threads = object.threads(c.user,rowsize,threadpage, 1 ) ;
+
+thread_count = menu_item.unread_item_count(c.user||0,5)
 %]
 <div class = 'forum_head'>
 [% UNLESS menu_item.pid == menu_start.pid ; INCLUDE 'menu/hierarchy.tt2' type = 'forum' page = menu_item ; END %]
@@ -13,13 +12,12 @@ thread_count = menu_item.viewable_item_count(c.user||0,5)
 <a href="[% c.uri_for('/menu',c.stash.menu_item.pid,'view',threadpage = threadpage ) %]">Back to Message Menu</a>
 [% content %][% ELSE ;
 cat_count = menu_item.forum_category_count(c.user) 
-%]<center> [%
+%]<center>[%
 IF cat_count > 1 %]
  <input type = button value = "View by category" name = "forum_view" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'forum') %]';">
- [% END ;
- IF c.user_exists 
-	%]<input type = button value = "View all unread ([% menu_item.unread_item_count(c.user||0,5) %] threads)" name = "unread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'unread') %]';">[%
-END %]</center>
+[% END %]
+<input type = button value = "View all threads ([% menu_item.viewable_item_count(c.user||0,5) %] threads)" name = "threads" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'threads') %]';">
+</center>
 
 </div>
 <table cellspacing = 1 cellpadding =5 class = "threadstable">
@@ -36,7 +34,7 @@ END %]</center>
 <tr >
 	<td >
 <a href = "[% item.first_unread(c.user).view_uri(c,menu_item) %]" [% UNLESS item.read(c.user) %]class = "unread_item"[% END %]>[% item.title %]</a>
-[% IF item.sticky %]<div style = "float:right;">sticky</div>[% END ; replies = item.count_replies %]
+[% IF item.sticky %]<div style = "float:right;">sticky</div>[% END ; replies = item.replycount %]
 <div style = "float: right">[% INCLUDE 'item/pagemenu.tt2' count = replies rowsize =  replies_per_page param = 'messagepage' currentpage = 0 
 request = '/menu/' _ c.stash.menu_item.pid _ '/item/' _ item.id _ '/view' %]</div>
 </td><td>[% IF item.contenttype.id == 5 ; replies ; END %]</td><td>[% INCLUDE "item/userlink.tt2" user = item.author %]</td><td>[% item.views %]</td>
@@ -53,11 +51,12 @@ request = '/menu/' _ c.stash.menu_item.pid _ '/item/' _ item.id _ '/view' %]</di
 <input type = button name = "new_thread" value = "Create New Thread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_thread') %]';">
 </th></tr>[% END -%]
 </table>
+[% END %]
 <div class = 'forum_head'>
 <center> <input type = button value = "Mark all forum as read" name = "mark_read" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'mark_all_read') %]';">
 <input type = button value = "Mark all forum as unread" name = "mark_unread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'mark_all_unread') %]';">
 </center>
 </div>
-[% END ; END %]
+[% END %]
 
 

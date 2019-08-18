@@ -80,7 +80,7 @@ UNLESS c.action == 'item/forum' ;
 			meta.thread_title ; 
 		ELSE ;  thread_count %] thread[% UNLESS thread_count == 1 %]s[% END ; 
 			IF c.user %],  [% 
-				thread_count - c.stash.menu_item.read_item_count(c.user,'5') %] unread.[% 
+				menu_item.unread_item_count(c.user||0,5) %] unread.[% 
 			END ; 
 		END ;
 		latest = menu_item.latest_item(c.user,5); 

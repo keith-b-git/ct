@@ -6,7 +6,10 @@ thread_count = menu_item.viewable_item_count(c.user||0,5) ;
 <br>
 <div id = 'collapse_button' style = 'float:right'><a class = "expand_button" href = "javascript:collapse_all();">collapse all -</a></div>
 <div id = 'expand_button' style = 'float:right; display:none;'><a class = "expand_button" href = "javascript:expand_all();">expand all +</a></div>
-<center> <input type = button value = "View all threads ([% thread_count %] threads)" name = "threads" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'threads') %]';"></center>
+<center> <input type = button value = "View all threads ([% thread_count %] threads)" name = "threads" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'threads') %]';">
+[% IF c.user_exists 
+	%]<input type = button value = "View all unread ([% menu_item.unread_item_count(c.user||0,5) %] threads)" name = "unread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'unread') %]';">[% 
+END %]</center>
 </div>
 
 [% future_events = menu_item.current_future_events(c.user) ; 
@@ -154,9 +157,11 @@ latest = menu_start.latest_item(c.user,5); IF latest%]
 <td style = 'width:30%'>[% FOREACH tag IN latest.tags %]<a href = "[% c.uri_for('/menu',tag.id,'threads') %]" >[% tag.title %]</a> [% END %]</td></tr>
 </table>
 [% END %]
-[% IF c.user_exists %]
-<center><a href = "[% c.uri_for('/menu',menu_item.pid,'top_ten') %]">Top Ten unread threads</a></center>
-[% END %]
+<div class = 'forum_head'>
+<center> <input type = button value = "Mark all forum as read" name = "mark_read" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'mark_all_read') %]';">
+<input type = button value = "Mark all forum as unread" name = "mark_unread" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'mark_all_unread') %]';">
+</center>
+</div>
 <br clear =all>
 
 

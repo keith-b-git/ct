@@ -76,7 +76,7 @@ Check if there is a user and, if not, forward to login page
 # 'auto's "chain" (all from application path to most specific class are run)
 # See the 'Actions' section of 'Catalyst::Manual::Intro' for more info.
 sub auto :Private {
-    my ($self, $c) = @_;$c->log->debug('here%%%%%%%');
+    my ($self, $c) = @_;
     if ($c->config->{'Controller::Root'}->{require_ssl}) {
 		$c->require_ssl;
 	}

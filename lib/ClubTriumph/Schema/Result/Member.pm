@@ -771,10 +771,10 @@ sub location {
 		return {lat => $self->latitude, lon => $self->longitude}
 	}
 	else {
-	#	use Geo::Coder::OSM;
-	#	my $geocoder = Geo::Coder::OSM->new;
-		use Geo::Coder::All;
-		my $geocoder = Geo::Coder::All->new(geocoder=>'OSM');
+		use Geo::Coder::OSM;
+		my $geocoder = Geo::Coder::OSM->new;
+#		use Geo::Coder::All;
+#		my $geocoder = Geo::Coder::All->new(geocoder=>'OSM');
 	#	use Geo::Coder::Googlev3;
 	#	my $geocoder = Geo::Coder::Googlev3->new;
 	    my $location = $geocoder->geocode(

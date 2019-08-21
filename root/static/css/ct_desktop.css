@@ -1,9 +1,15 @@
 @font-face {
-  font-family: gillius;
+	font-family: gillius;
+	/* src: url('/static/fonts/osp.foundry.sans-guilt/gilliusMB.otf'); */
+	src: url('/static/fonts/Gillius/GilliusADFNo2-Regular.ttf');
+}
 
-#  src: url('/static/fonts/osp.foundry.sans-guilt/gilliusMB.otf');
-   src: url('/static/fonts/Gillius/GilliusADFNo2-Regular.ttf');
+html {
+  box-sizing: border-box;
+}
 
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 #wrap {
@@ -548,7 +554,9 @@ th   {font-family: gillius, Helvetica, arial,century gothic;  color:#263a7f; }
 #td  {font-family: gillius, Helvetica, arial,century gothic; background-color: #FFFFFF}
 
 .head2 {color:#FFFFFF; font-family: Helvetica;font-size: 1em;font-weight: bold;}
-.welcome {color:#004080; font-family: gillius,  Helvetica;font-size: 1em;  padding:5px;}
+.welcome {
+	color:#004080; font-family: gillius,  Helvetica;font-size: 1em;  padding:5px;
+}
 .smallprint {color:#004080; font-family: Helvetica;font-size:1em; width :100%; text-align: centerline;  padding:5px;}
 .sub {color:#FFFFFF; font-family: Helvetica;font-size: 1em;font-weight: bold;}
 .membar {font-family: gillius, Helvetica; border-width:2pt; border-color:#990000; background-color:white; font-weight:bold; font-size:0.625em}

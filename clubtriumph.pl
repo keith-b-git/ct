@@ -8,8 +8,8 @@
 	    
 	    connect_info => {
 	
-	        dsn => 'dbi:mysql:clubtriu_mph',
-	        user => 'clubtriu_mph',
+	        dsn => 'dbi:mysql:ctdev',
+	        user => 'root',
 	        password => '',
 	        AutoCommit => q{1},
 			RaiseError        => 1,

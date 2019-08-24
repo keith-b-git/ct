@@ -109,8 +109,10 @@ document_base_url : '[% c.uri_for('/') %]',
 <!-- script src="https://openlayers.org/api/OpenLayers.js"></script>
 <!--script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>-->
   
-<script type="text/javascript" src="https://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=****************"></script --> 
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=[% c.config.Mapping.openspace_key %]"></script --> 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=[% c.config.Mapping.google_key %]&callback=initMap"
+  type="text/javascript"></script>
+
 
 
 <!--script src="http://mapstraction.com/mxn/build/latest/mxn.js?(openlayers,openspace,googlev3,[geocoder])" type="text/javascript"></script-->

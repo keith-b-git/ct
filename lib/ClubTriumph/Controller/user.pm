@@ -9,7 +9,7 @@ use Moose;
 use namespace::autoclean;
 
 BEGIN { extends 'Catalyst::Controller'; }
-with 'Catalyst::TraitFor::Controller::reCAPTCHA';
+#with 'Catalyst::TraitFor::Controller::reCAPTCHA';
 
 =head1 NAME
 

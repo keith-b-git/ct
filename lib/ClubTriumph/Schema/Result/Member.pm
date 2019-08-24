@@ -780,14 +780,14 @@ sub location {
 	    my $location = $geocoder->geocode(
 	       { location => $self->address1.', '.$self->address2.', '.$self->address3.', '.$self->address4.', '.$self->address5.', '.$self->postcode.', '.$self->country});
 	    my $coordinates = $$location{coordinates};
-	    unless ($$coordinates{lat}) {
-			my $google_geocoder = Geo::Coder::All->new();
+#	    unless ($$coordinates{lat}) {
+#			my $google_geocoder = Geo::Coder::All->new();
 	#	use Geo::Coder::Googlev3;
 	#	my $geocoder = Geo::Coder::Googlev3->new;
-			eval {$location = $google_geocoder->geocode(
-			{ location => $self->address1.', '.$self->address2.', '.$self->address3.', '.$self->address4.', '.$self->address5.', '.$self->postcode.', '.$self->country})};
-			$coordinates = $$location{coordinates};
-		}
+#			eval {$location = $google_geocoder->geocode(
+#			{ location => $self->address1.', '.$self->address2.', '.$self->address3.', '.$self->address4.', '.$self->address5.', '.$self->postcode.', '.$self->country})};
+#			$coordinates = $$location{coordinates};
+#		}
 
 	    $self->update({location_postcode => $self->postcode, latitude => $$coordinates{lat}, longitude => $$coordinates{lon}});
 		return $coordinates

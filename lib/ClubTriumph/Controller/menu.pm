@@ -188,11 +188,14 @@ sub contentform  {
         $c->stash( template => 'menu/menucontentform.tt2', form => $form, $menu_item );
         my $old_parent = $menu_item->parent;
         $form->process( item => $menu_item, params => \%param );
+        if ($menu_item->in_storage && $c->action =~ /create$/ && $param{upload}) { # redirect to contentedit if an attrachment ids added to newly created item.
+        	$c->response->redirect($c->uri_for( $menu_item->pid, 'contentedit'));
+		}
         return unless ($form->validated && !$param{upload});
         unless ($menu_item->menu_order) {$menu_item->make_last}
         $menu_item->link_uploaded_images($c);
  #       $menu_item->spider($c);
-		$c->response->redirect($c->uri_for( $menu_item->id, 'view', {mid => $c->set_status_msg("Item edited")})); 
+		$c->response->redirect($c->uri_for('/menu', $menu_item->pid, 'view', {mid => $c->set_status_msg("Item edited")})); 
 
     }
     

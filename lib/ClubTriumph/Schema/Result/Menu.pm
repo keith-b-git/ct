@@ -2095,11 +2095,11 @@ sub context_related {
 
 sub access_options {
 	my ($self, $user, $mask, $parent) = @_;
-	my $access_level = $user->access_level;
+	my $access_level = $self->access_level($user);
 	my $level32;
-#	my $localgroup = $self->ancestors->search({type => 'localgroup'},{order_by => {-desc => 'pid'}})->first;
-#	if ($localgroup) {$level32 = $localgroup->title.' Members'}
-	my $event = $self->ancestors->search({type => 'event'},{order_by => {-desc => 'pid'}})->first;
+	my $menu_item = $self;
+	if (!$menu_item->in_storage && $self->parent) {$menu_item = $self->parent}
+	my $event = $menu_item->ancestors->search({type => 'event'},{order_by => {-desc => 'pid'}})->first;
 	if ($event) {$level32 = $event->title.' Entrants'}
 	else {$mask &= 479}
 	my $level8;
@@ -2976,23 +2976,24 @@ sub access_level {
 	my $c = ClubTriumph->ctx;
 	if ($c->session->{menu_access_level}{$self->pid}) {return $c->session->{menu_access_level}{$self->pid}}
 	my $access_level = $user->access_level;
-	if ($self->view & 32 && $user && $self->ancestors->related_resultset('event')->count({}) && $self->ancestors->related_resultset('event')->related_resultset('entries')->count({
-		-or => ['entries.user' => $user->id,
+	my $menu_item = $self;
+	if (!$menu_item->in_storage && $self->parent) {$menu_item = $self->parent} #handle newly created items that aren;t in storage yet.
+	if (($menu_item->view & 32) && $user && ($menu_item->ancestors->related_resultset('event')->count({}) && $menu_item->ancestors->related_resultset('event')->related_resultset('entries')->count({
+		-and => [-or => ['entries.user' => $user->id,
 				'entrants.user' => $user->id], 
-		-or => [status => 'live', status => 'complimentary']},{prefetch => 'entrants'})) {
-		$access_level |= 32;
+		-or => [status => 'live', status => 'complimentary']]},{prefetch => 'entrants'}) ||
+			($c->user->club_member && $menu_item->ancestors->related_resultset('event')->count({organiser => $c->user->memno->memno})
+			)
+		)
+	) {
+		$access_level |= 32; 
 	}
-	if ( $user && $self->event && $self->event->entries->count({
-		-or => ['entries.user' => $user->id,
-				'entrants.user' => $user->id], 
-		-or => [status => 'live', status => 'complimentary']},{prefetch => 'entrants'})) {
-		$access_level |= 32;
-	}
-	if ($user->club_member && $self->ancestors->related_resultset('manager')->count({})  
-			&& ($self->ancestors->related_resultset('manager')->related_resultset('member_club_roles')->related_resultset('member')->count({memno => $user->memno->memno}))) { # cascade managers
+	if ($user->club_member && $menu_item->ancestors->related_resultset('manager')->count({})  
+			&& ($menu_item->ancestors->related_resultset('manager')->related_resultset('member_club_roles')->related_resultset('member')->count({memno => $user->memno->memno}))) { # cascade managers
 		$access_level |= 8}
 	if ($c->session->{menu_access_level}) {$c->session->{menu_access_level}{$self->pid} = $access_level} 
 	else {$c->session(menu_access_level => {$self->pid => $access_level})}
+	$c->log->debug('pid'.$self->pid.'View'.($self->view & 32).'Entrant'.($access_level & 32));
 	return $access_level
 }
 

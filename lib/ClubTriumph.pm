@@ -28,7 +28,7 @@ use Catalyst qw/
     Session::Store::FastMmap
     Session::State::Cookie
     StatusMessage
-	RequireSSL
+
 	Scheduler
 /;
 #    Session::Store::File     Scheduler     -Debug     StackTrace
@@ -78,7 +78,7 @@ __PACKAGE__->config('Plugin::Session' => {
 #        dbi_data_field => 'session_data',
 #        dbi_expires_field => 'expires',
 		compress => 'snappy',
-		cookie_secure => 1,
+		cookie_secure => 0,
     });
 
 __PACKAGE__->config('Plugin::Session::Store' => {
@@ -86,10 +86,7 @@ __PACKAGE__->config('Plugin::Session::Store' => {
 		compress => 'snappy'
     });
 
-__PACKAGE__->config('Plugin::Session::State::Cookie' => {
-	cookie_secure => 1,
 
-    });
 
 __PACKAGE__->config(
     'Plugin::Authentication' => {

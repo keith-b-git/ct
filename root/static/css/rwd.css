@@ -1,0 +1,25 @@
+@font-face {
+	font-family: gillius;
+	src: url('/static/fonts/Gillius/GilliusADFNo2-Regular.ttf');
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.topwrap {
+    width: 100%;
+    max-width: 1280px;
+}
+
+.topwrap {
+    display: grid;
+    grid-template-columns: repeat(12, [col] 1fr );
+    grid-template-rows: repeat(5, [row] auto);
+    grid-column-gap: 1em;
+    grid-row-gap: 15px;
+}

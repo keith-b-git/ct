@@ -1,6 +1,9 @@
 [% banner = c.model('ClubTriumphDB::Banner').next(type,c) ;
 IF banner ;
 IF type == 'mpu' ; width = 350 ; ELSE ; width = 1110 ; END 
-%]<div><a href = "[% banner.url(type) %]" ><img src = "[% c.uri_for('/static','banners',banner.image(type)) %]" width = [% width %]></a>
+%]<div class="topwrap__banner">
+    <a href = "[% banner.url(type) %]" >
+        <img src = "[% c.uri_for('/static','banners',banner.image(type)) %]" width = [% width %]>
+    </a>
 </div>[% 
 END %]

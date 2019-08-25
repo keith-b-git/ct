@@ -2,15 +2,13 @@
 <link  href="[% c.uri_for('/static/css/chosen.css') %]" rel="stylesheet" type="text/css">
 <link  href="[% c.uri_for('/static/css/superfish.css') %]" rel="stylesheet" type="text/css">
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>-->
 
-<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-<!--<script src="[% c.uri_for('/static/js/chosen.jquery.js') %]"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
 
 <!--<script src="[% c.uri_for('/static/js/tinymce5d/tinymce.js')%]"></script>-->
@@ -18,13 +16,17 @@
 
 <script src="[% c.uri_for('/static/js/superfish.js')%]"></script>
 
-[% IF mobile %]<link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/ct_mobile.css') %]">
+<!--[% IF mobile %]<link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/ct_mobile.css') %]">
 	<link rel="stylesheet" type="text/css" href="/static/css/xnormalize.css" />
 	<link rel="stylesheet" type="text/css" href="/static/css/icons.css" />
 	<link rel="stylesheet" type="text/css" href="/static/css/component.css" />
 	<script src="/static/js/modernizr.custom.js"></script>
 	<script src="[% c.uri_for('/static/js/jquery.ui.touch.js') %]"></script>
-[% ELSE %]<link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/ct_desktop.css') %]">[% END %]
+[% ELSE %]
+  <link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/ct_desktop.css') %]">
+[% END %]-->
+
+<link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/rwd.css') %]">
 
 <script>
 
@@ -94,13 +96,10 @@ tinymce.init({
       [%# END -%]
     [%# END -%]
   ],
-  // toolbar: "emoticons"
   upload_image_url: "[% c.uri_for('/menu',menu_item.pid,'upload_images') %]",
-  //images_upload_url: "[% c.uri_for('/menu',menu_item.pid,'upload_images') %]",
   external_plugins: {
     'imageupload': '/static/js/tinymce5d/plugins/uploader/plugin.js'
   },
-  //language : 'en_GB',
   relative_urls : false,
   remove_script_host : false,
   document_base_url : '[% c.uri_for('/') %]',

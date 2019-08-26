@@ -2036,7 +2036,6 @@ around 'update' => sub {
 	my $sticky =$self->sticky;
 	my $sortby = $self->sortby;
 	my $replies = $self->replycount;
-	my $modified = $self->modified;
 	my $old = $self->get_from_storage;
 	my $views = $old->views;
 	my $modified = $old->modified;

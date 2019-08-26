@@ -17,7 +17,8 @@ use utf8;
 #                 directory
 
 use Catalyst qw/
--Debug     StackTrace
+    -Debug     
+    StackTrace
     ConfigLoader
     Static::Simple
 
@@ -28,10 +29,10 @@ use Catalyst qw/
     Session::Store::FastMmap
     Session::State::Cookie
     StatusMessage
-
+	RequireSSL
 	Scheduler
 /;
-#    Session::Store::File     Scheduler     -Debug     StackTrace
+#  Remove -Debug & StackTrace for deployment 
 
 use CatalystX::RoleApplicator;
 

@@ -24,13 +24,12 @@ my $username = $c->config->{'Schema::Result::SMS'}->{aql_username};
 my $querystring= "https://gw.aql.com/sms/sms_gw.php?username=triumph&password=$password&originator=$sender&destination=$recipients&message=$message";
 my $response = get($querystring);
 
-my $c = ClubTriumph->ctx or die "Not in a request!";
+
 my $logfile = $c->path_to('root','log').'/messagelog.log';
 open (LOG,">>$logfile");
 print LOG "$querystring $response\n";
 close LOG; 
-my $password = $c->config->{'Schema::Result::SMS'}->{aql_password};
-my $username = $c->config->{'Schema::Result::SMS'}->{aql_username};
+
 $querystring= "https://gw.aql.com/sms/sms_gw.php?username=$username&password=$password&originator=$sender&destination=$sender&message=$response";
 my $receipt = get($querystring);
 return $response;

@@ -22,9 +22,9 @@
 </div>
 <form>
 <table cellspacing = 1 cellpadding =5 class = "threadstable">
-[% IF c.stash.menu_item.messages_addable_by(c.user) -%]<tr><th colspan = 6>
+<tr><th colspan = 6>
 <input type = button name = "new_thread" value = "Create New Private Message" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_pm') %]';">
-</th></tr>[% END -%]
+</th></tr>
 <tr><th colspan =6>
 
 [% INCLUDE 'item/pagemenu.tt2' count = c.user.pm_count(folder) rowsize = 15 param = 'pmpage' currentpage = pmpage || 1  -%]
@@ -54,10 +54,10 @@
 <tr><th colspan =6>
 [% INCLUDE 'item/pagemenu.tt2' count = c.user.pm_count(folder) rowsize = 15 param = 'pmpage' currentpage = pmpage || 1  -%]
 </th></tr>
-[% IF c.stash.menu_item.messages_addable_by(c.user) -%]
+]
 <tr><th colspan = 6>
 <input type = button name = "new_thread" value = "Create New Private Message" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_pm') %]';">
-</th></tr>[% END -%]
+</th></tr>
 </table>
 </form>
 

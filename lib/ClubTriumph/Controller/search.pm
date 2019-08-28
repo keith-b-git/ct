@@ -170,7 +170,6 @@ sub pagesearch :Chained('/menu/base') :PathPart('search') :Args(0) { #:Local :Ar
     if ($c->user) {
 		if ($c->user->access_level & 128) {$accesslevel = 128}
 		if ($c->user->access_level & 64) {$accesslevel = 64}
-		$accesslevel = $c->user->access_level;
 		$user_id = $c->user->id 
 	}
     my $filterterm ={};

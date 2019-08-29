@@ -2021,9 +2021,9 @@ after 'insert' => sub {
 		$self->thread->update({replycount => $self->thread->items->count({})});
 		$thread->discard_changes;
 		$thread->blog_menus->update_all({replies => $thread->replycount, sortby => $thread->sortby});
-		foreach my $blog_menu (	$thread->blog_menus) {
-			$blog_menu->bms_read->delete;
-			}
+#		foreach my $blog_menu (	$thread->blog_menus) {
+#			$blog_menu->bms_read->delete;
+#			}
 		};
 	$self->spider;
 };

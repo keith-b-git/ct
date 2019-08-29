@@ -64,7 +64,7 @@ sub events : Local {
 			color => $colour
 		})
 	}
-	$c->stash(1 => \@events);
+	$c->stash('json_data' => \@events);
 	$c->forward('View::JSON');
 }
 
@@ -108,7 +108,7 @@ sub cal_events :Chained('/menu/base') :PathPart('cal_events') :Args(0) {
 			color => $colour
 		})
 	}
-	$c->stash(1 => \@events);
+	$c->stash('json_data' => \@events);
 	$c->forward('View::JSON');
 }
 

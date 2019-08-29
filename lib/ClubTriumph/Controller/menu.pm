@@ -477,13 +477,14 @@ sub upload_images :Chained('base')  :Args(0) {
 	my ($self,$c) = @_;
 	my $menu_item = $c->stash->{menu_item};
 	my $resultCode =0;
+	my @files;
 	if ($menu_item->images_addable_by($c->user))  {
-		my @files = $c->model('ClubTriumphDB::Item')->upload_images($c);
-		$c->stash->{data} = \@files;
+		@files = $c->model('ClubTriumphDB::Item')->upload_images($c);
 	}
 	else {$resultCode = 5}
-	$c->stash->{resultCode} = $resultCode;
-	$c->forward('ClubTriumph::View::JSON')
+	$c->log->debug('resultCode '.$resultCode.' Files '.@files);
+	$c->stash(json_data => {data => \@files, resultCode => $resultCode});
+	$c->forward('ClubTriumph::View::JSON');
 }
 
 

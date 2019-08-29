@@ -1146,7 +1146,7 @@ sub contactable {
 	my $level = $self->contact_view;
 	unless ($level) {$level = 0}
 	unless ($user) { return ($level == 256)}
-	return ($level >= $user->access_level)
+	return ($level & $user->access_level)
 }
 
 sub link_to_member {

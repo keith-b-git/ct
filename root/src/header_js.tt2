@@ -120,7 +120,7 @@ document_base_url : '[% c.uri_for('/') %]',
 <script src="[% c.uri_for('/static/js/mxn/mxn.core.js') %]" type="text/javascript"></script>
 <script src="[% c.uri_for('/static/js/mxn/mxn.openlayers.core.js') %]" type="text/javascript"></script>
 <script src="[% c.uri_for('/static/js/mxn/mxn.leaflet.core.js') %]" type="text/javascript"></script>
-<!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />-->
+<!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
  <!--[if lte IE 8]>
      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.ie.css" />
  <![endif]-->

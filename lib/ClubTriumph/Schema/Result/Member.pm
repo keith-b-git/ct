@@ -1089,7 +1089,7 @@ sub renewal_form {
 		mobile => $self->mobile,
 		area => $self->area->id,
 		local_group => $localgroup,
-		lg_preference => $self->lg_preference,
+		lg_preference => $self->lg_preference->id,
 		status => 'open',
 		renew_code => $self->renew_code
 	});

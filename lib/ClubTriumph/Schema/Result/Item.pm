@@ -1031,13 +1031,13 @@ sub blogtags {
 			my $default=(grep {$_->menu->pid eq $menu->pid} $item->search_related('blog_menus',{ancs => undef}));
 			if (!$item->tags && ($pid == $tagid)) {$default =1}
 #			if ($pid == $c->user->menus->first->pid) {$default =1}
-			$pid = 'menu_'.$pid;
+#			$pid = 'menu_'.$pid;
 #			push (@field_list, {name => $pid, type => 'Boolean', 
 #					label => $menu->title, 
 #					default => $default, 
 #					wrapper_class => 'form-tags',
 #					element_attr => {onChange =>'countTags(this)'}});
-			unless (grep(/$pid/, @pids)) {
+			unless ($pid ~~ @pids) {
 				push (@field_list, {label => $menu->title, value => $menu->pid });
 				push (@pids, $pid)
 			}

@@ -589,12 +589,12 @@ sub new_sms {
 			$upload->filename =~ /\.jpg$/ ||
 			$upload->filename =~ /\.jpeg$/ 
 			) && $upload->size) { 
-				my $image = $diaryentry->items_attachments->find_or_create({title => $upload->filename, contenttype => 3}); 
+				my $image = $diaryentry->items_attachments->find_or_create({title => $upload->filename, contenttype => 3, view => 256}); 
 				$image->add_image_to_item($upload); 
 				$image->link_to_menu($self->menus->single);
 			}
 			elsif ($upload->size) { 
-				my $file= $diaryentry->items_attachments->find_or_create({title => $upload->filename, contenttype => 4}); 
+				my $file= $diaryentry->items_attachments->find_or_create({title => $upload->filename, contenttype => 4, view => 256}); 
 				$file->add_file_to_item($upload); 
 				if ($upload->type =~ /^text/i ||
 				$upload->filename =~ /\.txt$/) {
@@ -602,7 +602,9 @@ sub new_sms {
 						$diaryentry->update({latitude => $1, longitude => $2});
 					}
 #					if (length( $upload->slurp) > (length $self->content)) {
-						$self->update({content => $upload->slurp})
+						my $atttext = $upload->slurp;
+						$atttext =~ s/^10cr//i;
+						$diaryentry->update({content => $atttext})
 #					}
 				}
 			}

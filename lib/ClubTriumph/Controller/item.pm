@@ -81,6 +81,15 @@ sub new_news :Chained('/menu/base') :PathPart('new_news') :Args(0) {
 	return $self->messageform($c, $item);
 }
 
+sub new_news_adv :Chained('/menu/base') :PathPart('new_news_adv') :Args(0) {
+	my ($self, $c) = @_;
+
+#	my $item = $c->model('ClubTriumphDB::Item')->new_thread({},$c);
+	my $item = $c->model('ClubTriumphDB::Item')->new_result({contenttype => '12',author => $c->user->id, view => $c->stash->{menu_item}->view, edit => 3});
+	
+	return $self->messageform($c, $item,1);
+}
+
 
 sub new_thread :Chained('/menu/base') :PathPart('new_thread') :Args(0) {
 	my ($self, $c) = @_;

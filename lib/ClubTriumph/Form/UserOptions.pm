@@ -19,11 +19,11 @@
 	has_field 'location_info' => (type => 'Display', html => 'Allow the website access your location and link it to content that you upload');
 	has_field 'location_tag' => (type =>'Select', widget => 'RadioGroup', options => [{label => 'no', value => 0},{label => 'yes', value => 1}],
 		label_attr => {title => 'Allow the website to access your location when you create items'});
-	has_field 'profile_view'=> (type => 'Select', multiple => 1, inflate_default_method => \&inflate_perms, deflate_value_method => \&deflate_perms, widget => 'CheckboxGroup', 
+	has_field 'profile_view'=> (type => 'Select',   widget => 'RadioGroup', 
 	label => 'Profile visibility',
 		label_attr => {title => 'Allow your profile to be visible to other users'}
 		);
-	has_field 'contact_view'=> (type => 'Select', multiple => 1, inflate_default_method => \&inflate_perms, deflate_value_method => \&deflate_perms, widget => 'CheckboxGroup', 
+	has_field 'contact_view'=> (type => 'Select',   widget => 'RadioGroup', 
 	label => 'Privacy',
 		label_attr => {title => 'Allow your e-mail address to be visible to other users'}
 		);
@@ -48,14 +48,14 @@ sub options_profile_view {
 	my $self = $_[0];
 	my $view = 256;
 	if ($self->item->profile->parent) {$view = $self->item->profile->parent->view} 
-	return $self->item->profile->access_options($self->item,256, $view)
+	return $self->item->profile->access_options($self->item,448, $view)
 }
 
 sub options_contact_view {
 	my $self = $_[0];
 	my $view = 256;
 	if ($self->item->profile->parent) {$view = $self->item->profile->parent->view} 
-	return $self->item->profile->access_options($self->item,256, $view)
+	return $self->item->profile->access_options($self->item,192, $view)
 }
 
 sub inflate_perms {

@@ -2991,6 +2991,8 @@ sub access_level {
 	if ($user->club_member && $menu_item->ancestors->related_resultset('manager')->count({})  
 			&& ($menu_item->ancestors->related_resultset('manager')->related_resultset('member_club_roles')->related_resultset('member')->count({memno => $user->memno->memno}))) { # cascade managers
 		$access_level |= 8}
+	if ($self->user && $self->user->id && ($self->user->id == $user->id)) {
+		$access_level |= 1}
 	if ($c->session->{menu_access_level}) {$c->session->{menu_access_level}{$self->pid} = $access_level} 
 	else {$c->session(menu_access_level => {$self->pid => $access_level})}
 	$c->log->debug('pid'.$self->pid.'View'.($self->view & 32).'Entrant'.($access_level & 32));

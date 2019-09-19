@@ -7,14 +7,17 @@ BLOCK menublock ;
 	IF count > 0 && menu_object.children.size ;
 		IF count == menudepth 
 			-%]<ul class = 'sf-menu'>[% 
-			UNLESS c.stash.menu_item.pid == menu_start.pid || 1
-				%]<li><a href = "[% c.uri_for('/') %]">Home</a></li>[% 
-			END ;
-			IF c.user && c.user.club_member 
-				%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/menu',menu_start.pid,'forum') %]">Forum</a></li>[% 
-			ELSE ;
+				IF c.user && c.user.club_member ;
+					status = c.user.memno.status ;
+					IF (status == 'near expiry') || (status == 'grace period') 
+						%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/memno',c.user.memno.memno,'renew') %]">Renew</a></li>[%
+					ELSE ;
+						%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/') %]">Home</a></li>[% 
+					END ;
+				ELSE
 				%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/join') %]">Join</a></li>[%
-			END ;
+				END ;
+			%]<li style = 'padding-right:20px;'><a href = "[% c.uri_for('/menu',menu_start.pid,'forum') %]">Forum</a></li>[% 
 		ELSE 
 			%]<ul>[% 
 		END ; 

@@ -805,21 +805,21 @@ sub nplocation { #returns location with a random error added for privacy
 
 sub set_nearest_group {
 	my $self = $_[0];
-	return if ($self->lg_preference > 0); #don't update if manually set
+	return if ($self->lg_preference && $self->lg_preference > 0); #don't update if manually set
 	my $location = $self->location; return unless ($location && $$location{lat} && $$location{lon});
-	my @group_meetings=$self->result_source->schema->resultset('GroupMeeting')->all;
-	my $group_meeting;
+	my @local_groups=$self->result_source->schema->resultset('LocalGroup')->all;
+	my $local_group;
 	my $distance=40;
-	foreach my $meeting (@group_meetings) {
+	foreach my $group (@local_groups) {
 		my $county = $self->address5;
-		if ((!$meeting->local_group->county_filter || ($meeting->local_group->county_filter =~ /$county/ig)) 
-		&& $meeting->distance($location) && ($meeting->distance($location)->value('miles') < $distance)) {
-			$distance = $meeting->distance($location)->value('miles');
-			$group_meeting = $meeting 
+		if ((!$group->county_filter || !$county || ($group->county_filter =~ /$county/ig)) 
+		&& $group->distance($location) && ($group->distance($location)->value('miles') < $distance)) {
+			$distance = $group->distance($location)->value('miles');
+			$local_group = $group
 		}
 	}
-	if (defined($group_meeting)) {
-		$self->update({local_group => $group_meeting->local_group});
+	if (defined($local_group)) {
+		$self->update({local_group => $local_group});
 	}
 	
 }
@@ -1069,6 +1069,8 @@ sub renewal_form {
 	my $memform_rs = $self->result_source->schema->resultset('Memform');
 	my $localgroup;
 	if ($self->local_group) {$localgroup = $self->local_group->id}
+	my $lg_preference;
+	if ($self->lg_preference) {$lg_preference = $self->lg_preference->id}
 	my $newmember = $memform_rs->search({memno => $self->memno,renew_code => $self->renew_code, status => 'open'}, {order_by => {-desc => 'id'}})->first;
 	if ($newmember) {return $newmember}
 	$newmember = $memform_rs->new_result({
@@ -1089,7 +1091,7 @@ sub renewal_form {
 		mobile => $self->mobile,
 		area => $self->area->id,
 		local_group => $localgroup,
-		lg_preference => $self->lg_preference->id,
+		lg_preference => $lg_preference,
 		status => 'open',
 		renew_code => $self->renew_code
 	});

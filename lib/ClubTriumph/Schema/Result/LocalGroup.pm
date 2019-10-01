@@ -265,13 +265,24 @@ sub champ_points {
 
 sub distance {
 	my ($self, $location) = @_;
-	my $distance;
+	use Class::Measure::Length;
+	my $distance; 
 	my @meetings = $self->group_meetings;
 	foreach my $meeting (@meetings) {
 		if ($meeting->location && $meeting->location->latitude && $meeting->location->longitude) {
 			if (!defined($distance) || ($meeting->distance($location)->value() < $distance->value())) {
 				$distance = $meeting->distance($location)
 			}
+		}
+	}
+	unless (defined($distance)) {
+		if ($self->organiser && $self->organiser->club_member && $self->organiser->location) {
+			my $gis = GIS::Distance->new();
+			my $org_location = $self->organiser->location;
+			$distance = $gis->distance($$location{lat},$$location{lon} => $$org_location{lat},$$org_location{lon});
+		}
+	else {
+		$distance = new Class::Measure::Length( 999, 'mile' );
 		}
 	}
 	return $distance;
@@ -285,10 +296,20 @@ sub title_distance {
 sub colour {
 	my $self = shift;
 	my @distances ;
-	foreach my $meeting ($self->result_source->schema->resultset('GroupMeeting')->search({local_group => {'!=' => $self->id}}))  {
-		my $distance = $meeting->location->distance({lat => $self->group_meetings->first->location->latitude, lon => $self->group_meetings->first->location->longitude})->value('miles');
-		if (!$distances[$meeting->local_group->colr] || ($distances[$meeting->local_group->colr] > $distance)) {
-			$distances[$meeting->local_group->colr] = $distance 
+	my $lat; my $lon;
+	if ($self->group_meetings->count({})) {
+		$lat = $self->group_meetings->first->location->latitude;
+		$lon = $self->group_meetings->first->location->longitude;
+	}
+	elsif ($self->organiser && $self->organiser->club_member && $self->organiser->location) {
+		my $org_location = $self->organiser->location;
+			$lat = $$org_location{lat}; $lon = $$org_location{lon};
+		}
+	else {return};
+	foreach my $group ($self->result_source->schema->resultset('LocalGroup')->search({id => {'!=' => $self->id}}))  {
+		my $distance = $group->distance({lat => $lat, lon => $lon})->value('miles');
+		if (!$distances[$group->colr] || ($distances[$group->colr] > $distance)) {
+			$distances[$group->colr] = $distance 
 		}
 	}
 	my $colour =1;

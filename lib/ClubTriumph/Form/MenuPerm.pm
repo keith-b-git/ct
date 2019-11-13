@@ -105,7 +105,7 @@ sub options_view_blogs {
 	my $self = $_[0];
 	my $view = 256;
 	if ($self->item->parent) {$view = $self->item->parent->view} 
-	return $self->item->access_options($self->user,256, $view)
+	return $self->item->access_options($self->user,511, $view)
 }
 
 sub options_add_blog {
@@ -126,7 +126,7 @@ sub options_add_image {
 	my $self = $_[0];
 	my $view = 511;
 	if ($self->item->parent) {$view = $self->item->parent->view} 
-	return $self->item->access_options($self->user,127, $view)
+	return $self->item->access_options($self->user,255, $view)
 }
 
 sub options_view_messages {

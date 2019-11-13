@@ -29,7 +29,7 @@ sub options_parent {
 	if ($current->parent) {$parent = $current->parent->pid}
 	if ($current->parent && $current->parent->anchor) {
 		@pids = $self->schema->resultset('Menu')->search({
-		-or => [anchor => {'>=' => $access_level},
+		-or => [anchor => {'&' => $access_level},
 		-and => [anchor => 1, user => $self->user->id],
 		pid => $parent]})
 	}

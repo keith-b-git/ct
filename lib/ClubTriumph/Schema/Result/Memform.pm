@@ -412,7 +412,7 @@ sub total {
 }
 
 sub join_fee { #calculate whether joining fee is due or if applicant is already a member
-	my $self = shift;
+	my $self = shift; 
 	return unless $self->area;
 	unless ($self->memno) {return $self->area->joinfee}
 	my $c = ClubTriumph->ctx or die "Not in a request!";
@@ -443,7 +443,7 @@ sub young_check {
 	my $self = shift;
 	unless ($self->dob) {return 0}
 	my $age = $self->age;
-	return (($age >= 17) && ($age <= 24) && !($self->memforms->count({})))
+	return (($age >= 17) && ($age <= 24) )
 }
 
 sub young_update {

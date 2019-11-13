@@ -115,6 +115,18 @@ sub news_addable {
 	}
 }
 
+sub adverts_addable {
+	my ($self,$user) = @_;
+	my $me = $self->current_source_alias;
+	if ($user) {
+		my $access_level = $user->access_level || 128;
+		return $self->search({-or => ["$me.add_advert" => {'&' => $access_level},-and => ["$me.add_advert" => {'&' => 1}, "$me.user" => $user->id]]});
+	}
+	else {
+		my $access_level = 256; 
+		return $self->search({"$me.view_messages" => {'&' => $access_level}});
+	}
+}
 
 sub shop_addable {
 	my ($self,$user) = @_;

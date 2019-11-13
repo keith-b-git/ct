@@ -126,6 +126,9 @@ sub user_delete :Chained('user') :PathPart('delete') :Args(0) {
 sub user_delete_content :Chained('user') :PathPart('content_delete') :Args(0) {
 	my ($self,$c) = @_;
 	my $user = $c->stash->{user};
+	foreach my $content ($user->items->search({contenttype => 6})) {
+		$content->remove($c)
+	}
 	foreach my $content ($user->items) {
 		$content->remove($c)
 	}

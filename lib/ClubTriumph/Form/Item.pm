@@ -263,7 +263,7 @@ before 'update_model' => sub {
 	foreach my $field ($self->field('view'), $self->field('reply')) {
 		if ($field->is_active && ref $field->value eq 'ARRAY')  {$self->values->{$field->name}=0} 
 	}
-
+	$self->values->{'content'} = substr($self->values->{'content'},0,9999);
 };
 
 after 'update_model' => sub {

@@ -838,7 +838,7 @@ sub young_check {
 	my $self = shift;
 	unless ($self->dob) {return 0}
 	my $age = $self->age;
-	return (($age >= 17) && ($age <= 24) && !($self->memforms->count({})))
+	return (($age >= 17) && ($age <= 24) )
 }
 
 sub young_update {

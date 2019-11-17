@@ -36,6 +36,7 @@
 	has_field 'add_element' => ( type => 'AddElement', repeatable => 'entrants',  tags => { controls_div => 1 } ,
 	value => 'Add another Team Member',
 	);
+	has_field 'line' => (type => 'Display', html => '<br clear = all ><hr width = "90%">');
 	has_field 'charity_link' => (type => 'URI::HTTP', inflate => 0, size => 40, label =>'Charity web page link (optional)', label_attr => {title => 'If you are raising money for charity please enter the link here (justgiving etc). Include https:// at the start'} ) ;
 	has_field 'submit' => (type => 'Submit', value => 'Next');
 

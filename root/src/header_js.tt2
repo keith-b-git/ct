@@ -9,7 +9,7 @@
 <script src="[% c.uri_for('/static/js/jquery-ui.js') %]"></script> 
 
 <script src="[% c.uri_for('/static/js/chosen.jquery.js') %]"></script>
-<script type="text/javascript" src="[% c.uri_for('/static/js/tinymce5d/tinymce.js')%]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/tinymce5/tinymce.min.js')%]"></script>
 <script type="text/javascript" src="[% c.uri_for('/static/js/superfish.js')%]"></script>
 [% IF mobile %]<link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/css/ct_mobile.css') %]">
 	<link rel="stylesheet" type="text/css" href="/static/css/xnormalize.css" />

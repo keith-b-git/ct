@@ -463,7 +463,7 @@ sub items_locatable {
 
 sub within_date {
 	my $self = shift;
-	my $now = DateTime->now;
+	my $now = DateTime->today;
 	my $dtf =  $self->result_source->schema->storage->datetime_parser;
 #	my $zero = DateTime->new(year => 0000,month => 00, day => 00);
 	return $self->search({-and => [

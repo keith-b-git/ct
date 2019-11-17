@@ -456,6 +456,7 @@ sub replyform  {
 		item => $item,
         user => $c->user,
 		c => $c,
+		inactive => ['photo','view','reply','menu_items'],
 #		use_fields_for_input_without_param => 1,
 		);
         $c->stash(  form => $form,  ); #template => 'item/itemform.tt2',

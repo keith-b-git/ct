@@ -11,9 +11,7 @@ FILTER inflect ; '<#n:' _ wanted_count %]> wanted <N:item> [% END
 
 <div class = 'forum_head'><center>
 [% FILTER inflect ; '<#n:' _ car_count %]> <N:car> for sale [% END ; 
-IF c.stash.menu_item.advert_addable_by(c.user) -%]
-<input type = button name = "parts" value = "Create New Car for Sale Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','9') %]';">[% 
-END %]
+IF c.user_exists ;  INCLUDE addselect type = 9 ; END %]
 </div></center>
 <table class = 'threadstable'>[%
  FOREACH item IN menu_item.adverts(c.user,9,10,advertpage ) -%]
@@ -22,9 +20,7 @@ END %]
 </table>
 <div class = 'forum_head'><center>
 [% FILTER inflect ; '<#n:' _ part_count %]> <N:part> for sale [% END ; 
-IF c.stash.menu_item.advert_addable_by(c.user) -%]
-<input type = button name = "parts" value = "Create New Parts for Sale Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','10') %]';">[% 
-END %]
+IF c.user_exists ;  INCLUDE addselect type = 10 ; END %]
 </div></center>
 <table class = 'threadstable'>
 [% FOREACH item IN menu_item.adverts(c.user,10,10,advertpage ) -%]
@@ -33,9 +29,7 @@ END %]
 </table>
 <div class = 'forum_head'><center>
 [% FILTER inflect ; '<#n:' _ wanted_count %]> wanted <N:items>  [% END ; 
-IF c.stash.menu_item.advert_addable_by(c.user) -%]
-<input type = button name = "wanted" value = "Create New Wanted Advert" onClick="location.href='[% c.uri_for('/menu',c.stash.menu_item.pid, 'new_advert','11') %]';">[% 
-END -%]
+IF c.user_exists ;  INCLUDE addselect type = 11 ; END %]
 </div></center>
 <table class = 'threadstable'>
 [% FOREACH item IN menu_item.adverts(c.user,11,10,advertpage ) -%]
@@ -103,3 +97,24 @@ advert.contenttype.displaytype %]?')) {location.href='[% c.uri_for('/menu',c.sta
 
 
 [% END ; #of adblock %]
+
+[% BLOCK addselect %]
+<p > Create new [% SWITCH type ;
+CASE 9 %]car for sale [%
+CASE 10 %]parts for sale [%
+CASE 11 %]wanted [% END %]
+advert in 
+<select id = 'advertpage_[% type %]' class = 'chosen-select' >
+<option>please select</option>
+[% FOREACH page IN c.model('ClubTriumphDB::Menu').adverts_addable(c.user) %]
+<option value = "[% c.uri_for('/menu',page.pid,'new_advert',type) %]" [%
+IF page.pid == menu_item.pid %]selected[% END %] style = "background-color: white; color: black"
+>[% page.title %]</option>
+[% END %]
+</select>
+<input type = button name = "parts" value = "go" onClick="location.href=document.getElementById('advertpage_[% type %]').value;"></p>
+<small>Private adverts may be placed by users in accordance with our <a href="[% c.uri_for('/static','docs','reg_agreement.pdf') %]">Terms and Conditions</a>. Please use the most specific category to reach the widest audience.</small>
+[% END %]
+<script language = 'javascript'>
+   $(".chosen-select").chosen()
+</script>

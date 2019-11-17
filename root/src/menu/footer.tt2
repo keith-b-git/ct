@@ -14,5 +14,6 @@ Club Triumph Ltd. Registered in England No. 4961210 Registered Office: Suite A,1
 Club Triumph is run entirely by its members for its members and does not have paid employees. 
 </p>
 <p align = center><strong><a href="[% c.uri_for('/static','docs','reg_agreement.pdf') %]">Website Terms and Conditions</a> | 
-<a href="[% c.uri_for('/static','docs','Terms_and_Conditions.pdf') %]">Terms and Conditions of Sale</a> | <a href="[% c.uri_for('/static','docs','rules.pdf') %]">Club Rules</a></strong></p>
+<a href="[% c.uri_for('/static','docs','Terms_and_Conditions.pdf') %]">Terms and Conditions of Sale</a> | 
+<a href="[% c.uri_for('/static','docs','privacy.pdf') %]">Privacy</a> |<a href="[% c.uri_for('/static','docs','rules.pdf') %]">Club Rules</a></strong></p>
 [% END %]

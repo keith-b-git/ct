@@ -18,7 +18,7 @@
 <p>
 This form will generate an e-mail which can be sent to all members of the [% localgroup.title %] Local Group. After composing your message you are advised to select the 'to self' option below to check that it is formatted correctly as an email. 
 You can then use the 'all members' tick box to send it to all group members who have not opted out. This may take a while if you have a lot of members in your group, if it appears to timeout don't refresh the page or try to send again, it's probably still working on it.
-
+<br>You are advised to use a sender address which is in the club.triumph.org.uk domain otherwise the message may be rejected by spam filters, if you don't yet have one please contact admin@club.triumph.org.uk
 <br>
 Template variables can be incuded to personalise the message as below.<br>
 </p>

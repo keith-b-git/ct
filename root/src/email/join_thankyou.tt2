@@ -12,6 +12,10 @@ Dear [% member.forename | lower | ucfirst %],
 Welcome to Club Triumph <br>
 You will receive a New members pack in the post.
 </p>
+[% UNLESS member.userid %]
+Please register by clicking <a href="[% c.uri_for('/register') %]" >here</a> and create a unique User Name and Password which will allow you full access to our Website and Forum. 
+You will need this to enter any of the Club events and Pay your yearly membership.
+[% END %]
 <p>
 [% IF member.local_group %]
 Details of your local group: <a href="[% c.uri_for('/menu',member.local_group.menus.first.pid,'view') %]">[% member.local_group.title %]</a><br>
@@ -67,5 +71,5 @@ Tony Pulis<br>
 Membership Secretary <br>
 Club Triumph<br>
 membership@club.triumph.org.uk<br>
-0208 351 9544 (Evenings 07:00pm – 09:00pm<br>
+0208 351 9544 (Evenings 07:00pm – 09:00pm)<br>
 </p>

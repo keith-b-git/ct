@@ -164,6 +164,7 @@ sub check {
 	$address1 =~ s/ Rd$/ Road/ig;
 	$address1 =~ s/ Ave$/ Avenue/ig;
 	$address1 =~ s/ Gdns$/ Gardens/ig;
+	return 1 if (uc($self->email) eq uc($member->email));
 	return ((uc($self->postcode) eq uc($member->postcode)) && 
 		(uc($address1) eq uc($member->address1)) &&
 		($self->country eq $member->country) &&

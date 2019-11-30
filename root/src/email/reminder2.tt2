@@ -20,7 +20,12 @@ Your membership details are currently as follows-
 Your can renew easily online and pay by credit or debit card by clicking on the link below-
  </p><p> 
 <a href = "[% c.uri_for('/renew',member.generate_renew_code) %]">[% c.uri_for('/renew',member.generate_renew_code) %]</a>
- </p><p> 
+ </p>
+ [% UNLESS member.userid %]<p>
+Please register by clicking <a href="[% c.uri_for('/register') %]" >here</a> and create a unique User Name and Password which will allow you full access to our Website and Forum. 
+You will need this to enter any of the Club events and pay your yearly membership.</p>
+[% END %]
+ <p> 
 Yours Sincerely, 
 </p><p>
 Tony Pulis (Club Triumph Membership Secretary)<br>

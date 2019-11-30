@@ -184,29 +184,16 @@ around 'update_model' => sub {
 	my$orig = shift;
 	my $self = shift;
 	my $item = $self->item;
-
+	my $old_entrant_count = $item->entrants->count({});
 	$self->schema->txn_do( sub {
 	$self->$orig(@_);
+	my $new_entrant_count = 0;
+	foreach my $entrant ($self->field('entrants')->fields) { $new_entrant_count ++ }
+	unless ($item->status eq 'draft') {$item->update({status => 'revised'})}
 	$item->update_merchandise;
 	my $entry_list = $self->schema->resultset('Menu')->find({parent => $item->event->menus->single->id, type => 'entrylist'});
 	return unless ($entry_list);
-=cut
-	my $menu_item = $self->schema->resultset('Menu')->find_or_create({parent => $entry_list, entry => $self->item});
 
-	$menu_item->update({
-		type => 'entry',
-		user => $self->user->id,
-		heading1 => $self->item->title,
-		view => 256,
-		edit => 8,
-		anchor => 0,
-		add_blog => 64,
-		view_blogs => 256,
-		add_image => 64,
-		view_images => 256,
-		add_message => 128,
-		view_messages => 256});
-=cut
 	});
 
 };

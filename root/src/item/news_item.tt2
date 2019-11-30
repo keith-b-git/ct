@@ -33,6 +33,7 @@ FOREACH attachment IN news.unembedded_attachments(c) ;
 %]<a href="[% attachment.download_uri(c) %]"><img src = "[% attachment.display_uri(c,'w-520') %]"></a> [% 
 	END ;
 END %]</span>
+<br clear =all>
 <span class = "item_date">
 posted [% news.created | dateformat(news.created) %]</span>
 [% IF news.editable_by(c.user) %]

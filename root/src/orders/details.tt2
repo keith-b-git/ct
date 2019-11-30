@@ -32,7 +32,7 @@ IF purchases.size %]
 	<tr><th></th><th>Name</th><th>DoB</th><th>Membership Fee</th></tr>
 	<tr><th style ="text-align:right;">Principle member</th><td>[% application.formalname %]</td>
 	<td>[% INCLUDE 'date.tt2' date = application.dob %]</td><td>£[% application.area.fee %]</td>
-	<td>[% IF (application.young_check) %]You are eligible fo a 50% reducton in your membership fee[% END %]</td></tr>
+	<td>[% IF (application.young_check) %]You are eligible for a 50% reduction in your membership fee <a href = "[% c.uri_for('/static','docs','Young_members_Terms_and_Conditions.pdf') %]">(terms & conditions)</a>[% END %]</td></tr>
 	<tr><th style ="text-align:right;">Joining Fee</th><td></td><td></td><td>£[% application.join_fee %]</td></tr>
 	
 	
